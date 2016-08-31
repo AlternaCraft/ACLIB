@@ -18,13 +18,13 @@ public class CommandListener implements CommandExecutor {
         if (args.length == 0) {
             PluginDescription pluginDescription = PluginManager.instance
                     .getPluginDescription();
-            
-            pluginDescription.getLines().stream().forEach((line) -> {
+
+            for (String line : pluginDescription.getLines()) {
                 MessageManager.sendCommandSender(
                         cs,
                         line
                 );
-            });
+            }
         } else {
             PluginCommand command = PluginCommands.instance.getCommand(args[0]);
             if (command != null) {

@@ -8,6 +8,7 @@ package com.alternacraft.aclib.files;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -25,9 +26,9 @@ public class PluginFile {
         try {
             this.yamlFile = new YamlConfiguration();
 
-            values.entrySet().stream().forEach((entry) -> {
+            for (Map.Entry<String, Object> entry : values.entrySet()) {
                 this.yamlFile.set(entry.getKey(), entry.getValue());
-            });
+            }
 
             this.yamlFile.save(file);
         } catch (IOException ex) {
@@ -46,7 +47,7 @@ public class PluginFile {
     public Object getNode(String path) {
         return yamlFile.get(path);
     }
-    
+
     public void save() {
         try {
             yamlFile.save(file);
