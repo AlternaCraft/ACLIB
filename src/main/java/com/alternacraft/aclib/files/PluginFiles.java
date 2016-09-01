@@ -8,18 +8,16 @@ package com.alternacraft.aclib.files;
 import java.util.HashMap;
 
 public class PluginFiles {
-    public static final PluginFiles instance = new PluginFiles();
-
-    private HashMap<String, PluginFile> files = new HashMap<>();
+    private static HashMap<String, PluginFile> files = new HashMap<>();
 
     private PluginFiles() {
     }
 
-    public void registerFile(String path, PluginFile file) {
+    public static void registerFile(String path, PluginFile file) {
         files.put(path, file);
     }
 
-    public PluginFile getFile(String path) {
+    public static PluginFile getFile(String path) {
         return files.get(path);
     }
 }

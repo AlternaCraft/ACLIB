@@ -26,7 +26,7 @@ public class CommandListener implements CommandExecutor {
                 );
             }
         } else {
-            PluginCommand command = PluginCommands.instance.getCommand(args[0]);
+            PluginCommand command = PluginCommands.getCommand(args[0]);
             if (command != null) {
                 if (!command.execute(cs, args)) {
                     MessageManager.sendCommandSender(cs, command.error());

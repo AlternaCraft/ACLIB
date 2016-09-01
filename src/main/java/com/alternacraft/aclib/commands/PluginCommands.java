@@ -19,18 +19,16 @@ package com.alternacraft.aclib.commands;
 import java.util.HashMap;
 
 public class PluginCommands {
-    public static final PluginCommands instance = new PluginCommands();
-
-    private HashMap<String, PluginCommand> commands = new HashMap<>();
+    private static HashMap<String, PluginCommand> commands = new HashMap<>();
 
     private PluginCommands() {
     }
 
-    public void registerCommand(String command, PluginCommand pluginCommand) {
+    public static void registerCommand(String command, PluginCommand pluginCommand) {
         commands.put(command, pluginCommand);
     }
 
-    public PluginCommand getCommand(String command) {
+    public static PluginCommand getCommand(String command) {
         return commands.get(command);
     }
 }

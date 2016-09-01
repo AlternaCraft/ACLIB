@@ -11,7 +11,7 @@ public abstract class PluginCommand {
     protected String error = null;
 
     public abstract boolean execute(CommandSender cs, String[] args);
-    
+
     public final String error() {
         return error;
     }
