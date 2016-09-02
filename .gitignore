@@ -1,4 +1,6 @@
-/nbactions.xml
+# Netbeans
 /target/
-/nb-configuration.xml
+/nbproject/
 /nbactions-deployer.xml
+/nb-configuration.xml
+/.utility/*.txt
