@@ -7,7 +7,7 @@ package com.alternacraft.aclib.commands;
 
 import org.bukkit.command.CommandSender;
 
-public interface PluginCommand {
+public interface ArgumentExecutor {
     
     /**
      * Method for execute the command

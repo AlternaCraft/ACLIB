@@ -6,9 +6,9 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginDescription;
-import com.alternacraft.aclib.PluginManager;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,7 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
 
-    private HashMap<String, PluginCommand> arguments = new HashMap<>();
+    private Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
     private final JavaPlugin plugin;
@@ -24,30 +24,31 @@ public class CommandListener implements CommandExecutor {
     public CommandListener(String command, JavaPlugin plugin) {
         this.command = command;
         this.plugin = plugin;
-        
+
         this.plugin.getCommand(command).setExecutor(this);
     }
 
-    public void addArgument(String arg, PluginCommand argClass) {
+    public void addArgument(CommandArgument arg, ArgumentExecutor argClass) {
         arguments.put(arg, argClass);
     }
 
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String str, String[] args) {
         if (args.length == 0) {
-            PluginDescription pluginDescription = PluginManager.instance
-                    .getPluginDescription();
-
-            for (String line : pluginDescription.getLines()) {
-                MessageManager.sendCommandSender(
-                        cs,
-                        line
-                );
+            for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
+                CommandArgument key = entry.getKey();
+                MessageManager.sendCommandSender(cs, key.getArgument());
             }
         } else {
-            if (this.arguments.containsKey(args[0])) {
-                PluginCommand command = this.arguments.get(args[0]);
-                return command.execute(cs, args);
+            Set<CommandArgument> cmd_args = this.arguments.keySet();
+            for (CommandArgument argument : cmd_args) {
+                if (argument.getArgument().equals(args[0])) {
+                    ArgumentExecutor arg_exe = this.arguments.get(argument);
+                    if (!arg_exe.execute(cs, args)) {
+                        MessageManager.sendCommandSender(cs, argument.getUsage());                        
+                    }
+                    return true;
+                }
             }
             MessageManager.sendCommandSender(cs, "&4Invalid argument");
         }

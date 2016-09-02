@@ -48,6 +48,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @see ConfigDataStore
  */
 public class ConfigurationFile {
+
     //Attributes
     private JavaPlugin plugin = null;
 
@@ -145,7 +146,7 @@ public class ConfigurationFile {
         String resul = linea;
 
         for (String value : newFile.getKeys(true)) {
-            if (value.equals("Version")) // Este parametro no se toca
+            if (value.equalsIgnoreCase("Version")) // Este parametro no se toca
             {
                 continue;
             }
