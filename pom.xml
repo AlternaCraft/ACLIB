@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    
+    <!-- The Basics -->
     <groupId>com.alternacraft</groupId>
     <artifactId>aclib</artifactId>
     <version>0.0.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>
+    <repositories>
+        <!-- Spigot repository -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
     
     <dependencies>
         <!-- Spigot dependency -->
@@ -22,6 +26,47 @@
         </dependency>
     </dependencies>
     
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+    
+    <!-- More Project Information -->
+    <name>ACLIB</name>
+    <description>Library for bukkit plugins</description>
+    <inceptionYear>2016</inceptionYear>
+    
+    <organization>
+        <name>AlternaCraft</name>
+        <url>https://github.com/AlternaCraft</url>
+    </organization>
+    
+    <developers>
+        <developer>
+            <name>esejuli94</name>
+            <id>1</id>
+            <roles>
+                <role>Programmer</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>edgargaza</name>
+            <id>2</id>
+            <roles>
+                <role>Programmer</role>
+            </roles>
+        </developer>
+    </developers>
+    
+    <licenses>
+        <license>
+            <name>The GNU General Public Licence version 3 (GPLv3)</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
+    
+    <!-- Environment Settings -->
     <distributionManagement>
         <repository>
             <id>bintray</id>
@@ -35,6 +80,4 @@
             <url>http://oss.jfrog.org/oss-snapshot-local/</url>
         </snapshotRepository>
     </distributionManagement>
-
-    <name>ACLIB</name>
 </project>
