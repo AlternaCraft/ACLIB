@@ -7,12 +7,13 @@ package com.alternacraft.aclib.commands;
 
 import org.bukkit.command.CommandSender;
 
-public abstract class PluginCommand {
-    protected String error = null;
-
+public interface PluginCommand {
+    
+    /**
+     * Method for execute the command
+     * @param cs CommandSender
+     * @param args List of arguments
+     * @return Command result
+     */
     public abstract boolean execute(CommandSender cs, String[] args);
-
-    public final String error() {
-        return error;
-    }
 }
