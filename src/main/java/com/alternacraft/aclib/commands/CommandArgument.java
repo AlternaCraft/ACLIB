@@ -22,17 +22,9 @@ public class CommandArgument {
     private String description;
     private String usage;
 
-    public CommandArgument(String argument) {
-        this.argument = argument;
-    }
-
-    public CommandArgument(String argument, String usage) {
-        this(argument);
-        this.usage = usage;
-    }
-
     public CommandArgument(String argument, String usage, String description) {
-        this(argument, usage);        
+        this.argument = argument;
+        this.usage = usage;
         this.description = description;
     }
 
