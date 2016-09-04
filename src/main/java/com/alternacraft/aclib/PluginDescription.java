@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PluginDescription {
-    private List<String> lines = new ArrayList();
+    private final List<String> lines = new ArrayList();
 
     public void addLine(String message) {
         lines.add(message);

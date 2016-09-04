@@ -16,11 +16,19 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.StrUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginManager {
+
+    @Deprecated
     public static final PluginManager instance = new PluginManager();
+    
+    /**
+     * @since 0.0.6
+     */
+    public static final PluginManager INSTANCE = new PluginManager();
 
     private JavaPlugin pluginInstance = null;
     private String prefix = null;
@@ -28,6 +36,13 @@ public class PluginManager {
     private PluginDescription pluginDescription = null;
 
     private ConfigurationFile configurationFile = null;
+
+    /**
+     * Default language for translations
+     *
+     * @since 0.0.6
+     */
+    private Langs messages = Langs.EN;
 
     private PluginManager() {
     }
@@ -52,6 +67,14 @@ public class PluginManager {
     public void definePluginPrefix(String prefix) {
         this.prefix = StrUtils.translateColors(prefix);
     }
+
+    /**
+     * @param lang Langs
+     * @since 0.0.6
+     */
+    public void defineMainLanguage(Langs lang) {
+        this.messages = lang;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters">
@@ -69,6 +92,14 @@ public class PluginManager {
 
     public PluginDescription getPluginDescription() {
         return pluginDescription;
+    }
+
+    /**
+     * @return Langs
+     * @since 0.0.6
+     */
+    public Langs getMainLanguage() {
+        return this.messages;
     }
     //</editor-fold>
 }

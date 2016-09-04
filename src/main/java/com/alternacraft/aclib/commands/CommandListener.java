@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
 
-    private Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
+    private final Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
     private final JavaPlugin plugin;
