@@ -33,14 +33,29 @@ public class CommandListener implements CommandExecutor {
     public void addArgument(CommandArgument arg, ArgumentExecutor argClass) {
         arguments.put(arg, argClass);
     }
-    
+
+    @Deprecated
     public CommandArgument getArgument(ArgumentExecutor argClass) {
         for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
             CommandArgument key = entry.getKey();
             ArgumentExecutor value = entry.getValue();
-            
-            if(value.equals(argClass)) {
+
+            if (value.equals(argClass)) {
                 return key;
+            }
+        }
+        return null;
+    }
+
+    public CommandArgument getCmdArgument(ArgumentExecutor argClass) {
+        if (this.arguments.containsValue(argClass)) {
+            for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
+                CommandArgument key = entry.getKey();
+                ArgumentExecutor value = entry.getValue();
+
+                if (value.equals(argClass)) {
+                    return key;
+                }
             }
         }
         return null;
@@ -50,25 +65,25 @@ public class CommandListener implements CommandExecutor {
     public boolean onCommand(CommandSender cs, Command cmd, String str, String[] args) {
         if (args.length == 0) {
             List<String> lines = new ArrayList<>();
-            
+
             for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
                 CommandArgument key = entry.getKey();
-                
+
                 String line = "&6" + key.getUsage() + "&r - " + key.getDescription();
                 lines.add(line);
             }
-            
+
             MessageManager.sendCommandSender(cs, "Plugin command list:");
-            for(String line : lines) {
+            for (String line : lines) {
                 MessageManager.sendCommandSender(cs, line);
             }
         } else {
-            Set<CommandArgument> cmd_args = this.arguments.keySet();
-            for (CommandArgument argument : cmd_args) {
+            Set<CommandArgument> cmdArgument = this.arguments.keySet();
+            for (CommandArgument argument : cmdArgument) {
                 if (argument.getArgument().equals(args[0])) {
-                    ArgumentExecutor arg_exe = this.arguments.get(argument);
-                    if (!arg_exe.execute(cs, args)) {
-                        MessageManager.sendCommandSender(cs, argument.getUsage());                        
+                    ArgumentExecutor argExecutor = this.arguments.get(argument);
+                    if (!argExecutor.execute(cs, args)) {
+                        MessageManager.sendCommandSender(cs, argument.getUsage());
                     }
                     return true;
                 }
