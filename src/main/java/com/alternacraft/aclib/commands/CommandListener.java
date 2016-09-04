@@ -47,6 +47,12 @@ public class CommandListener implements CommandExecutor {
         return null;
     }
 
+    /**
+     * 
+     * @param argClass ArgumentExecutor
+     * @return CommandArgument
+     * @since 0.0.6
+     */
     public CommandArgument getCmdArgument(ArgumentExecutor argClass) {
         if (this.arguments.containsValue(argClass)) {
             for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
