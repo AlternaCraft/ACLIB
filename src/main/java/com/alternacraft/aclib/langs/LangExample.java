@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.langs;
 
 import static com.alternacraft.aclib.langs.LangManager.DIRECTORY;
+import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.StrUtils;
 import java.io.File;
 import java.util.HashMap;
@@ -84,6 +85,9 @@ public enum LangExample implements LangInterface {
         private void doit() {
             // Init first
             LangManager.setKeys(Langs.EN, Langs.ES); // Default languages
+            // Or
+            LangManager.setKeys(MapUtils.getKeys(locales));
+            
             LangManager.load(LangExample.class); // Enum class to initialize
             
             // And then use normally :P

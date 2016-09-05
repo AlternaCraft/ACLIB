@@ -6,11 +6,11 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -48,23 +48,13 @@ public class CommandListener implements CommandExecutor {
     }
 
     /**
-     * 
-     * @param argClass ArgumentExecutor
+     *
+     * @param argExecutor ArgumentExecutor
      * @return CommandArgument
      * @since 0.0.6
      */
-    public CommandArgument getCmdArgument(ArgumentExecutor argClass) {
-        if (this.arguments.containsValue(argClass)) {
-            for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
-                CommandArgument key = entry.getKey();
-                ArgumentExecutor value = entry.getValue();
-
-                if (value.equals(argClass)) {
-                    return key;
-                }
-            }
-        }
-        return null;
+    public CommandArgument getCmdArgument(ArgumentExecutor argExecutor) {
+        return MapUtils.getKeyFrom(arguments, argExecutor);
     }
 
     @Override
@@ -84,17 +74,14 @@ public class CommandListener implements CommandExecutor {
                 MessageManager.sendCommandSender(cs, line);
             }
         } else {
-            Set<CommandArgument> cmdArgument = this.arguments.keySet();
-            for (CommandArgument argument : cmdArgument) {
-                if (argument.getArgument().equals(args[0])) {
-                    ArgumentExecutor argExecutor = this.arguments.get(argument);
-                    if (!argExecutor.execute(cs, args)) {
-                        MessageManager.sendCommandSender(cs, argument.getUsage());
-                    }
-                    return true;
+            CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
+            if (cmdArgument != null) {
+                if (!arguments.get(cmdArgument).execute(cs, args)) {
+                    MessageManager.sendCommandSender(cs, cmdArgument.getUsage());
                 }
+            } else {
+                MessageManager.sendCommandSender(cs, "&4Invalid argument");
             }
-            MessageManager.sendCommandSender(cs, "&4Invalid argument");
         }
 
         return true;
