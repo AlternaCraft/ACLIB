@@ -87,6 +87,13 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>                         
+                            <goal>tree</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             
@@ -109,22 +116,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            
-            <!-- Save dependencies -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>tree</id>
-                        <phase>prepare-package</phase>
-                        <goals>                         
-                            <goal>tree</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>    
+            </plugin>  
         </plugins>
     </build>
     

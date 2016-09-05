@@ -84,7 +84,7 @@ public class LangManager {
                 }
 
                 if (!checkLocales(langFile, langType, value)) {
-                    MessageManager.logError("Error loading " + langType.name() + " locales, "
+                    MessageManager.logError("Couldn't load " + langType.name() + " locales, "
                             + "a new one has been created.");
                 }
             }
