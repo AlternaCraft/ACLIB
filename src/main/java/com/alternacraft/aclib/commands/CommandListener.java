@@ -29,10 +29,10 @@ public class CommandListener implements CommandExecutor {
     private final JavaPlugin plugin;
     private final String alias;
 
-    public CommandListener(String command, JavaPlugin plugin, String alias) {
+    public CommandListener(String command, String alias, JavaPlugin plugin) {
         this.command = command;
-        this.plugin = plugin;
         this.alias = alias;
+        this.plugin = plugin;
 
         this.plugin.getCommand(command).setExecutor(this);
     }
