@@ -61,7 +61,7 @@ public class MessageManager {
     public static String prepareString(String message) {
         return StrUtils.translateColors(
                 "&f"
-                + PluginManager.INSTANCE.pluginPrefix()
+                + PluginBase.INSTANCE.pluginPrefix()
                 + message.replace("&r", "&r&f")
         );
     }

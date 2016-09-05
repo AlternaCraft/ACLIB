@@ -20,15 +20,15 @@ import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.StrUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PluginManager {
+public class PluginBase {
 
     @Deprecated
-    public static final PluginManager instance = new PluginManager();
+    public static final PluginBase instance = new PluginBase();
     
     /**
      * @since 0.0.6
      */
-    public static final PluginManager INSTANCE = new PluginManager();
+    public static final PluginBase INSTANCE = new PluginBase();
 
     private JavaPlugin pluginInstance = null;
     private String prefix = null;
@@ -44,25 +44,20 @@ public class PluginManager {
      */
     private Langs messages = Langs.EN;
 
-    private PluginManager() {
+    private PluginBase() {
     }
 
     /**
      * Initializing the essentials
      *
      * @param plugin
-     * @return Boolean
      */
-    public boolean setup(JavaPlugin plugin) {
+    public void init(JavaPlugin plugin) {
         this.pluginInstance = plugin;
-
         pluginDescription = new PluginDescription();
-
         configurationFile = new ConfigurationFile(plugin);
-
-        return true;
     }
-
+    
     // <editor-fold defaultstate="collapsed" desc="Setters">
     public void definePluginPrefix(String prefix) {
         this.prefix = StrUtils.translateColors(prefix);

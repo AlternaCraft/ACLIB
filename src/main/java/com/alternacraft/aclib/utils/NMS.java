@@ -16,14 +16,14 @@
  */
 package com.alternacraft.aclib.utils;
 
-import com.alternacraft.aclib.PluginManager;
+import com.alternacraft.aclib.PluginBase;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.bukkit.entity.Player;
 
 
 public class NMS {
-    private static final String PACKAGENAME = PluginManager.INSTANCE.plugin().getServer().getClass().getPackage().getName();
+    private static final String PACKAGENAME = PluginBase.INSTANCE.plugin().getServer().getClass().getPackage().getName();
     public static final String VERSION = PACKAGENAME.substring(PACKAGENAME.lastIndexOf(".") + 1);
 
     private static Class<?> craftPlayer;

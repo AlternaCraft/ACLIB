@@ -17,17 +17,17 @@
 package com.alternacraft.aclib.langs;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginManager;
+import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.files.PluginFile;
 import java.io.File;
 
 public class LangManager {
 
     public static final String DIRECTORY = new StringBuilder().append(
-            PluginManager.INSTANCE.plugin().getDataFolder()).append(
-                    File.separator).append(
+            PluginBase.INSTANCE.plugin().getDataFolder()).append(
+                File.separator).append(
                     "Langs").append(
-                    File.separator).toString();
+                        File.separator).toString();
 
     private static PluginFile backupFile = null;
 

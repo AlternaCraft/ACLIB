@@ -17,7 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.langs.Langs;
-import com.alternacraft.aclib.PluginManager;
+import com.alternacraft.aclib.PluginBase;
 import java.lang.reflect.Field;
 import org.bukkit.entity.Player;
 
@@ -88,7 +88,7 @@ public enum Localizer {
             return code.getType();
         } catch (NoSuchFieldException | SecurityException |
                 IllegalArgumentException | IllegalAccessException exc) {
-            return PluginManager.INSTANCE.getMainLanguage();
+            return PluginBase.INSTANCE.getMainLanguage();
         }
     }
 
