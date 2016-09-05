@@ -17,14 +17,13 @@
 package com.alternacraft.aclib.langs;
 
 import static com.alternacraft.aclib.langs.LangManager.DIRECTORY;
-import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.StrUtils;
 import java.io.File;
 import java.util.HashMap;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 // You have to create this in your project
-public enum LangExample implements LangInterface {
+public enum DefaultMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     PLUGIN_ENABLED(
             "Plugin activado correctamente",
@@ -37,6 +36,14 @@ public enum LangExample implements LangInterface {
     PLUGIN_RELOAD(
             "&6Plugin recargado correctamente",
             "&6Plugin recharged properly"
+    ),
+    NO_PERMISSION(
+            "&4No tienes permiso",
+            "&4You don't have permission"
+    ),
+    INVALID_ARGUMENTS(
+            "&4Argumentos de comando invalidos",
+            "&4Invalid command arguments"
     );
     // </editor-fold>
 
@@ -48,7 +55,7 @@ public enum LangExample implements LangInterface {
      * @param es Spanish
      * @param en English
      */
-    private LangExample(String es, String en) {
+    private DefaultMessages(String es, String en) {
         this.locales.put(Langs.ES, es);
         this.locales.put(Langs.EN, en);
     }
@@ -74,32 +81,5 @@ public enum LangExample implements LangInterface {
         }
 
         return value;
-    }
-
-    /**
-     * Example class
-     */
-    class Clazz {
-
-        // Let's try this
-        private void doit() {
-            // Init first
-            LangManager.setKeys(Langs.EN, Langs.ES); // Default languages
-            // Or
-            LangManager.setKeys(MapUtils.getKeys(locales));
-            
-            LangManager.load(LangExample.class); // Enum class to initialize
-            
-            // And then use normally :P
-            LangExample.PLUGIN_ENABLED.getText(Langs.EN);
-            LangExample.PLUGIN_DISABLED.getText(Langs.ES);
-            
-            /* 
-             * Custom translation, if it doesn't exits PluginManager.messages will be used
-             */
-            LangExample.PLUGIN_RELOAD.getText(Langs.CA);            
-
-            // You can even register multiple enumerations !!
-        }
     }
 }

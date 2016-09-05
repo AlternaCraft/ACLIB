@@ -30,7 +30,6 @@ public class LangManager {
                         File.separator).toString();
 
     private static PluginFile backupFile = null;
-
     private static Langs[] keys = null;
 
     private LangManager() {

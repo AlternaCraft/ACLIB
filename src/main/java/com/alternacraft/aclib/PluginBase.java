@@ -21,10 +21,6 @@ import com.alternacraft.aclib.utils.StrUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginBase {
-
-    @Deprecated
-    public static final PluginBase instance = new PluginBase();
-
     /**
      * @since 0.0.6
      */

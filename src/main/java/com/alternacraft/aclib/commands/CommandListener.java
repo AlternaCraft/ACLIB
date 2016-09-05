@@ -6,6 +6,10 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.langs.DefaultMessages;
+import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -14,6 +18,7 @@ import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
@@ -22,29 +27,18 @@ public class CommandListener implements CommandExecutor {
 
     private final String command;
     private final JavaPlugin plugin;
+    private String alias;
 
-    public CommandListener(String command, JavaPlugin plugin) {
+    public CommandListener(String command, JavaPlugin plugin, String alias) {
         this.command = command;
         this.plugin = plugin;
+        this.alias = alias;
 
         this.plugin.getCommand(command).setExecutor(this);
     }
 
     public void addArgument(CommandArgument arg, ArgumentExecutor argClass) {
         arguments.put(arg, argClass);
-    }
-
-    @Deprecated
-    public CommandArgument getArgument(ArgumentExecutor argClass) {
-        for (Map.Entry<CommandArgument, ArgumentExecutor> entry : arguments.entrySet()) {
-            CommandArgument key = entry.getKey();
-            ArgumentExecutor value = entry.getValue();
-
-            if (value.equals(argClass)) {
-                return key;
-            }
-        }
-        return null;
     }
 
     /**
@@ -74,13 +68,23 @@ public class CommandListener implements CommandExecutor {
                 MessageManager.sendCommandSender(cs, line);
             }
         } else {
+            Langs l = ((cs instanceof Player) ? Localizer.getLocale((Player)cs)
+                    :PluginBase.INSTANCE.getMainLanguage());
+            
             CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
             if (cmdArgument != null) {
-                if (!arguments.get(cmdArgument).execute(cs, args)) {
-                    MessageManager.sendCommandSender(cs, cmdArgument.getUsage());
+                if (cs instanceof Player) {
+                    String permission = this.alias + "." + cmdArgument.getArgument();
+                    if (((Player) cs).hasPermission(permission)) {
+                        if (!arguments.get(cmdArgument).execute(cs, args)) {
+                            MessageManager.sendCommandSender(cs, cmdArgument.getUsage());
+                        }
+                    } else {
+                        MessageManager.sendCommandSender(cs, DefaultMessages.NO_PERMISSION.getText(l));
+                    }
                 }
             } else {
-                MessageManager.sendCommandSender(cs, "&4Invalid argument");
+                MessageManager.sendCommandSender(cs, DefaultMessages.INVALID_ARGUMENTS.getText(l));
             }
         }
 

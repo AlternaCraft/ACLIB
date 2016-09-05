@@ -25,7 +25,7 @@ public class CommandArgument {
     public CommandArgument(String argument, String usage, String description) {
         this.argument = argument;
         this.usage = usage;
-        this.description = description;
+        this.description = description;        
     }
 
     public String getArgument() {
