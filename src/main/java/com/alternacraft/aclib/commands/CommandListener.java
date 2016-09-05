@@ -29,13 +29,20 @@ public class CommandListener implements CommandExecutor {
     private final Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
+    private final String prefix;
     private final JavaPlugin plugin;
-    private final String alias;
 
+    /**
+     * Main constructor
+     *
+     * @param command Main command
+     * @param prefix Permissions prefix
+     * @param plugin JavaPlugin
+     */
     @SuppressWarnings("LeakingThisInConstructor")
-    public CommandListener(String command, String alias, JavaPlugin plugin) {
+    public CommandListener(String command, String prefix, JavaPlugin plugin) {
         this.command = command;
-        this.alias = alias;
+        this.prefix = prefix;
         this.plugin = plugin;
 
         this.plugin.getCommand(command).setExecutor(this);
@@ -46,6 +53,7 @@ public class CommandListener implements CommandExecutor {
     }
 
     /**
+     * Get a command argument by an argument executor
      *
      * @param argExecutor ArgumentExecutor
      * @return CommandArgument
@@ -67,11 +75,11 @@ public class CommandListener implements CommandExecutor {
         CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
             if (cs instanceof Player) { // Checking if it has permission
-                String permission = this.alias + "." + cmdArgument.getArgument();
+                String permission = this.prefix + "." + cmdArgument.getArgument();
                 if (!((Player) cs).hasPermission(permission)) {
                     MessageManager.sendCommandSender(cs, DefaultMessages.NO_PERMISSION.getText(l));
                 }
-            }            
+            }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
                 MessageManager.sendCommandSender(cs, cmdArgument.getUsage());
             }
@@ -82,12 +90,13 @@ public class CommandListener implements CommandExecutor {
         return true;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="GETTERS">
     public String getCommand() {
         return command;
     }
 
-    public String alias() {
-        return alias;
+    public String prefix() {
+        return prefix;
     }
 
     public Map<CommandArgument, ArgumentExecutor> arguments() {
@@ -97,4 +106,5 @@ public class CommandListener implements CommandExecutor {
     public JavaPlugin plugin() {
         return plugin;
     }
+    // </editor-fold>
 }
