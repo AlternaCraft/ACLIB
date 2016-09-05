@@ -16,11 +16,10 @@
  */
 package com.alternacraft.aclib.langs;
 
+import com.alternacraft.aclib.files.PluginFile;
 import static com.alternacraft.aclib.langs.LangManager.DIRECTORY;
 import com.alternacraft.aclib.utils.StrUtils;
-import java.io.File;
 import java.util.HashMap;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 // You have to create this in your project
 public enum DefaultMessages implements LangInterface {
@@ -48,7 +47,8 @@ public enum DefaultMessages implements LangInterface {
     // </editor-fold>
 
     public final HashMap<Langs, String> locales = new HashMap();
-
+    public static String PATH = DIRECTORY;
+    
     /**
      * Define the default languages to load
      *
@@ -72,12 +72,12 @@ public enum DefaultMessages implements LangInterface {
                 ? this.locales.get(Langs.EN) : this.locales.get(lang);
 
         // File access to get custom message (if exists)
-        File langFile = new File(DIRECTORY + "messages_" + lang.name() + ".yml");
-        YamlConfiguration langConf = YamlConfiguration.loadConfiguration(langFile);
+        PluginFile pFile = new PluginFile(PATH + "messages_" + lang.name() + ".yml");
+        pFile.loadYamlConfiguration();        
 
         // Value from the file (externally)
-        if (langConf != null && langConf.contains(this.name())) {
-            value = langConf.getString(this.name());
+        if (pFile.yamlFile != null && pFile.hasNode(this.name())) {
+            value = (String) pFile.getNode(this.name());
         }
 
         return value;

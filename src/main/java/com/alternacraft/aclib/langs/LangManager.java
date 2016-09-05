@@ -36,7 +36,7 @@ public class LangManager {
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
     private static PluginFile backupFile = null;
-    private static Langs[] keys = null;
+    private static Langs[] keys = {Langs.EN}; // Default value
 
     private LangManager() {
     }
