@@ -72,7 +72,7 @@ public enum DefaultMessages implements LangInterface {
                 ? this.locales.get(Langs.EN) : this.locales.get(lang);
 
         // File access to get custom message (if exists)
-        File langFile = new File(DIRECTORY + "messages_" + lang.name().replace("CUSTOM_", "") + ".yml");
+        File langFile = new File(DIRECTORY + "messages_" + lang.name() + ".yml");
         YamlConfiguration langConf = YamlConfiguration.loadConfiguration(langFile);
 
         // Value from the file (externally)

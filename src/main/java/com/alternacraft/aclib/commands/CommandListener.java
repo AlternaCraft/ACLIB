@@ -29,6 +29,7 @@ public class CommandListener implements CommandExecutor {
     private final JavaPlugin plugin;
     private final String alias;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public CommandListener(String command, String alias, JavaPlugin plugin) {
         this.command = command;
         this.alias = alias;
