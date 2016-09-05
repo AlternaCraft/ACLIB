@@ -27,7 +27,7 @@ public class CommandListener implements CommandExecutor {
 
     private final String command;
     private final JavaPlugin plugin;
-    private String alias;
+    private final String alias;
 
     public CommandListener(String command, JavaPlugin plugin, String alias) {
         this.command = command;
