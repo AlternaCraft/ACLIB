@@ -24,7 +24,7 @@ public class PluginBase {
 
     @Deprecated
     public static final PluginBase instance = new PluginBase();
-    
+
     /**
      * @since 0.0.6
      */
@@ -34,7 +34,6 @@ public class PluginBase {
     private String prefix = null;
 
     private PluginDescription pluginDescription = null;
-
     private ConfigurationFile configurationFile = null;
 
     /**
@@ -44,6 +43,13 @@ public class PluginBase {
      */
     private Langs messages = Langs.EN;
 
+    /**
+     * Default language for translations
+     *
+     * @since 0.0.6
+     */
+    private short errorFormat = 2;
+    
     private PluginBase() {
     }
 
@@ -57,7 +63,7 @@ public class PluginBase {
         pluginDescription = new PluginDescription();
         configurationFile = new ConfigurationFile(plugin);
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Setters">
     public void definePluginPrefix(String prefix) {
         this.prefix = StrUtils.translateColors(prefix);
@@ -69,6 +75,14 @@ public class PluginBase {
      */
     public void defineMainLanguage(Langs lang) {
         this.messages = lang;
+    }
+
+    /**
+     * @param n Error format
+     * @since 0.0.6
+     */
+    public void defineErrorFormat(short n) {
+        this.errorFormat = n;
     }
     // </editor-fold>
 
@@ -95,6 +109,14 @@ public class PluginBase {
      */
     public Langs getMainLanguage() {
         return this.messages;
+    }
+
+    /**
+     * @return short
+     * @since 0.0.6
+     */
+    public short getErrorFormat() {
+        return this.errorFormat;
     }
     //</editor-fold>
 }
