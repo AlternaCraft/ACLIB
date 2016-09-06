@@ -21,11 +21,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
 
-    /**
-     * @since 0.0.7
-     */
-    public static final String DEFAULT_CMD = "info";
-
     private final Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
@@ -66,7 +61,7 @@ public class CommandListener implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender cs, Command cmd, String str, String[] args) {
         if (args.length == 0) {
-            args = new String[]{DEFAULT_CMD}; // Custom template
+            args = new String[]{""}; // Custom template
         }
 
         Langs l = ((cs instanceof Player) ? Localizer.getLocale((Player) cs)
