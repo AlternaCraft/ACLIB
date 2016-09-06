@@ -27,26 +27,28 @@ public class ExternalPluginRegister {
 
     public static final ExternalPluginRegister INSTANCE = new ExternalPluginRegister();
 
-    Map<String, HookerInterface> plugins = new HashMap();
+    private final Map<String, HookerInterface> plugins = new HashMap();
+    private final Map<String, Boolean> enabled = new HashMap();
 
     private ExternalPluginRegister() {
     }
 
     public void registerPlugin(String str, HookerInterface hooker) {
         plugins.put(str, hooker);
+        enabled.put(str, Boolean.FALSE);
     }
 
     public void loadPlugin(String str) {
         if (PluginBase.INSTANCE.plugin().getServer().getPluginManager()
                 .isPluginEnabled(str)) {
-            plugins.get(str).hook();
+            this.enabled.put(str, this.plugins.get(str).hook());
         }
     }
 
     public HookerInterface getHooker(String pluginName) {
         return plugins.get(pluginName);
     }
-    
+
     public void loadPlugins() {
         final JavaPlugin plugin = PluginBase.INSTANCE.plugin();
 
@@ -63,5 +65,9 @@ public class ExternalPluginRegister {
                 MessageManager.log(ChatColor.GRAY + "# ENDING INTEGRATION MODULE #");
             }
         }, 5L);
+    }
+
+    public boolean isPluginEnabled(String pl) {
+        return this.enabled.get(pl);
     }
 }

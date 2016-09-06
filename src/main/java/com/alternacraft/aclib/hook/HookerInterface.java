@@ -20,7 +20,9 @@ public interface HookerInterface {
 
     /**
      * Method for hook plugin
+     * 
+     * @return boolean
      */
-    public void hook();
+    public boolean hook();
     
 }
