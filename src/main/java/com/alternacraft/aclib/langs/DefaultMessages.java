@@ -24,24 +24,12 @@ import java.util.HashMap;
 // You have to create this in your project
 public enum DefaultMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
-    PLUGIN_ENABLED(
-            "Plugin activado correctamente",
-            "Plugin activated successfully"
-    ),
-    PLUGIN_DISABLED(
-            "Plugin desactivado correctamente",
-            "Plugin disabled!"
-    ),
-    PLUGIN_RELOAD(
-            "&6Plugin recargado correctamente",
-            "&6Plugin recharged properly"
-    ),
     NO_PERMISSION(
             "&4No tienes permiso",
             "&4You don't have permission"
     ),
     INVALID_ARGUMENTS(
-            "&4Argumentos de comando invalidos",
+            "&4Argumentos de comando inválidos",
             "&4Invalid command arguments"
     );
     // </editor-fold>
