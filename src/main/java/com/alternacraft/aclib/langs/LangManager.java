@@ -155,7 +155,8 @@ public class LangManager {
         for (Class<T> e : messages) {
             for (T msgs : e.getEnumConstants()) {
                 if (!langFile.hasNode(msgs.name())) {
-                    backupFile.copyYamlConfiguration(langFile.yamlFile); // Save the original file                   
+                    backupFile.copyYamlConfiguration(langFile.yamlFile); // Save the original file      
+                    backupFile.saveConfiguration();
                     createConfig(langFile, langType, messages, true); // Restore
                     return false;
                 }
