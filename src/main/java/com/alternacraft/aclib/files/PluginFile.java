@@ -61,6 +61,10 @@ public class PluginFile extends File {
         return yamlFile.get(path);
     }
 
+    public String getNameWithoutExtension() {
+        return this.getName().replaceFirst("[.][^.]+$", "");
+    }
+    
     /**
      * @since 0.0.6
      */

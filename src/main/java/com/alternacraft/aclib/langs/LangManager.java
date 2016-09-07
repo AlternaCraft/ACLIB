@@ -146,7 +146,8 @@ public class LangManager {
      */
     private static <T extends Enum<T> & LangInterface> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
-        backupFile = new PluginFile(langFile.getPath() + ".backup");
+        backupFile = new PluginFile(langFile.getParent() 
+                + langFile.getNameWithoutExtension() + "_backup.yml");
         langFile.loadYamlConfiguration();
 
         Boolean resul = true;
