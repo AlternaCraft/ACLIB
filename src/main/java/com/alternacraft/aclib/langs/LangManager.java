@@ -19,6 +19,7 @@ package com.alternacraft.aclib.langs;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.files.PluginFile;
+import com.alternacraft.aclib.utils.MapUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +31,8 @@ public class LangManager {
     public static final String DIRECTORY = new StringBuilder().append(
             PluginBase.INSTANCE.plugin().getDataFolder()).append(
                     File.separator).append(
-                        "Langs").append(
-                            File.separator).toString();
+                    "Langs").append(
+                    File.separator).toString();
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
@@ -47,10 +48,10 @@ public class LangManager {
      * @param e Enum class
      * @param path Path to save the file
      */
-    public static void saveMessages(String path, Class... e) {        
+    public static void saveMessages(String path, Class... e) {
         if (MESSAGES.get(path) == null) {
             MESSAGES.put(path, new ArrayList());
-        }        
+        }
         for (Class clazz : e) {
             if (!MESSAGES.get(path).contains(clazz)) {
                 MESSAGES.get(path).add(clazz);
@@ -76,7 +77,7 @@ public class LangManager {
                 String key = entry.getKey();
                 List<Class> value = entry.getValue();
 
-                PluginFile langFile = new PluginFile(key + "messages_"
+                PluginFile langFile = new PluginFile(key + "_"
                         + langType.name() + ".yml");
 
                 if (!langFile.exists()) {
@@ -145,7 +146,7 @@ public class LangManager {
      */
     private static <T extends Enum<T> & LangInterface> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
-        backupFile = new PluginFile(langFile.getParent() + "messages_" + langType.name() + "_Backup.yml");
+        backupFile = new PluginFile(langFile.getPath() + ".backup");
         langFile.loadYamlConfiguration();
 
         Boolean resul = true;
@@ -170,5 +171,28 @@ public class LangManager {
      */
     public static void setKeys(Langs... locales) {
         LangManager.keys = locales;
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param lang
+     * @param e
+     * @return
+     */
+    public static <T extends Enum<T> & LangInterface> String getDefaultText(
+            Langs lang, T e) {
+
+        // File access to get custom message (if exists)
+        PluginFile pFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES, 
+                e.getDeclaringClass()) + "_" + lang.name() + ".yml");
+        pFile.loadYamlConfiguration();
+
+        // Value from the file (externally)
+        if (pFile.yamlFile != null && pFile.hasNode(e.name())) {
+            return (String) pFile.getNode(e.name());
+        }
+
+        return null;
     }
 }

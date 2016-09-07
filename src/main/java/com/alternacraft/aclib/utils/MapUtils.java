@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.commands.CommandArgument;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,15 +59,37 @@ public class MapUtils {
     }
 
     /**
+     * Method for getting a key by value in a List
+     *
+     * @param <K> Map key
+     * @param <V> Map value
+     * @param map Map
+     * @param value value
+     * @return Key
+     */
+    public static <K, V extends List, C> K getKeyFromList(Map<K, V> map, C value) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            K k = entry.getKey();
+            V v = entry.getValue();
+
+            if (v.contains(value)) {
+                return k;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Method for getting a map key by argument from CommandArgument
      *
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
      * @param argument String with the argument
-     * 
+     *
      * @see CommandArgument
-     * 
+     *
      * @return Key
      */
     public static <K extends CommandArgument, V> K findArgument(Map<K, V> map,

@@ -16,8 +16,6 @@
  */
 package com.alternacraft.aclib.langs;
 
-import com.alternacraft.aclib.files.PluginFile;
-import static com.alternacraft.aclib.langs.LangManager.DIRECTORY;
 import com.alternacraft.aclib.utils.StrUtils;
 import java.util.HashMap;
 
@@ -35,7 +33,6 @@ public enum DefaultMessages implements LangInterface {
     // </editor-fold>
 
     public final HashMap<Langs, String> locales = new HashMap();
-    public static String PATH = DIRECTORY;
     
     /**
      * Define the default languages to load
@@ -55,19 +52,11 @@ public enum DefaultMessages implements LangInterface {
 
     @Override
     public String getDefaultText(Langs lang) {
-        // Save the value from this (internally)
         String value = (this.locales.get(lang) == null)
                 ? this.locales.get(Langs.EN) : this.locales.get(lang);
+        
+        String v = LangManager.getDefaultText(lang, this);
 
-        // File access to get custom message (if exists)
-        PluginFile pFile = new PluginFile(PATH + "messages_" + lang.name() + ".yml");
-        pFile.loadYamlConfiguration();        
-
-        // Value from the file (externally)
-        if (pFile.yamlFile != null && pFile.hasNode(this.name())) {
-            value = (String) pFile.getNode(this.name());
-        }
-
-        return value;
+        return (v == null) ? value:v;
     }
 }
