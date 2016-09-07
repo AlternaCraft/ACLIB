@@ -16,7 +16,7 @@
  */
 package com.alternacraft.aclib.langs;
 
-import com.alternacraft.aclib.utils.StrUtils;
+import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 
 // You have to create this in your project
@@ -47,7 +47,7 @@ public enum DefaultMessages implements LangInterface {
 
     @Override
     public String getText(Langs lang) {
-        return StrUtils.translateColors(getDefaultText(lang));
+        return StringsUtils.translateColors(getDefaultText(lang));
     }
 
     @Override

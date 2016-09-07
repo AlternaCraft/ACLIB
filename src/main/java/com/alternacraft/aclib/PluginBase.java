@@ -17,7 +17,7 @@
 package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.langs.Langs;
-import com.alternacraft.aclib.utils.StrUtils;
+import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginBase {
@@ -62,7 +62,7 @@ public class PluginBase {
 
     // <editor-fold defaultstate="collapsed" desc="Setters">
     public void definePluginPrefix(String prefix) {
-        this.prefix = StrUtils.translateColors(prefix);
+        this.prefix = StringsUtils.translateColors(prefix);
     }
 
     /**

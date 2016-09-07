@@ -16,10 +16,34 @@
  */
 package com.alternacraft.aclib.utils;
 
-import org.bukkit.ChatColor;
+/**
+ * An utils class about numbers.
+ *
+ * @author AlternaCraft
+ */
+public class NumbersUtils {
+    /**
+     * Checks if an string is an Integer instance or not.
+     *
+     * @param s
+     * @return
+     */
+    public static boolean isInteger(String s) {
+        try {
+            Integer.parseInt(s);
+        } catch (NumberFormatException | NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
 
-public class StrUtils {
-    public static String translateColors(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
+    /**
+     * Checks if a number is even or odd.
+     *
+     * @param number
+     * @return
+     */
+    public static boolean isEven(int number) {
+        return (number & 1) == 0;
     }
 }

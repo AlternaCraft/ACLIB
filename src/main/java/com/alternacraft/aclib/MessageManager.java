@@ -16,7 +16,7 @@
  */
 package com.alternacraft.aclib;
 
-import com.alternacraft.aclib.utils.StrUtils;
+import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -59,7 +59,7 @@ public class MessageManager {
     }
 
     public static String prepareString(String message) {
-        return StrUtils.translateColors(
+        return StringsUtils.translateColors(
                 "&f"
                 + PluginBase.INSTANCE.pluginPrefix()
                 + message.replace("&r", "&r&f")
