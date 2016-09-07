@@ -90,8 +90,8 @@ public class ConfigurationFile {
 
         YamlConfiguration configV = YamlConfiguration.loadConfiguration(cFile);
 
-        if (!configV.contains("Version")
-                || !configV.getString("Version").equals(plugin.getConfig().getDefaults().getString("Version"))) {
+        if (!configV.contains("version")
+                || !configV.getString("version").equals(plugin.getConfig().getDefaults().getString("version"))) {
 
             if (bFile.exists()) {
                 bFile.delete();
@@ -146,7 +146,7 @@ public class ConfigurationFile {
         String resul = linea;
 
         for (String value : newFile.getKeys(true)) {
-            if (value.equalsIgnoreCase("Version")) // Este parametro no se toca
+            if (value.equals("version")) // Este parametro no se toca
             {
                 continue;
             }
