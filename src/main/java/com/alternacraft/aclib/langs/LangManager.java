@@ -67,7 +67,7 @@ public class LangManager {
     public static void saveMessages(Class... e) {
         LangManager.saveMessages(
                 new StringBuilder(DIRECTORY)
-                        .append("messages").toString(), e);
+                .append("messages").toString(), e);
     }
 
     /**
@@ -150,9 +150,9 @@ public class LangManager {
             PluginFile langFile, Langs langType, List<Class> messages) {
         backupFile = new PluginFile(
                 new StringBuilder(langFile.getParent())
-                    .append(File.separator)
-                        .append(langFile.getNameWithoutExtension())
-                            .append("_backup.yml").toString()
+                .append(File.separator)
+                .append(langFile.getNameWithoutExtension())
+                .append("_backup.yml").toString()
         );
         langFile.loadYamlConfiguration();
 
@@ -182,17 +182,18 @@ public class LangManager {
     }
 
     /**
+     * Method for getting a lang value from locales files
      *
-     * @param <T>
-     * @param lang
-     * @param e
-     * @return
+     * @param <T> Enum type
+     * @param lang Langs
+     * @param e Enum value
+     * @return Value or null if it does not exist
      */
-    public static <T extends Enum<T> & LangInterface> String getDefaultText(
+    public static <T extends Enum<T> & LangInterface> String getValueFromFile(
             Langs lang, T e) {
 
         // File access to get custom message (if exists)
-        PluginFile pFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES, 
+        PluginFile pFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES,
                 e.getDeclaringClass()) + "_" + lang.name() + ".yml");
         pFile.loadYamlConfiguration();
 
