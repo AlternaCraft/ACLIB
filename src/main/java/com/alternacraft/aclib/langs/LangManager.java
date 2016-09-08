@@ -16,8 +16,8 @@
  */
 package com.alternacraft.aclib.langs;
 
+import static com.alternacraft.aclib.ConfigurationFile.DIRECTORY;
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.files.PluginFile;
 import com.alternacraft.aclib.utils.MapUtils;
 import java.io.File;
@@ -28,11 +28,11 @@ import java.util.Map;
 
 public class LangManager {
 
-    public static final String DIRECTORY = new StringBuilder().append(
-            PluginBase.INSTANCE.plugin().getDataFolder()).append(
-                    File.separator).append(
-                    "Langs").append(
-                    File.separator).toString();
+    public static final String LANG_DIRECTORY = 
+            new StringBuilder().append(
+                DIRECTORY).append(
+                    "langs").append(
+                        File.separator).toString();
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
@@ -65,8 +65,7 @@ public class LangManager {
      * @param e Enum class
      */
     public static void saveMessages(Class... e) {
-        LangManager.saveMessages(
-                new StringBuilder(DIRECTORY)
+        LangManager.saveMessages(new StringBuilder(LANG_DIRECTORY)
                 .append("messages").toString(), e);
     }
 

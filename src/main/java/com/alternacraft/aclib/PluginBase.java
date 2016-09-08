@@ -21,6 +21,7 @@ import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginBase {
+
     /**
      * @since 0.0.6
      */
@@ -45,7 +46,7 @@ public class PluginBase {
      * @since 0.0.6
      */
     private short errorFormat = 2;
-    
+
     private PluginBase() {
     }
 

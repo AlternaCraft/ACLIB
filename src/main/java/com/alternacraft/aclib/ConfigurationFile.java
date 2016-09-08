@@ -49,6 +49,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class ConfigurationFile {
 
+    /**
+     * @since 0.0.8
+     */
+    public static final String DIRECTORY = new StringBuilder().append(
+            PluginBase.INSTANCE.plugin().getDataFolder()).append(
+                    File.separator).toString();
+    
     //Attributes
     private JavaPlugin plugin = null;
 
@@ -60,9 +67,8 @@ public class ConfigurationFile {
         this.plugin = plugin;
 
         File cfile = new File(new StringBuilder().append(
-                plugin.getDataFolder()).append(
-                        File.separator).append(
-                        "config.yml").toString());
+                DIRECTORY).append(
+                    "config.yml").toString());
 
         if (!cfile.exists() || mismatchVersion(cfile)) {
             plugin.saveDefaultConfig();
@@ -84,9 +90,8 @@ public class ConfigurationFile {
     // <editor-fold defaultstate="collapsed" desc="Internal stuff">
     private boolean mismatchVersion(File cFile) {
         File bFile = new File(new StringBuilder().append(
-                plugin.getDataFolder()).append(
-                        File.separator).append(
-                        "config.backup.yml").toString());
+                DIRECTORY).append(
+                    "config.backup.yml").toString());
 
         YamlConfiguration configV = YamlConfiguration.loadConfiguration(cFile);
         
@@ -113,9 +118,8 @@ public class ConfigurationFile {
         YamlConfiguration oldFile = YamlConfiguration.loadConfiguration(backupFile);
 
         File temp = new File(new StringBuilder().append(
-                plugin.getDataFolder()).append(
-                        File.separator).append(
-                        "config_temp.yml").toString());
+                DIRECTORY).append(
+                    "config_temp.yml").toString());
 
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
                 FileWriter fw = new FileWriter(temp)) {
