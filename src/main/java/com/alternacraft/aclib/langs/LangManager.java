@@ -65,7 +65,9 @@ public class LangManager {
      * @param e Enum class
      */
     public static void saveMessages(Class... e) {
-        LangManager.saveMessages(DIRECTORY, e);
+        LangManager.saveMessages(
+                new StringBuilder(DIRECTORY)
+                        .append("messages").toString(), e);
     }
 
     /**
@@ -146,8 +148,12 @@ public class LangManager {
      */
     private static <T extends Enum<T> & LangInterface> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
-        backupFile = new PluginFile(langFile.getParent() + File.pathSeparator
-                + langFile.getNameWithoutExtension() + "_backup.yml");
+        backupFile = new PluginFile(
+                new StringBuilder(langFile.getParent())
+                    .append(File.separator)
+                        .append(langFile.getNameWithoutExtension())
+                            .append("_backup.yml").toString()
+        );
         langFile.loadYamlConfiguration();
 
         Boolean resul = true;
