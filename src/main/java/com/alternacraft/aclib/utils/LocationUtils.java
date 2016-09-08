@@ -24,6 +24,24 @@ import org.bukkit.block.BlockFace;
  * @author AlternaCraft
  */
 public class LocationUtils {
+
+    private static final short VARIATION = 45;
+    private static final double CIRCUNFERENCE = 360;
+    private static final double BEGIN = 360;
+    private static final double END = CIRCUNFERENCE - VARIATION;
+
+    private static final BlockFace[] BFACES = {
+        BlockFace.NORTH,
+        BlockFace.NORTH_EAST,
+        BlockFace.EAST,
+        BlockFace.SOUTH_EAST,
+        BlockFace.SOUTH,
+        BlockFace.SOUTH_WEST,
+        BlockFace.WEST,
+        BlockFace.NORTH_WEST,
+        BlockFace.NORTH
+    };
+
     /**
      * Returns the facing direction from an specified yaw.
      *
@@ -60,31 +78,22 @@ public class LocationUtils {
      * @return
      */
     public static BlockFace yawToFace(float yaw) {
-        double rotation = (yaw - 90) % 360;
+        double rotation = (yaw - 90) % CIRCUNFERENCE;
         if (rotation < 0) {
-            rotation += 360.0;
+            rotation += ((double) CIRCUNFERENCE);
         }
 
-        if (0 <= rotation && rotation < 22.5) {
-            return BlockFace.NORTH;
-        } else if (22.5 <= rotation && rotation < 67.5) {
-            return BlockFace.NORTH_EAST;
-        } else if (67.5 <= rotation && rotation < 112.5) {
-            return BlockFace.EAST;
-        } else if (112.5 <= rotation && rotation < 157.5) {
-            return BlockFace.SOUTH_EAST;
-        } else if (157.5 <= rotation && rotation < 202.5) {
-            return BlockFace.SOUTH;
-        } else if (202.5 <= rotation && rotation < 247.5) {
-            return BlockFace.SOUTH_WEST;
-        } else if (247.5 <= rotation && rotation < 292.5) {
-            return BlockFace.WEST;
-        } else if (292.5 <= rotation && rotation < 337.5) {
-            return BlockFace.NORTH_WEST;
-        } else if (337.5 <= rotation && rotation < 360.0) {
-            return BlockFace.NORTH;
-        } else {
-            return null;
+        int j = 0;
+        if (0 <= rotation && rotation < BEGIN) {
+            return BFACES[j];
         }
+
+        for (double i = BEGIN; i <= END; i += VARIATION) {
+            if (i <= rotation && rotation < (i + VARIATION)) {
+                return BFACES[++j];
+            }
+        }
+
+        return null;
     }
 }
