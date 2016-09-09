@@ -101,8 +101,10 @@ public class LangManager {
      * @param lang Langs
      * @param messages List
      * @param restore boolean
+     * 
+     * @see LangInterface
      */
-    private static <T extends Enum<T> & LangInterface> void createConfig(
+    private static <T extends Enum & LangInterface> void createConfig(
             PluginFile langfile, Langs lang, List<Class> messages, boolean restore) {
 
         langfile.resetYamlConfiguration();
@@ -144,8 +146,10 @@ public class LangManager {
      * @param langConf YamlConfiguration
      * @param langType Langs
      * @return true or false
+     * 
+     * @see LangInterface
      */
-    private static <T extends Enum<T> & LangInterface> boolean checkLocales(
+    private static <T extends Enum> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
         backupFile = new PluginFile(
                 new StringBuilder(langFile.getParent())
@@ -181,14 +185,23 @@ public class LangManager {
     }
 
     /**
+     * Method for cleaning all registered messages
+     */
+    public static void clearMessages() {
+        LangManager.MESSAGES.clear();
+    }
+    
+    /**
      * Method for getting a lang value from locales files
      *
      * @param <T> Enum type
      * @param lang Langs
      * @param e Enum value
      * @return Value or null if it does not exist
+     * 
+     * @see LangInterface
      */
-    public static <T extends Enum<T> & LangInterface> String getValueFromFile(
+    public static <T extends Enum> String getValueFromFile(
             Langs lang, T e) {
 
         // File access to get custom message (if exists)

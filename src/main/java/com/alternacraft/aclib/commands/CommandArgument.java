@@ -16,13 +16,16 @@
  */
 package com.alternacraft.aclib.commands;
 
+import com.alternacraft.aclib.langs.LangInterface;
+import com.alternacraft.aclib.langs.Langs;
+
 public class CommandArgument {
 
     private String argument;
-    private String description;
     private String usage;
+    private Enum description;
 
-    public CommandArgument(String argument, String usage, String description) {
+    public CommandArgument(String argument, String usage, Enum description) {
         this.argument = argument;
         this.usage = usage;
         this.description = description;        
@@ -32,8 +35,8 @@ public class CommandArgument {
         return argument;
     }
 
-    public String getDescription() {
-        return description;
+    public <T extends Enum & LangInterface> String getDescription(Langs lang) {
+        return ((T)description).getDefaultText(lang);
     }
 
     public String getUsage() {
@@ -44,7 +47,7 @@ public class CommandArgument {
         this.argument = argument;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(Enum description) {
         this.description = description;
     }
 
