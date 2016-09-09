@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class contains some utils for Maps
+ * 
+ * @author AlternaCraft
+ */
 public class MapUtils {
 
     /**

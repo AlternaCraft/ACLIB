@@ -19,7 +19,6 @@ package com.alternacraft.aclib.langs;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 
-// You have to create this in your project
 public enum DefaultMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     NO_PERMISSION(

@@ -18,6 +18,11 @@ package com.alternacraft.aclib.utils;
 
 import org.bukkit.ChatColor;
 
+/**
+ * This class contains some utils for Strings
+ * 
+ * @author AlternaCraft
+ */
 public class StringsUtils {
     public static String translateColors(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
