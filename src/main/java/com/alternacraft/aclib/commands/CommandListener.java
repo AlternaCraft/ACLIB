@@ -80,7 +80,7 @@ public class CommandListener implements CommandExecutor {
 
         CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
-            if (cs instanceof Player) { // Checking if it has permission
+            if (cs instanceof Player && !cmdArgument.getArgument().isEmpty()) {
                 String permission = this.prefix + "." + cmdArgument.getArgument();
                 if (!((Player) cs).hasPermission(permission)) {
                     MessageManager.sendCommandSender(cs, DefaultMessages.NO_PERMISSION.getText(l));

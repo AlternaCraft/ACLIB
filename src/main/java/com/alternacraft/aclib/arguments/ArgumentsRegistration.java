@@ -20,12 +20,7 @@ import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.CommandArgument;
 import com.alternacraft.aclib.commands.CommandListener;
 
-/**
- * 
- * @author AlternaCraft
- * @deprecated
- */
-public class ArgumentsRegister {
+public class ArgumentsRegistration {
 
     private final CommandListener cmd;
 
@@ -35,7 +30,7 @@ public class ArgumentsRegister {
      * @param cmd Argument
      * @param alias Abbreviation
      */
-    public ArgumentsRegister(String cmd, String alias) {
+    public ArgumentsRegistration(String cmd, String alias) {
         this.cmd = new CommandListener(cmd, alias, PluginBase.INSTANCE.plugin());
     }
 

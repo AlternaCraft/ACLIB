@@ -20,15 +20,46 @@ import org.bukkit.ChatColor;
 
 /**
  * This class contains some utils for Strings
- * 
+ *
  * @author AlternaCraft
  */
 public class StringsUtils {
+
     public static String translateColors(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
-    
+
     public static String stripColors(String s) {
         return ChatColor.stripColor(s);
+    }
+
+    /**
+     * Method for getting a formatted time
+     *
+     * @param s Time in seconds
+     * @return String formatted as, for example, "5h 3m 2s" without quotes
+     * 
+     * @since 0.0.9
+     */
+    public static String splitToComponentTimes(int s) {
+        String resul = "";
+
+        // Logic
+        int hours = (int) s / 3600;
+        int remainder = (int) s - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+
+        // Representation
+        resul += (hours > 0) ? (hours + "h ") : "";
+        if (hours > 0) {
+            resul += mins + "m ";
+        } else {
+            resul += (mins > 0) ? (mins + "m ") : "";
+        }
+        resul += secs + "s";
+
+        return resul;
     }
 }
