@@ -31,7 +31,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
-
     private final Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
@@ -86,7 +85,8 @@ public class CommandListener implements CommandExecutor {
                 }
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
-                MessageManager.sendCommandSender(cs, cmdArgument.getUsage());
+                MessageManager.sendCommandSender(cs, DefaultMessages.COMMAND_USAGE
+                        .getText(l).replace("%USAGE%", cmdArgument.getUsage()));
             }
         } else {
             MessageManager.sendCommandSender(cs, DefaultMessages.INVALID_ARGUMENTS.getText(l));

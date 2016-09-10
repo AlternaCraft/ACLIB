@@ -22,12 +22,16 @@ import java.util.HashMap;
 public enum DefaultMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     NO_PERMISSION(
-            "&4No tienes permiso",
-            "&4You don't have permission"
+            "&cNo tienes permiso",
+            "&cYou don't have permission"
     ),
     INVALID_ARGUMENTS(
-            "&4Argumentos de comando inválidos",
-            "&4Invalid command arguments"
+            "&cArgumentos de comando inválidos",
+            "&cInvalid command arguments"
+    ),
+    COMMAND_USAGE(
+            "&cUso: /%USAGE%",
+            "&cUsage: /%USAGE%"
     );
     // </editor-fold>
 
