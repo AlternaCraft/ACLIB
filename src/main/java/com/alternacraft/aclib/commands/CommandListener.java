@@ -75,8 +75,7 @@ public class CommandListener implements CommandExecutor {
             args = new String[]{""}; // Custom template
         }
 
-        Langs l = ((cs instanceof Player) ? Localizer.getLocale((Player) cs)
-                : PluginBase.INSTANCE.getMainLanguage());
+        Langs l = Localizer.getLocales(cs);
 
         CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {

@@ -19,6 +19,7 @@ package com.alternacraft.aclib.utils;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.PluginBase;
 import java.lang.reflect.Field;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
@@ -74,6 +75,19 @@ public enum Localizer {
 
     private static Field field = null;
 
+    /**
+     * Method for getting a locale by CommandSender
+     * 
+     * @param cs CommandSender
+     * @return Langs
+     * 
+     * @since 0.0.9
+     */
+    public static Langs getLocales(CommandSender cs) {
+        return (cs instanceof Player) ? Localizer.getLocale((Player) cs)
+                : PluginBase.INSTANCE.getMainLanguage();
+    }
+    
     public static Langs getLocale(Player inPlayer) {
         try {
             Object nms = NMS.castToNMS(inPlayer);
