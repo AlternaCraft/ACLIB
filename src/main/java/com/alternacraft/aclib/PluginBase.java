@@ -23,6 +23,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PluginBase {
 
     /**
+     * Ticks Per Seconds
+     *
+     * @since 0.0.9
+     */
+    public static final int TPS = 20;
+
+    /**
      * @since 0.0.6
      */
     public static final PluginBase INSTANCE = new PluginBase();

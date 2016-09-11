@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -55,7 +56,7 @@ public class ConfigurationFile {
     public static final String DIRECTORY = new StringBuilder().append(
             PluginBase.INSTANCE.plugin().getDataFolder()).append(
                     File.separator).toString();
-    
+
     //Attributes
     private JavaPlugin plugin = null;
 
@@ -68,7 +69,7 @@ public class ConfigurationFile {
 
         File cfile = new File(new StringBuilder().append(
                 DIRECTORY).append(
-                    "config.yml").toString());
+                        "config.yml").toString());
 
         if (!cfile.exists() || mismatchVersion(cfile)) {
             plugin.saveDefaultConfig();
@@ -89,23 +90,26 @@ public class ConfigurationFile {
 
     // <editor-fold defaultstate="collapsed" desc="Internal stuff">
     private boolean mismatchVersion(File cFile) {
-        File bFile = new File(new StringBuilder().append(
+        File backup = new File(new StringBuilder().append(
                 DIRECTORY).append(
-                    "config.backup.yml").toString());
+                        "config.backup.yml").toString());
 
-        YamlConfiguration configV = YamlConfiguration.loadConfiguration(cFile);
-        
-        if (!configV.contains("version")
-                || !configV.getString("version").equals(plugin.getConfig().getDefaults().getString("version"))) {
+        YamlConfiguration yaml = YamlConfiguration.loadConfiguration(cFile);
+        Configuration defaults = plugin.getConfig().getDefaults();
 
-            if (bFile.exists()) {
-                bFile.delete();
+        // Seek for "version" or "Version"
+        if ((!yaml.contains("version") && !yaml.contains("Version"))
+                || (!yaml.getString("version").equals(defaults.getString("version"))
+                && !yaml.getString("Version").equals(defaults.getString("version")))) {
+
+            if (backup.exists()) {
+                backup.delete();
             }
 
-            cFile.renameTo(bFile);
+            cFile.renameTo(backup);
             MessageManager.log(ChatColor.RED + "Mismatch config version, a new one has been created.");
 
-            backupFile = bFile;
+            backupFile = backup;
 
             return true;
         }
@@ -119,7 +123,7 @@ public class ConfigurationFile {
 
         File temp = new File(new StringBuilder().append(
                 DIRECTORY).append(
-                    "config_temp.yml").toString());
+                        "config_temp.yml").toString());
 
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
                 FileWriter fw = new FileWriter(temp)) {
@@ -150,15 +154,15 @@ public class ConfigurationFile {
         String resul = linea;
 
         for (String value : newFile.getKeys(true)) {
-            if (value.equals("version")) // Este parametro no se toca
+            if (value.equalsIgnoreCase("version")) // This param is sacred
             {
                 continue;
             }
 
             String cValue = value + ":";
-            String spaces = ""; // Estilo
+            String spaces = ""; // Style
 
-            // Para comprobar si el valor existe solo me hace falta el ultimo valor
+            // I just need the last value for checking
             if (value.contains(".")) {
                 String[] vals = value.split("\\.");
                 cValue = vals[vals.length - 1] + ":";

@@ -38,7 +38,7 @@ public class StringsUtils {
      *
      * @param s Time in seconds
      * @return String formatted as, for example, "5h 3m 2s" without quotes
-     * 
+     *
      * @since 0.0.9
      */
     public static String splitToComponentTimes(int s) {
@@ -62,37 +62,71 @@ public class StringsUtils {
 
         return resul;
     }
-    
+
     /**
-     * Method for getting the maximum length of multiple Strings
-     * 
+     * Method for getting the higher length of multiple Strings
+     *
      * @param strs String...
-     * 
-     * @return longer
+     *
+     * @return the higher length
      */
-    public static int getLonger(String... strs) {
+    public static int getHigherLength(String... strs) {
         int max = 0;
         for (String str : strs) {
-            if (str.length() > max) {
+            str = stripColors(str);
+
+            if (stripColors(str).length() > max) {
                 max = str.length();
             }
         }
         return max;
     }
-    
+
     /**
-     * Method for setting the same length into multiple Strings by using an item
-     * <b>Values will be changed by reference</b>
-     * 
+     * @since 0.0.9
+     */
+    public static enum POSITION {
+        LEFT, CENTER, RIGHT;
+    }
+
+    /**
+     * Method for setting the same length into multiple Strings by using a char
+     * <p>
+     * So far, this is a bit useless because lettes in Minecraft don't occupy
+     * the same space</p>
+     *
      * @param size Maximum size
      * @param e Char to add
+     * @param p Position in the 'block'
      * @param strs String...
+     *
+     * @return String[] in the same order
+     *
+     * @since 0.0.9
      */
-    public static void copyLength(int size, char e, String... strs) {        
-        for (int i = 0; i < strs.length; i++) {            
-            for (int j = strs[i].length()-1; j < size; j++) {
-                strs[i] += e;
+    public static String[] copyLength(int size, char e, POSITION p, String... strs) {
+        boolean left;
+
+        for (int i = 0; i < strs.length; i++) {
+            int length = stripColors(strs[i]).length();
+            left = true;
+
+            for (int j = length; j < size; j++) {
+                switch (p) {
+                    case LEFT:
+                        strs[i] = e + strs[i];
+                        break;
+                    case CENTER:
+                        strs[i] = (left) ? (e + strs[i]) : (strs[i] + e);
+                        left = !left;
+                        break;
+                    case RIGHT:
+                        strs[i] += e;
+                        break;
+                }
             }
         }
+
+        return strs;
     }
 }
