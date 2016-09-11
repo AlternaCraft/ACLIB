@@ -49,15 +49,30 @@ public class NumbersUtils {
     }
 
     /**
-     * Method for getting the distance between two points
+     * Method for getting the difference between two numbers
      *
      * @param p1 int
      * @param p2 int
      * @return distance
+     * 
+     * @since 0.0.9
      */
-    public static int distanceBetweenPoints(int p1, int p2) {
+    public static int differenceBetween(int p1, int p2) {
         int v = (p1 > p2) ? (p1 - p2) : (p2 - p1);
         return Math.abs(v);
+    }
+    
+    /**
+     * Method for getting the difference between two numbers
+     *
+     * @param p1 int
+     * @param p2 int
+     * @return distance
+     * 
+     * @deprecated 
+     */
+    public static int distanceBetweenPoints(int p1, int p2) {
+        return differenceBetween(p1, p2);
     }
 
     /**
