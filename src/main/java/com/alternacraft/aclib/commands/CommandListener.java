@@ -17,7 +17,6 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.langs.DefaultMessages;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.Localizer;
@@ -74,7 +73,7 @@ public class CommandListener implements CommandExecutor {
             args = new String[]{""}; // Custom template
         }
 
-        Langs l = Localizer.getLocales(cs);
+        Langs l = Localizer.getLocale(cs);
 
         CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {

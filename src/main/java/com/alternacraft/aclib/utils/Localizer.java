@@ -83,7 +83,7 @@ public enum Localizer {
      * 
      * @since 0.0.9
      */
-    public static Langs getLocales(CommandSender cs) {
+    public static Langs getLocale(CommandSender cs) {
         return (cs instanceof Player) ? Localizer.getLocale((Player) cs)
                 : PluginBase.INSTANCE.getMainLanguage();
     }

@@ -62,4 +62,37 @@ public class StringsUtils {
 
         return resul;
     }
+    
+    /**
+     * Method for getting the maximum length of multiple Strings
+     * 
+     * @param strs String...
+     * 
+     * @return longer
+     */
+    public static int getLonger(String... strs) {
+        int max = 0;
+        for (String str : strs) {
+            if (str.length() > max) {
+                max = str.length();
+            }
+        }
+        return max;
+    }
+    
+    /**
+     * Method for setting the same length into multiple Strings by using an item
+     * <b>Values will be changed by reference</b>
+     * 
+     * @param size Maximum size
+     * @param e Char to add
+     * @param strs String...
+     */
+    public static void copyLength(int size, char e, String... strs) {        
+        for (int i = 0; i < strs.length; i++) {            
+            for (int j = strs[i].length()-1; j < size; j++) {
+                strs[i] += e;
+            }
+        }
+    }
 }
