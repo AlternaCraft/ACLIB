@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -66,6 +67,19 @@ public class PluginBase {
         this.pluginInstance = plugin;
         pluginDescription = new PluginDescription();
         configurationFile = new ConfigurationFile(plugin);
+    }
+
+    /**
+     * Initializing the essentials and setting the main config data
+     *
+     * @param plugin
+     * @param cdi
+     * 
+     * @since 0.0.9
+     */    
+    public void init(JavaPlugin plugin, ConfigDataInterface cdi) {
+        this.init(plugin);        
+        this.configurationFile.loadParams(cdi);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Setters">

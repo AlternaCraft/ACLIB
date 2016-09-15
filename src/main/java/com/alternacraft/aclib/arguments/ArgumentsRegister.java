@@ -21,10 +21,10 @@ import com.alternacraft.aclib.commands.CommandArgument;
 import com.alternacraft.aclib.commands.CommandListener;
 
 /**
- * 
+ *
  * @author AlternaCraft
- * @deprecated
  */
+@Deprecated
 public class ArgumentsRegister {
 
     private final CommandListener cmd;

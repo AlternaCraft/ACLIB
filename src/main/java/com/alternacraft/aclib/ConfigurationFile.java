@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.config.ConfigDataInterface;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -81,6 +82,18 @@ public class ConfigurationFile {
 
         plugin.reloadConfig();
         configFile = plugin.getConfig();
+    }
+    
+    /**
+     * Method for loading the main config params
+     * 
+     * @param <T> Loader Interface
+     * @param cdi Loader
+     * 
+     * @since 0.0.9
+     */
+    public <T extends ConfigDataInterface> void loadParams(T cdi) {
+        cdi.loadParams(this.configFile);
     }
 
     // File getter

@@ -50,9 +50,8 @@ public class Randomizer {
      * @param p2 Vector 2
      *
      * @return Random vector
-     * 
-     * @deprecated 
      */
+    @Deprecated
     public static Vector randVector(Vector p1, Vector p2) {
         return Randomizer.randBetweenVector(p1, p2);
     }
