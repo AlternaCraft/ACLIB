@@ -18,6 +18,7 @@ package com.alternacraft.aclib.files;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -70,6 +71,10 @@ public class PluginFile extends File {
 
     public Object getNode(String path) {
         return yamlFile.get(path);
+    }
+    
+    public Set<String> getNodes(String path) {
+        return yamlFile.getConfigurationSection(path).getKeys(false);
     }
 
     public String getNameWithoutExtension() {

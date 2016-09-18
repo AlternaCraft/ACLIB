@@ -110,10 +110,9 @@ public class ConfigurationFile {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(cFile);
         Configuration defaults = plugin.getConfig().getDefaults();
 
-        // Seek for "version" or "Version"
-        if ((!yaml.contains("version") && !yaml.contains("Version"))
-                || (!yaml.getString("version").equals(defaults.getString("version"))
-                && !yaml.getString("Version").equals(defaults.getString("version")))) {
+        // Seek for "version"
+        if (!yaml.contains("version") || 
+                !yaml.getString("version").equals(defaults.getString("version"))) {
 
             if (backup.exists()) {
                 backup.delete();
