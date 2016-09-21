@@ -37,13 +37,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Custom class for working better with the main config file. These are the
  * capabilities:
  * <ul>
- * <li>Creating config with comments between lines</li>
- * <li>Checking config version with internal version for checking changes
- * <ul>
- * <li>Setting params from previous config into the new one</li>
- * </ul>
- * </li>
- * <li>Saving data from the config into params</li>
+ *  <li>Creating config with comments between lines</li>
+ *  <li>Checking config version with internal version for checking changes
+ *      <ul>
+ *          <li>Setting params from previous config into the new one</li>
+ *      </ul>
+ *  </li>
+ *  <li>Saving data from the config into params</li>
  * </ul>
  *
  * @see FileConfiguration
@@ -157,9 +157,9 @@ public class ConfigurationFile {
         }
 
         temp.renameTo(outFile);
-        MessageManager.log(ChatColor.GREEN + "Previous file settings have been established "
+        MessageManager.log(ChatColor.YELLOW + "Previous file settings have been established "
                 + "into the new one.");
-        MessageManager.log(ChatColor.GREEN + "Just in case, check the result.");
+        MessageManager.log(ChatColor.YELLOW + "Just in case, check the result.");
     }
 
     private String parent;
