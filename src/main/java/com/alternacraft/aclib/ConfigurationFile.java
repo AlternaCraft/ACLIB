@@ -37,13 +37,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Custom class for working better with the main config file. These are the
  * capabilities:
  * <ul>
- *  <li>Creating config with comments between lines</li>
- *  <li>Checking config version with internal version for checking changes
- *      <ul>
- *          <li>Setting params from previous config into the new one</li>
- *      </ul>
- *  </li>
- *  <li>Saving data from the config into params</li>
+ * <li>Creating config with comments between lines</li>
+ * <li>Checking config version with internal version for checking changes
+ * <ul>
+ * <li>Setting params from previous config into the new one</li>
+ * </ul>
+ * </li>
+ * <li>Saving data from the config into params</li>
  * </ul>
  *
  * @see FileConfiguration
@@ -83,13 +83,13 @@ public class ConfigurationFile {
         plugin.reloadConfig();
         configFile = plugin.getConfig();
     }
-    
+
     /**
      * Method for loading the main config params
-     * 
+     *
      * @param <T> Loader Interface
      * @param cdi Loader
-     * 
+     *
      * @since 0.0.9
      */
     public <T extends ConfigDataInterface> void loadParams(T cdi) {
@@ -111,8 +111,8 @@ public class ConfigurationFile {
         Configuration defaults = plugin.getConfig().getDefaults();
 
         // Seek for "version"
-        if (!yaml.contains("version") || 
-                !yaml.getString("version").equals(defaults.getString("version"))) {
+        if (!yaml.contains("version")
+                || !yaml.getString("version").equals(defaults.getString("version"))) {
 
             if (backup.exists()) {
                 backup.delete();
@@ -142,7 +142,7 @@ public class ConfigurationFile {
 
             String linea;
             while ((linea = br.readLine()) != null) {
-                if (linea.matches("\\s*-\\s?.+") && !linea.contains("#")) {
+                if (linea.matches("\\s*-\\s?.+")) {
                     continue;
                 }
                 String nline = replace(linea, newFile, oldFile);
@@ -162,52 +162,80 @@ public class ConfigurationFile {
         MessageManager.log(ChatColor.GREEN + "Just in case, check the result.");
     }
 
-    private String replace(String linea, YamlConfiguration newFile, YamlConfiguration oldFile) {
-        String resul = linea;
+    private String parent;
 
-        for (String value : newFile.getKeys(true)) {
-            if (value.equalsIgnoreCase("version")) // This param is sacred
-            {
-                continue;
-            }
-
-            String cValue = value + ":";
-            String spaces = ""; // Style
-
-            // I just need the last value for checking
-            if (value.contains(".")) {
-                String[] vals = value.split("\\.");
-                cValue = vals[vals.length - 1] + ":";
-                spaces = "    ";
-            }
-
-            if (linea.contains(cValue)) {
-                Object v;
-
-                if (oldFile.contains(value)) {
-                    v = oldFile.get(value);
-                } else {
-                    v = newFile.get(value);
-                }
-
-                resul = spaces + cValue;
-
-                if (v instanceof List) {
-                    List<Object> vs = (List<Object>) v;
-                    for (Object v1 : vs) {
-                        String val = getFilteredString(v1.toString());
-                        resul += System.lineSeparator() + spaces + "- " + val;
-                    }
-                } else if (!(v instanceof MemorySection)) {
-                    resul += " " + getFilteredString(v.toString());
-                }
-
-                resul += System.lineSeparator();
-                break;
-            }
+    private String replace(String line, YamlConfiguration newFile, YamlConfiguration oldFile) {
+        // Ignore values
+        if (line.contains("version") || line.matches(" *#+.*") || line.isEmpty()
+                || line.matches(" +")) {
+            return line + System.lineSeparator();
         }
 
-        return (resul.equals(linea) ? resul + System.lineSeparator() : resul);
+        // Output
+        String res;
+        
+        // ** BEGIN FIND NODE ** //
+        String key = getKey(line);
+        String cKey = key;
+        
+        Object v = newFile.get(cKey); // Default value
+        
+        // Testing with parent (Maybe it is a children)
+        if (v == null) {
+            cKey = parent + "." + key;
+            v = newFile.get(cKey);
+        }
+        
+        // Going back
+        while (v == null && parent.contains(".")) {
+            parent = parent.substring(0, parent.lastIndexOf("."));
+            cKey = parent + "." + key;
+            v = newFile.get(cKey);
+        }
+        // ** END FIND NODE ** //
+
+        // Unhandled error
+        if (v == null) {
+            return line + System.lineSeparator();
+        }
+
+        // Style
+        String spaces = fillSpaces(cKey.split("\\.").length - 1);
+
+        // Old value <- This is the point
+        if (oldFile.contains(cKey)) {
+            v = oldFile.get(cKey);
+        }
+
+        // Default output
+        res = spaces + key + ":";
+        
+        // Object type
+        if (v instanceof List) {
+            List<Object> list = (List<Object>) v;
+            for (Object l : list) {
+                String val = getFilteredString(l.toString());
+                res += System.lineSeparator() + spaces + "- " + val;
+            }
+        } else if (v instanceof MemorySection) {
+            parent = cKey;            
+        } else {
+            res += " " + getFilteredString(v.toString());
+        }
+
+        return res += System.lineSeparator();
+    }
+
+    private String getKey(String str) {
+        return str.split(":")[0].replaceAll("\\s+", "");
+    }
+
+    private String fillSpaces(int c) {
+        String res = "";
+        for (int i = 0; i < c; i++) {
+            res += "    ";
+        }
+        return res;
     }
 
     private String getFilteredString(String str) {

@@ -1,7 +1,6 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
-import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -38,7 +37,7 @@ import org.json.simple.JSONValue;
  * <br>
  * If you are unsure about these rules, please read the plugin submission guidelines: http://goo.gl/8iU5l
  *
- * @author <strike>Gravity</strike> AlternaCraft
+ * @author Gravity
  * @version 2.3
  */
 
