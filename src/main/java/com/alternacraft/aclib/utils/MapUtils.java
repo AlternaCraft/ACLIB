@@ -69,15 +69,15 @@ public class MapUtils {
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
-     * @param value value
+     * @param listValue Value
      * @return Key
      */
-    public static <K, V extends List, C> K getKeyFromList(Map<K, V> map, C value) {
+    public static <K, V extends List> K getKeyFromList(Map<K, V> map, Object listValue) {
         for (Map.Entry<K, V> entry : map.entrySet()) {
             K k = entry.getKey();
             V v = entry.getValue();
 
-            if (v.contains(value)) {
+            if (v.contains(listValue)) {
                 return k;
             }
         }

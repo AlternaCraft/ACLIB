@@ -63,6 +63,9 @@ public class ConfigurationFile {
 
     private FileConfiguration configFile = null;
     private File backupFile = null;
+    
+    // Parents
+    private String parent;
 
     // Constructor
     public ConfigurationFile(JavaPlugin plugin) {
@@ -110,7 +113,7 @@ public class ConfigurationFile {
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(cFile);
         Configuration defaults = plugin.getConfig().getDefaults();
 
-        // Seek for "version"
+        // Seeking for "version"
         if (!yaml.contains("version")
                 || !yaml.getString("version").equals(defaults.getString("version"))) {
 
@@ -120,7 +123,6 @@ public class ConfigurationFile {
 
             cFile.renameTo(backup);
             MessageManager.log(ChatColor.RED + "Mismatch config version, a new one has been created.");
-
             backupFile = backup;
 
             return true;
@@ -140,12 +142,13 @@ public class ConfigurationFile {
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
                 FileWriter fw = new FileWriter(temp)) {
 
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (linea.matches("\\s*-\\s?.+")) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // List
+                if (line.matches("\\s*-\\s?.+")) {
                     continue;
                 }
-                String nline = replace(linea, newFile, oldFile);
+                String nline = replace(line, newFile, oldFile);
                 fw.write(nline);
             }
         } catch (IOException ex) {
@@ -161,8 +164,6 @@ public class ConfigurationFile {
                 + "into the new one.");
         MessageManager.log(ChatColor.YELLOW + "Just in case, check the result.");
     }
-
-    private String parent;
 
     private String replace(String line, YamlConfiguration newFile, YamlConfiguration oldFile) {
         // Ignore values
@@ -180,7 +181,7 @@ public class ConfigurationFile {
         
         Object v = newFile.get(cKey); // Default value
         
-        // Testing with parent (Maybe it is a children)
+        // Testing with parent
         if (v == null) {
             cKey = parent + "." + key;
             v = newFile.get(cKey);
@@ -194,36 +195,36 @@ public class ConfigurationFile {
         }
         // ** END FIND NODE ** //
 
-        // Unhandled error
+        // Not found??
         if (v == null) {
             return line + System.lineSeparator();
         }
 
-        // Style
+        // Spaces
         String spaces = fillSpaces(cKey.split("\\.").length - 1);
 
         // Old value <- This is the point
         if (oldFile.contains(cKey)) {
-            v = oldFile.get(cKey);
+            v = oldFile.get(cKey); // Restore old value
         }
 
-        // Default output
+        // Default output [For nodes]
         res = spaces + key + ":";
         
         // Object type
         if (v instanceof List) {
-            List<Object> list = (List<Object>) v;
+            List<Object> list = (List<Object>) v; // Saving list
             for (Object l : list) {
                 String val = getFilteredString(l.toString());
                 res += System.lineSeparator() + spaces + "- " + val;
             }
         } else if (v instanceof MemorySection) {
-            parent = cKey;            
+            parent = cKey; // Saving parent
         } else {
-            res += " " + getFilteredString(v.toString());
+            res += " " + getFilteredString(v.toString()); // saving value
         }
 
-        return res += System.lineSeparator();
+        return res += System.lineSeparator(); // Multiple lines
     }
 
     private String getKey(String str) {
