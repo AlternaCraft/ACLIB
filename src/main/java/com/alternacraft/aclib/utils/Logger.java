@@ -16,36 +16,53 @@
  */
 package com.alternacraft.aclib.utils;
 
-import static com.alternacraft.aclib.ConfigurationFile.DIRECTORY;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Logger {
 
     private final List<String> messages;
     private final String path;
-    
-    public Logger(String name) {
-        this.messages = new ArrayList();
-        this.path = DIRECTORY + name;
+
+    /**
+     * Register a logger which will be saved into plugin folder
+     *
+     * @param pl JavaPlugin
+     * @param name File name
+     */
+    public Logger(JavaPlugin pl, String name) {
+        this(pl.getDataFolder() + File.separator, name);
     }
-    
+
+    /**
+     * Register a logger which will be saved into path
+     * 
+     * @param path Path
+     * @param name File name
+     */
+    public Logger(String path, String name) {
+        this.messages = new ArrayList();
+        this.path = path + name;
+    }
+
     public void addMessage(String str) {
         if (!messages.contains(str)) {
             messages.add(str);
         }
     }
-    
+
     public void export() {
         if (UtilsFile.exists(path)) {
             UtilsFile.delete(path);
         }
-        
+
         String all = "";
         for (String message : messages) {
             all += message + "\n";
         }
-        
+
         UtilsFile.writeFile(path, all);
     }
 }
