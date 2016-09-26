@@ -1,7 +1,9 @@
 # ACLIB
 [![Build Status](https://travis-ci.org/AlternaCraft/ACLIB.svg)](https://travis-ci.org/AlternaCraft/ACLIB) [![codecov](https://codecov.io/gh/AlternaCraft/ACLIB/branch/master/graph/badge.svg)](https://codecov.io/gh/AlternaCraft/ACLIB) [ ![Download](https://api.bintray.com/packages/alternacraft/maven/ACLIB/images/download.svg) ](https://www.github.com/alternacraft/ACLIB/releases) [![Web](https://img.shields.io/badge/Web-alternacraft.github.io%2FACLIB%2F-yellow.svg)](https://alternacraft.github.io/ACLIB)
 
-## Integrate me!!
+This is a custom library used in plugins created by AlternaCraft.
+
+### How to integrate
 ```XML
 <plugin>
     <groupId>org.apache.maven.plugins</groupId>
