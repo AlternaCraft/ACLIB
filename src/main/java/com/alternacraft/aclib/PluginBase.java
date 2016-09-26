@@ -22,7 +22,7 @@ import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginBase {
-
+    
     /**
      * Ticks Per Seconds
      *

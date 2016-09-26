@@ -3,7 +3,7 @@
 echo "<settings><servers><server><id>bintray</id><username>\${BINTRAY_USER}</username><password>\${BINTRAY_PASS}</password></server></servers></settings>" > ~/settings.xml
 
 if [[ ! -z $TRAVIS_TAG ]]; then
-  VERSION=`ls target/aclib-*.jar | sed 's/target\/aclib-//;s/.jar//;'`  
+  VERSION=`ls target/ACLIB-*.jar | sed 's/target\/ACLIB-//;s/.jar//;'`  
   
   # Skipping snapshots
   if [[ ! $VERSION =~ "SNAPSHOT" ]]; then

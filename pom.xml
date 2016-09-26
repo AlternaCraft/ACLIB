@@ -53,6 +53,7 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <outputFile>${basedir}/.utility/dependencies.txt</outputFile>
+        <release.path>target/release/</release.path>
     </properties>
     
     <build>
@@ -81,8 +82,8 @@
                                     <version>${project.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
-                                    <outputDirectory>${basedir}/target/dependency</outputDirectory>
-                                    <destFileName>${project.artifactId}.jar</destFileName>
+                                    <outputDirectory>${release.path}</outputDirectory>
+                                    <destFileName>${project.name}.jar</destFileName>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>

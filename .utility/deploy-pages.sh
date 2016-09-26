@@ -5,7 +5,7 @@ TARGET_BRANCH="gh-pages"
 
 URL=`git config remote.origin.url`
 REPO=$(echo $URL | sed -e "s/https:\/\//https:\/\/${GH_TOKEN}@/g")
-VERSION=`ls target/aclib-*.jar | sed 's/target\/aclib-//;s/.jar//;'`
+VERSION=`ls target/ACLIB-*.jar | sed 's/target\/ACLIB-//;s/.jar//;'`
 
 COMMIT_AUTHOR_NAME="Travis CI"
 COMMIT_AUTHOR_EMAIL="esejuli94@gmail.com"
