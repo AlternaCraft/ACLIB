@@ -28,3 +28,19 @@ This is a custom library used in plugins created by AlternaCraft.
     </executions>
 </plugin>
 ```
+
+### How to use
+Well, there are some utils that you could be interested in...
+
+#### First at all, register your plugin.
+```JAVA
+PluginBase.INSTANCE.init(<Your plugin instance>);
+```
+
+### Configuration file
+### Translations
+### Commands
+### Listeners
+### Hookers
+### Exceptions
+### Some utils
