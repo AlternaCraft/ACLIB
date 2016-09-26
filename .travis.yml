@@ -12,7 +12,7 @@ deploy:
   provider: releases
   api_key:
     secure: IvGhdAPT5lRigfuK7yb7idGnokj9myCc8bu2WDk0tIGDsfhRp151nNFO0oues8yyFrcnwvcD25HxIC+illr9RtKU7viUTZtp5QwfnYdWPQaeSMIenlDOEjDzo9FfVMZ7mRAOOlhlZha5ZNQ1PnT0WHHMw0y1LHN7fJz2KiQjHMlcaOdg+8Fb5tYGbH2doaeKirCK80mHtWfb4mBOYBCR/wb0e/ZDl5ctf7bwVZhrH2jOwPkJuqKiUeaqCOUIYEZRHkiAme2FduluGDDMn+4e1FFtO8l8ug7gGzbC54ZmpOy/zSvbi1KGF553KUw+BNuxOVg5Y0MPEQV8u8htG43Z4xuPs5hs36w41zg+N6QiwjyjTlf97q7DgQViaR61iLqpfDbp55Fo3aNycUm+i+xOrqd6Epv8KxwbiVDI+nEbQoHe/KwVZI84t1owqsf/YDkcjVUqHe1BlNyr9qaXR4K5wR2kKLWQuCi57GflqXZISHmbO8hNl0dhORCJtWUAKYu24vDOW1PSdhnIlS6FM+FxgCu0UOCwhBd9ni1nvloxe1ZOmjRloD2sU8+3eWslI3e8oOjHpdYEx4q5tLvdsR12jgDtVkPmGikr6Cq3SxqmWxsNAFxyV+eMTSnvZop1FGEqLizfopvc5PlrlhDnHmy3buhpie93IA5dv2cBiq9H4/U=
-  file: target/release/aclib.jar
+  file: target/release/ACLIB.jar
   on:
     tags: true  
   
