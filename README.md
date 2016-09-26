@@ -34,10 +34,10 @@ This is a custom library used in plugins created by AlternaCraft.
 ```JAVA
 PluginBase.INSTANCE.init(<Your plugin instance>);
 ```
-### Configuration file
-### Translations
-### Commands
-### Listeners
-### Hookers
-### Exceptions
-### Some utils
+#### Configuration file
+#### Translations
+#### Commands
+#### Listeners
+#### Hookers
+#### Exceptions
+#### Some utils
