@@ -18,6 +18,7 @@ This is a custom library used in plugins created by AlternaCraft.
             </goals>
             <configuration>
                 <relocations>
+                    <!-- This is just for avoiding problems with plugins which use this library -->
                     <relocation>
                         <pattern>com.alternacraft.aclib</pattern>
                         <shadedPattern>${project.groupId}.${project.artifactId}.ACLIB</shadedPattern>
