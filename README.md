@@ -42,3 +42,8 @@ PluginBase.INSTANCE.init(<Your plugin instance>);
 #### Hookers
 #### Exceptions
 #### Some utils
+
+## Full example
+```
+https://github.com/AlternaCraft/ACLIBExample
+```
