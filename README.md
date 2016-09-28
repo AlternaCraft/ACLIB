@@ -35,6 +35,12 @@ This is a custom library used in plugins created by AlternaCraft.
 ```JAVA
 PluginBase.INSTANCE.init(<Your plugin instance>);
 ```
+Or, if you are going to use the default config file use this:
+```JAVA
+PluginBase.INSTANCE.init(<Your plugin instance>, <Config loader>);
+```
+It is explained in Configuration File section
+
 #### Configuration file
 You have to create a class which implements ConfigDataInterface for loading the params in your config.
 ```JAVA
@@ -99,7 +105,7 @@ public enum Messages1 implements LangInterface {
     @Override
     public String getDefaultText(Langs lang) {
         String value = (this.locales.get(lang) == null)
-                ? this.locales.get(Langs.EN) : this.locales.get(lang); 
+                ? this.locales.get(PluginBase.INSTANCE.getMainLanguage()) : this.locales.get(lang); 
 
         String v = LangManager.getValueFromFile(lang, this);
 
