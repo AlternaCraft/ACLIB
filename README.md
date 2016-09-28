@@ -71,7 +71,7 @@ ConfigLoader cLoader = new ConfigLoader();
 PluginBase.INSTANCE.init(<Your plugin instance>, cLoader);
 ```
 #### Translations
-First create your/s message/s class/es of this way:
+First create your/s messages class/es of this way:
 ```JAVA
 public enum Messages1 implements LangInterface {    
     // You can create as many messages as you want
