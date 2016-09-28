@@ -73,15 +73,15 @@ PluginBase.INSTANCE.init(<Your plugin instance>, cLoader);
 #### Translations
 First create your/s message/s class/es of this way:
 ```JAVA
-public enum Messages1 implements LangInterface {
-    private final HashMap<Langs, String> locales = new HashMap();
-    
+public enum Messages1 implements LangInterface {    
     // You can create as many messages as you want
     MESSAGE(
             "&eEsto es un mensaje",
             "&eThis is a message",
             "&eDies ist eine Nachricht",
     );
+    
+    private final HashMap<Langs, String> locales = new HashMap();
 
     /**
      * Define the default languages to load
@@ -113,7 +113,7 @@ public enum Messages1 implements LangInterface {
     }
 }
 ```
-And now you have to load the files...
+And now you have to boot the manager...
 ```JAVA
 // List of main languages
 LangManager.setKeys(Langs.ES, Langs.EN, Langs.DE);
