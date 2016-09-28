@@ -36,7 +36,87 @@ This is a custom library used in plugins created by AlternaCraft.
 PluginBase.INSTANCE.init(<Your plugin instance>);
 ```
 #### Configuration file
+You have to create a class which implements ConfigDataInterface for loading the params in your config.
+```JAVA
+public class ConfigLoader {
+    // I did into an inner class for keeping a bit more organized
+    public class ConfigDataStore {
+        private boolean variable1;
+
+        public void setV1(boolean v1) {
+            this.variable1 = v1;
+        }
+
+        public boolean isV1() {
+            return this.variable1;
+        }    
+    }
+
+    @Override
+    public void loadParams(FileConfiguration fc) { 
+        this.setV1(fc.getBoolean("variable1"));
+    }
+}
+```
+
+In order to get it be loaded correctly, you have to pass an instance of "ConfigLoader" to the init method.
+```JAVA
+ConfigLoader cLoader = new ConfigLoader();
+PluginBase.INSTANCE.init(<Your plugin instance>, cLoader);
+```
 #### Translations
+First create your/s message/s class/es of this way:
+```JAVA
+public enum Messages1 implements LangInterface {
+    private final HashMap<Langs, String> locales = new HashMap();
+    
+    // You can create as many messages as you want
+    MESSAGE(
+            "&eEsto es un mensaje",
+            "&eThis is a message",
+            "&eDies ist eine Nachricht",
+    );
+
+    /**
+     * Define the default languages to load
+     *
+     * @param es Spanish
+     * @param en English
+     * @param de German
+     */
+    private DefineInfo(String es, String en, String de) {
+        this.locales.put(Langs.ES, es);
+        this.locales.put(Langs.EN, en);
+        this.locales.put(Langs.DE, de);
+        /* ... */
+    }
+
+    @Override
+    public String getText(Langs lang) {
+        return StringsUtils.translateColors(getDefaultText(lang)); // Get the messages translated
+    }
+
+    @Override
+    public String getDefaultText(Langs lang) {
+        String value = (this.locales.get(lang) == null)
+                ? this.locales.get(Langs.EN) : this.locales.get(lang); 
+
+        String v = LangManager.getValueFromFile(lang, this);
+
+        return (v == null) ? value : v;
+    }
+}
+```
+And now you have to load the files...
+```JAVA
+// List of main languages
+LangManager.setKeys(Langs.ES, Langs.EN, Langs.DE);
+// List of enums to load
+LangManager.saveMessages(Messages1.class);
+// Load the messages
+LangManager.loadMessages();
+```
+
 #### Commands
 #### Listeners
 #### Hookers
