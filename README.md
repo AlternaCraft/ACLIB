@@ -127,7 +127,7 @@ LangManager.saveMessages("path", Messages1.class);
 // Load the messages
 LangManager.loadMessages();
 ```
-It will create three files into langs folder. For example, in the english locales:
+It will create three files into langs folder. For example, english messages would be like this:
 ```YAML
 # ######################################
 # ## [LOCALES]Do not edit %variables% ##
