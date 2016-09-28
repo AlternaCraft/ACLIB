@@ -117,10 +117,22 @@ And now you have to boot the manager...
 ```JAVA
 // List of main languages
 LangManager.setKeys(Langs.ES, Langs.EN, Langs.DE);
+
 // List of enums to load
 LangManager.saveMessages(Messages1.class);
+// Even you can select a custom path to save it by using...
+LangManager.saveMessages("path", Messages1.class);
+// By default it will created at <plugin_folder>/langs/ [Check out to "LANG_DIRECTORY" constant]
+
 // Load the messages
 LangManager.loadMessages();
+```
+It will create three files into langs folder. For example, in the english locales:
+```YAML
+# ######################################
+# ## [LOCALES]Do not edit %variables% ##
+# ######################################
+MESSAGE: '&eThis is a message'
 ```
 
 #### Commands
