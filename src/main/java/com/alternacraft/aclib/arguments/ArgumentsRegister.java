@@ -24,7 +24,6 @@ import com.alternacraft.aclib.commands.CommandListener;
  *
  * @author AlternaCraft
  */
-@Deprecated
 public class ArgumentsRegister {
 
     private final CommandListener cmd;
@@ -51,7 +50,7 @@ public class ArgumentsRegister {
         for (T arg : e.getEnumConstants()) {
             this.cmd.addArgument(
                     new CommandArgument(arg.getArgument(), arg.getUsage(),
-                            arg.getDescription()), arg.getClazz());
+                            arg.getDescription()), arg.getInstance());
         }
     }
 

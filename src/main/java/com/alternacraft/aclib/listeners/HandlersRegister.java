@@ -19,14 +19,17 @@ package com.alternacraft.aclib.listeners;
 import com.alternacraft.aclib.PluginBase;
 import org.bukkit.Bukkit;
 
-/**
- * 
- * @author AlternaCraft
- * @since 0.0.9
- */
-public class HandlersRegistration {
+public class HandlersRegister {
 
-    public static <T extends HandlersInterface> void registerHandlers(Class<T> e) {
+    /**
+     * Method for loading handlers
+     * 
+     * @param <T> Enum
+     * @param e Enum class
+     * 
+     * @since 1.0.1
+     */
+    public static <T extends HandlersInterface> void load(Class<T> e) {
         for (T handler : e.getEnumConstants()) {
             Bukkit.getServer().getPluginManager().registerEvents(
                     handler.getListener(), PluginBase.INSTANCE.plugin());

@@ -42,10 +42,11 @@ public interface ArgumentsInterface {
     public Enum getDescription();
 
     /**
-     * Get the executor class
+     * Get the executor instance
      * 
      * @return ArgumentExecutor
+     * @since 1.0.1
      */
-    public ArgumentExecutor getClazz();
+    public ArgumentExecutor getInstance();
 
 }
