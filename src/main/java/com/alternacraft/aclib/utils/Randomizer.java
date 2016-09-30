@@ -43,19 +43,6 @@ public class Randomizer {
         return new Vector(pos1, pos2, pos3);
     }
     
-    /**
-     * Get a random vector contained into the two vectors
-     *
-     * @param p1 Vector 1
-     * @param p2 Vector 2
-     *
-     * @return Random vector
-     */
-    @Deprecated
-    public static Vector randVector(Vector p1, Vector p2) {
-        return Randomizer.randBetweenVector(p1, p2);
-    }
-    
     private static int seekMAXandGetRand(int v1, int v2) {
         int r;
 

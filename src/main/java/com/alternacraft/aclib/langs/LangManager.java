@@ -16,7 +16,7 @@
  */
 package com.alternacraft.aclib.langs;
 
-import static com.alternacraft.aclib.ConfigurationFile.DIRECTORY;
+import static com.alternacraft.aclib.config.ConfigurationFile.DIRECTORY;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.utils.PluginFile;
 import com.alternacraft.aclib.utils.MapUtils;

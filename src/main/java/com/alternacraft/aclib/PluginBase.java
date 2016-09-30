@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.config.ConfigurationFile;
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.StringsUtils;

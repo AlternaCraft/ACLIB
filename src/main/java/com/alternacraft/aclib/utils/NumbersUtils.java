@@ -63,19 +63,6 @@ public class NumbersUtils {
     }
 
     /**
-     * Method for getting the difference between two numbers
-     *
-     * @param p1 int
-     * @param p2 int
-     * 
-     * @return distance
-     */
-    @Deprecated
-    public static int distanceBetweenPoints(int p1, int p2) {
-        return differenceBetween(p1, p2);
-    }
-
-    /**
      * Method for getting lower number
      *
      * @param numbers int...
