@@ -16,8 +16,8 @@
  */
 package com.alternacraft.aclib.utils;
 
-import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.langs.Langs;
 import java.lang.reflect.Field;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

@@ -16,10 +16,10 @@
  */
 package com.alternacraft.aclib.langs;
 
-import static com.alternacraft.aclib.config.ConfigurationFile.DIRECTORY;
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.utils.PluginFile;
+import static com.alternacraft.aclib.config.ConfigurationFile.DIRECTORY;
 import com.alternacraft.aclib.utils.MapUtils;
+import com.alternacraft.aclib.utils.PluginFile;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;

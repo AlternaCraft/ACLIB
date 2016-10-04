@@ -18,7 +18,6 @@ package com.alternacraft.aclib.config;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
-import com.alternacraft.aclib.config.ConfigDataInterface;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
