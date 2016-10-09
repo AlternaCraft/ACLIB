@@ -127,7 +127,8 @@ public class LangManager {
 
                 // Set previous value
                 if (restore) {
-                    if (backupFile.hasNode(name)) {
+                    // Ignore empty lines, new translations?
+                    if (backupFile.hasNode(name) && !backupFile.getNode(name).equals("")) {
                         value = (String) backupFile.getNode(name);
                     }
                 }

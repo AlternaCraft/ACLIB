@@ -23,7 +23,7 @@ public enum DefaultMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     NO_PERMISSION(
             "&cNo tienes permiso",
-            "&cYou don't have permission"
+            "&cYou do not have permission"
     ),
     INVALID_ARGUMENTS(
             "&cArgumentos de comando inválidos",
