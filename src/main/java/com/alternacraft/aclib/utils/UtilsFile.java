@@ -70,22 +70,26 @@ public class UtilsFile {
         }
         return lines;
     }
-    
+
     public static String getFileAsString(String path) {
         List<String> lines = UtilsFile.getFileLines(path);
         StringBuilder res = new StringBuilder();
-        
-        for (String line : lines) { 
+
+        for (String line : lines) {
             res.append(line.replace(" ", "")); // Optimization
         }
-        
+
         return res.toString();
     }
-    
+
     public static void delete(String ruta) {
         File todelete = new File(ruta);
         if (!todelete.delete()) {
             todelete.deleteOnExit();
         }
+    }
+
+    public static boolean createDir(String ruta) {
+        return new File(ruta).mkdir();
     }
 }

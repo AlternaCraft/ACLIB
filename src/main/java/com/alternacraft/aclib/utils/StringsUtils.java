@@ -34,29 +34,39 @@ public class StringsUtils {
     }
 
     /**
-     * Method for getting a formatted time
+     * Method for formatting in time components
      *
      * @param s Time in seconds
-     * @return String formatted as, for example, "5h 3m 2s" without quotes
+     * @return String formatted as, for example, "4d 5h 3m 2s" without quotes
      *
      * @since 0.0.9
      */
     public static String splitToComponentTimes(int s) {
         String resul = "";
-
-        // Logic
-        int hours = (int) s / 3600;
-        int remainder = (int) s - hours * 3600;
-        int mins = remainder / 60;
+        int days, hours, mins, secs, remainder;
+        
+        // Lógica        
+        days = s / 3600 / 24;
+        remainder = s - days * 3600 * 24;
+        hours = remainder / 3600;        
+        remainder = remainder - hours * 3600;
+        mins = remainder / 60;
         remainder = remainder - mins * 60;
-        int secs = remainder;
+        secs = remainder;
 
-        // Representation
-        resul += (hours > 0) ? (hours + "h ") : "";
-        if (hours > 0) {
+        // Representación
+        resul += (days > 0) ? (days + "d ") : "";
+        if (days > 0) {
+            resul += hours + "h ";
             resul += mins + "m ";
-        } else {
-            resul += (mins > 0) ? (mins + "m ") : "";
+        }
+        else {
+            resul += (hours > 0) ? (hours + "h ") : "";
+            if (hours > 0) {
+                resul += mins + "m ";
+            } else {
+                resul += (mins > 0) ? (mins + "m ") : "";
+            }
         }
         resul += secs + "s";
 
