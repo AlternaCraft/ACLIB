@@ -17,7 +17,7 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.langs.DefaultMessages;
+import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
@@ -80,15 +80,15 @@ public class CommandListener implements CommandExecutor {
             if (cs instanceof Player && !cmdArgument.getArgument().isEmpty()) {
                 String permission = this.prefix + "." + cmdArgument.getArgument();
                 if (!((Player) cs).hasPermission(permission)) {
-                    MessageManager.sendCommandSender(cs, DefaultMessages.NO_PERMISSION.getText(l));
+                    MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
                 }
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
-                MessageManager.sendCommandSender(cs, DefaultMessages.COMMAND_USAGE
+                MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE
                         .getText(l).replace("%USAGE%", cmdArgument.getUsage()));
             }
         } else {
-            MessageManager.sendCommandSender(cs, DefaultMessages.INVALID_ARGUMENTS.getText(l));
+            MessageManager.sendCommandSender(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));
         }
 
         return true;

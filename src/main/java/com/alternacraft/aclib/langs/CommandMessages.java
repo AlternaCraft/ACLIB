@@ -19,7 +19,7 @@ package com.alternacraft.aclib.langs;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 
-public enum DefaultMessages implements LangInterface {
+public enum CommandMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     NO_PERMISSION(
             "&cNo tienes permiso",
@@ -43,7 +43,7 @@ public enum DefaultMessages implements LangInterface {
      * @param es Spanish
      * @param en English
      */
-    private DefaultMessages(String es, String en) {
+    private CommandMessages(String es, String en) {
         this.locales.put(Langs.ES, es);
         this.locales.put(Langs.EN, en);
     }
