@@ -92,4 +92,12 @@ public class UtilsFile {
     public static boolean createDir(String ruta) {
         return new File(ruta).mkdir();
     }
+    
+    public static File[] getFilesIntoDir(String dir) {
+        File f = new File(dir);
+        if (f.exists()) {
+            return f.listFiles();    
+        }        
+        return new File[0];
+    }
 }

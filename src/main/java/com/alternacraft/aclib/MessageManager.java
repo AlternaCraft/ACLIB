@@ -31,11 +31,20 @@ public class MessageManager {
         }
     }
 
+    public static void logInfo(String message) {
+        String[] messages = message.split("\n");
+        for (String _message : messages) {
+            Bukkit.getConsoleSender().sendMessage(
+                    prepareString("&eINFO: &f" + _message)
+            );
+        }
+    }
+    
     public static void logError(String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
             Bukkit.getConsoleSender().sendMessage(
-                    prepareString("&4ERROR: &f" + _message)
+                    prepareString("&cERROR: &f" + _message)
             );
         }
     }
@@ -59,10 +68,6 @@ public class MessageManager {
     }
 
     public static String prepareString(String message) {
-        return StringsUtils.translateColors(
-                "&f"
-                + PluginBase.INSTANCE.pluginPrefix()
-                + message.replace("&r", "&r&f")
-        );
+        return StringsUtils.translateColors(PluginBase.INSTANCE.pluginPrefix() + message);
     }
 }

@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.utils;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -46,5 +47,9 @@ public class DateUtils {
         Date now = new Date();
         String strDate = sdfDate.format(now);
         return strDate;
-    }    
+    }
+    
+    public static DateFormat getDefaultDateFormat() {
+        return new SimpleDateFormat(DEFAULT_FORMAT);
+    }
 }

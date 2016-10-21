@@ -18,14 +18,19 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import java.io.File;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginLogs {
 
-    private static String logs_folder = "Logs";
-    
+    private static String logs_folder = "logs";
+    private static String default_path = "logs";
+
     private final List<String> messages;
     private final String fullpath;
     private final String path;
@@ -33,28 +38,27 @@ public class PluginLogs {
     /**
      * Register a logger which will be saved into plugin folder
      *
-     * @param pl JavaPlugin
      * @param filename File name
      */
-    public PluginLogs(JavaPlugin pl, String filename) {
-        this(pl.getDataFolder() + File.separator, filename);
+    public PluginLogs(String filename) {
+        this(PluginLogs.default_path, filename);
     }
 
     /**
      * Register a logger which will be saved into path
-     * 
+     *
      * @param path Path
      * @param filename File name
      */
     public PluginLogs(String path, String filename) {
+        this.path = path;
         this.messages = new ArrayList();
-        this.path = path + logs_folder + File.separator;
-        this.fullpath = this.path + filename;
+        this.fullpath = PluginLogs.default_path + filename;
     }
 
     /**
      * Add a new record to log
-     * 
+     *
      * @param str Record value
      */
     public void addMessage(String str) {
@@ -65,23 +69,28 @@ public class PluginLogs {
 
     /**
      * Export records to log file
-     * 
+     *
      * @param keep_old_values Keep old values?
      */
     public void export(boolean keep_old_values) {
-        // Creating log folder if not exists
+        // Nothing to export
+        if (messages.isEmpty()) {
+            return;
+        }
+        
+        // Creating logs folder if not exists
         if (!UtilsFile.exists(path)) {
             if (!UtilsFile.createDir(path)) {
-                MessageManager.logError("Couldn't create Logs folder");
+                MessageManager.logError("Couldn't create " + logs_folder + " folder");
                 return;
             }
         }
-        
-        String all = "";
-        
+
+        String resul = "";
+
         if (keep_old_values) {
             // Recovering old values
-            List<String> old_values = new ArrayList<>();        
+            List<String> old_values = new ArrayList<>();
             if (UtilsFile.exists(fullpath)) {
                 old_values = UtilsFile.getFileLines(fullpath);
                 UtilsFile.delete(fullpath);
@@ -90,26 +99,113 @@ public class PluginLogs {
             // Writing old values            
             if (old_values.size() > 0) {
                 for (String cont : old_values) {
-                    all += cont + "\n";
+                    resul += cont + "\n";
                 }
-                all += "\n";            
+                resul += "\n";
             }
         }
-        
-        // Writing new values
-        // Date
-        all += "---\n" + DateUtils.getCurrentTimeStamp() + "\n---\n";
+
+        // Writing new values        
+        resul += "### " + DateUtils.getCurrentTimeStamp() + " ###\n";
         for (String message : messages) {
-            all += message + "\n";
+            resul += message + "\n";
         }
-        UtilsFile.writeFile(fullpath, all);
+        UtilsFile.writeFile(fullpath, resul);
     }
-    
-    public static String getLogsFolderName() {
+
+    //<editor-fold defaultstate="collapsed" desc="STATIC METHODS">
+    /**
+     * Get all custom logs
+     *
+     * @return File[]
+     */
+    public static File[] importLogs() {
+        return PluginLogs.importLogs(default_path);
+    }
+
+    public static File[] importLogs(String path) {
+        return UtilsFile.getFilesIntoDir(path);
+    }
+
+    /**
+     * Get a custom log
+     *
+     * @param logname Log name with extension
+     * 
+     * @return File
+     */
+    public static File importLog(String logname) {
+        return PluginLogs.importLog(default_path, logname);
+    }
+
+    public static File importLog(String path, String logname) {
+        File[] files = importLogs(path);
+        for (File file : files) {
+            if (file.getName().equals(logname)) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Remove a custom log
+     *
+     * @param name Log name with extension
+     */
+    public static void removeLog(String name) {
+        PluginLogs.removeLog(PluginLogs.default_path, name);
+    }
+
+    public static void removeLog(String path, String name) {
+        UtilsFile.delete(path + name);
+    }
+
+    /**
+     * Parse the content of a log file
+     *
+     * @param log Log file
+     *
+     * @return Map with the content parsed
+     */
+    public static Map<Date, List<String>> parseLogFile(File log) {
+        Map<Date, List<String>> data = new HashMap<>();
+        List<String> lines = UtilsFile.getFileLines(log);
+
+        Date lastdate = null;
+        DateFormat format = DateUtils.getDefaultDateFormat();
+
+        for (String line : lines) {
+            if (line.matches("### .* ###")) {
+                try {
+                    lastdate = format.parse(line.replace("### ", "").replace(" ###", ""));
+                    data.put(lastdate, new ArrayList());
+                } catch (Exception ex) {
+                    MessageManager.logError("Error parsing log: " + log.getName());
+                }
+            } else if (!line.isEmpty() && lastdate != null && data.containsKey(lastdate)) {
+                data.get(lastdate).add(line);
+            }
+        }
+
+        return data;
+    }
+
+    public static final String getLogsFolderName() {
         return logs_folder;
     }
-    
-    public static void changeLogsFolderNameTo(String str) {
+
+    public static final void changeLogsFolderNameTo(String str) {
         logs_folder = str;
     }
+
+    public static final void setDefaultPath(JavaPlugin plugin) {
+        PluginLogs.default_path = plugin.getDataFolder().toString() + File.separator
+                + logs_folder + File.separator;
+    }
+    
+    public static final String getDefaultPath() {
+        return PluginLogs.default_path;
+    }
+    //</editor-fold>
 }
