@@ -90,7 +90,7 @@ public class PluginFile extends File {
             this.getParentFile().mkdirs();
             this.createNewFile();
         } catch (IOException ex) {
-            MessageManager.log(ex.getMessage());
+            MessageManager.logError(ex.getMessage());
         }
     }
 
