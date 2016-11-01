@@ -17,7 +17,6 @@
 package com.alternacraft.aclib.langs;
 
 import com.alternacraft.aclib.MessageManager;
-import static com.alternacraft.aclib.PluginBase.DIRECTORY;
 import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
 import java.io.File;
@@ -30,9 +29,8 @@ public class LangManager {
 
     public static final String LANG_DIRECTORY = 
             new StringBuilder().append(
-                DIRECTORY).append(
-                    "langs").append(
-                        File.separator).toString();
+                "langs").append(
+                    File.separator).toString();
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
@@ -152,12 +150,13 @@ public class LangManager {
      */
     private static <T extends Enum> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
-        backupFile = new PluginFile(
-                new StringBuilder(langFile.getParent())
-                .append(File.separator)
-                .append(langFile.getNameWithoutExtension())
-                .append("_backup.yml").toString()
+        backupFile = new PluginFile(langFile.getParent(), 
+                new StringBuilder()
+                    .append(File.separator)
+                    .append(langFile.getNameWithoutExtension())
+                    .append("_backup.yml").toString()
         );
+        
         langFile.loadYamlConfiguration();
 
         Boolean resul = true;
@@ -206,13 +205,13 @@ public class LangManager {
             Langs lang, T e) {
 
         // File access to get custom message (if exists)
-        PluginFile pFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES,
+        PluginFile pluginFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES,
                 e.getDeclaringClass()) + "_" + lang.name() + ".yml");
-        pFile.loadYamlConfiguration();
+        pluginFile.loadYamlConfiguration();
 
         // Value from the file (externally)
-        if (pFile.yamlFile != null && pFile.hasNode(e.name())) {
-            return (String) pFile.getNode(e.name());
+        if (pluginFile.yamlFile != null && pluginFile.hasNode(e.name())) {
+            return (String) pluginFile.getNode(e.name());
         }
 
         return null;

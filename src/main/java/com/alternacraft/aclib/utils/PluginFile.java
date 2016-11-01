@@ -29,17 +29,17 @@ public class PluginFile extends File {
 
     /**
      * @param path Path to file
-     * 
+     *
      * @since 1.0.2
      */
     public PluginFile(String path) {
         this(PluginBase.DIRECTORY, path, true);
     }
-    
+
     /**
      * @param base Default directory
      * @param path Path to file
-     * 
+     *
      * @since 1.0.2
      */
     public PluginFile(String base, String path) {
@@ -48,8 +48,8 @@ public class PluginFile extends File {
 
     /**
      * @param path Path to file
-     * @param create Create automaticaly the file
-     * 
+     * @param create Defaults
+     *
      * @since 1.0.2
      */
     public PluginFile(String path, boolean create) {
@@ -61,27 +61,36 @@ public class PluginFile extends File {
      * <li>Create a new file if not exists</li>
      * <li>Load YAML configuration</li>
      * </ul>
-     * 
+     *
      * @param base Default directory
      * @param path Custom path
-     * @param create Create automatically the file
+     * @param defaults Do extras
      *
      * @since 1.0.2
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public PluginFile(String base, String path, boolean create) {
+    public PluginFile(String base, String path, boolean defaults) {        
         super(base + path);
+        System.out.println(base + path);
 
-        if (create && !exists()) {
-            try {
-                createNewFile();
-            } catch (IOException ex) {
-                MessageManager.log("Couldn't create " + path);
+        if (defaults) {
+            if (!exists()) {
+                createConfig();
+            }
+            if (exists()) {
+                loadYamlConfiguration();
             }
         }
+    }
 
-        if (exists()) {
-            loadYamlConfiguration();
+    /**
+     * @since 1.0.3
+     */
+    public void createConfig() {
+        try {
+            createNewFile();
+        } catch (IOException ex) {
+            MessageManager.log(ex.getMessage());
         }
     }
 
