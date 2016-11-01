@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.utils;
 
+import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import java.io.File;
 import java.io.IOException;
@@ -33,17 +34,28 @@ public class PluginFile extends File {
      * @since 1.0.2
      */
     public PluginFile(String path) {
-        super(PluginBase.DIRECTORY, path);
+        this(PluginBase.DIRECTORY, path);
     }
 
     /**
      * @param base Default directory
      * @param path Custom path
-     * 
+     *
      * @since 1.0.2
      */
+    @SuppressWarnings("LeakingThisInConstructor")
     public PluginFile(String base, String path) {
         super(base + path);
+
+        if (!exists()) {
+            try {
+                createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(PluginFile.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        yamlFile = YamlConfiguration.loadConfiguration(this);
     }
 
     /**
