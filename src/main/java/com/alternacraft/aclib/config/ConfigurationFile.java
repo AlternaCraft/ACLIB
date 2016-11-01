@@ -17,7 +17,7 @@
 package com.alternacraft.aclib.config;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginBase;
+import static com.alternacraft.aclib.PluginBase.DIRECTORY;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -51,14 +51,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @see ConfigDataStore
  */
 public class ConfigurationFile {
-
-    /**
-     * @since 0.0.8
-     */
-    public static final String DIRECTORY = new StringBuilder().append(
-            PluginBase.INSTANCE.plugin().getDataFolder()).append(
-                    File.separator).toString();
-
+    
     //Attributes
     private JavaPlugin plugin = null;
 

@@ -21,9 +21,19 @@ import com.alternacraft.aclib.config.ConfigurationFile;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.PluginLogs;
 import com.alternacraft.aclib.utils.StringsUtils;
+import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginBase {
+    
+    /**
+      * Gets plugin's directory 
+      * 
+      * @since 1.0.2
+      */
+    public static final String DIRECTORY = new StringBuilder().append(
+            PluginBase.INSTANCE.plugin().getDataFolder()).append(
+                    File.separator).toString();
     
     /**
      * Ticks Per Seconds

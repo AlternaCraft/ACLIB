@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.utils;
 
+import com.alternacraft.aclib.PluginBase;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -29,10 +30,20 @@ public class PluginFile extends File {
 
     /**
      * @param path String
-     * @since 0.0.6
+     * @since 1.0.2
      */
     public PluginFile(String path) {
-        super(path);
+        super(PluginBase.DIRECTORY, path);
+    }
+
+    /**
+     * @param base Default directory
+     * @param path Custom path
+     * 
+     * @since 1.0.2
+     */
+    public PluginFile(String base, String path) {
+        super(base + path);
     }
 
     /**
@@ -72,7 +83,7 @@ public class PluginFile extends File {
     public Object getNode(String path) {
         return yamlFile.get(path);
     }
-    
+
     public Set<String> getNodes(String path) {
         return yamlFile.getConfigurationSection(path).getKeys(false);
     }
@@ -80,7 +91,7 @@ public class PluginFile extends File {
     public String getNameWithoutExtension() {
         return this.getName().replaceFirst("[.][^.]+$", "");
     }
-    
+
     /**
      * @since 0.0.6
      */

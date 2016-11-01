@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.PluginBase;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -200,8 +201,7 @@ public class PluginLogs {
     }
 
     public static final void setDefaultPath(JavaPlugin plugin) {
-        PluginLogs.default_path = plugin.getDataFolder().toString() + File.separator
-                + logs_folder + File.separator;
+        PluginLogs.default_path = PluginBase.DIRECTORY + logs_folder + File.separator;
     }
     
     public static final String getDefaultPath() {
