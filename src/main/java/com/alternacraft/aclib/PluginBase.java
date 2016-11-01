@@ -31,9 +31,7 @@ public class PluginBase {
       * 
       * @since 1.0.2
       */
-    public static final String DIRECTORY = new StringBuilder().append(
-            PluginBase.INSTANCE.plugin().getDataFolder()).append(
-                    File.separator).toString();
+    public static String DIRECTORY;
     
     /**
      * Ticks Per Seconds
@@ -75,8 +73,13 @@ public class PluginBase {
      *
      * @param plugin
      */
-    public void init(JavaPlugin plugin) {
+    public final void init(JavaPlugin plugin) {        
         this.pluginInstance = plugin;
+        
+        DIRECTORY = new StringBuilder().append(
+            plugin.getDataFolder()).append(
+                    File.separator).toString();
+        
         pluginDescription = new PluginDescription();
         configurationFile = new ConfigurationFile(plugin);
         
@@ -92,7 +95,7 @@ public class PluginBase {
      * 
      * @since 0.0.9
      */    
-    public void init(JavaPlugin plugin, ConfigDataInterface cdi) {
+    public final void init(JavaPlugin plugin, ConfigDataInterface cdi) {
         this.init(plugin);        
         this.configurationFile.loadParams(cdi);
     }
