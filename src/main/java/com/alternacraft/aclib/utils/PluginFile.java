@@ -21,8 +21,6 @@ import com.alternacraft.aclib.PluginBase;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class PluginFile extends File {
@@ -30,32 +28,61 @@ public class PluginFile extends File {
     public YamlConfiguration yamlFile;
 
     /**
-     * @param path String
+     * @param path Path to file
+     * 
      * @since 1.0.2
      */
     public PluginFile(String path) {
-        this(PluginBase.DIRECTORY, path);
+        this(PluginBase.DIRECTORY, path, true);
+    }
+    
+    /**
+     * @param base Default directory
+     * @param path Path to file
+     * 
+     * @since 1.0.2
+     */
+    public PluginFile(String base, String path) {
+        this(base, path, true);
     }
 
     /**
+     * @param path Path to file
+     * @param create Create automaticaly the file
+     * 
+     * @since 1.0.2
+     */
+    public PluginFile(String path, boolean create) {
+        this(PluginBase.DIRECTORY, path, create);
+    }
+
+    /**
+     * <ul>Some extras:
+     * <li>Create a new file if not exists</li>
+     * <li>Load YAML configuration</li>
+     * </ul>
+     * 
      * @param base Default directory
      * @param path Custom path
+     * @param create Create automatically the file
      *
      * @since 1.0.2
      */
-    @SuppressWarnings("LeakingThisInConstructor")
-    public PluginFile(String base, String path) {
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public PluginFile(String base, String path, boolean create) {
         super(base + path);
 
-        if (!exists()) {
+        if (create && !exists()) {
             try {
                 createNewFile();
             } catch (IOException ex) {
-                Logger.getLogger(PluginFile.class.getName()).log(Level.SEVERE, null, ex);
+                MessageManager.log("Couldn't create " + path);
             }
         }
 
-        yamlFile = YamlConfiguration.loadConfiguration(this);
+        if (exists()) {
+            loadYamlConfiguration();
+        }
     }
 
     /**
@@ -111,7 +138,7 @@ public class PluginFile extends File {
         try {
             yamlFile.save(this);
         } catch (IOException ex) {
-            Logger.getLogger(PluginFile.class.getName()).log(Level.SEVERE, null, ex);
+            MessageManager.log(ex.getMessage());
         }
     }
 }
