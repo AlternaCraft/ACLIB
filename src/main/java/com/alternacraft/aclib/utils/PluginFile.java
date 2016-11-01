@@ -87,7 +87,8 @@ public class PluginFile extends File {
      */
     public void createConfig() {
         try {
-            createNewFile();
+            this.getParentFile().mkdirs();
+            this.createNewFile();
         } catch (IOException ex) {
             MessageManager.log(ex.getMessage());
         }
