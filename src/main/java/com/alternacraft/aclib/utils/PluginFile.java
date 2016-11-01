@@ -71,7 +71,6 @@ public class PluginFile extends File {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public PluginFile(String base, String path, boolean defaults) {        
         super(base + path);
-        System.out.println(base + path);
 
         if (defaults) {
             if (!exists()) {
