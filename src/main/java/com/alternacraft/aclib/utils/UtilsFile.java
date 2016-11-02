@@ -17,11 +17,14 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
+import com.google.common.io.Files;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UtilsFile {
@@ -38,7 +41,7 @@ public class UtilsFile {
         writeFile(new File(path), cont);
     }
 
-   public static void writeFile(File fout, String cont) {
+    public static void writeFile(File fout, String cont) {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(fout);
@@ -59,14 +62,6 @@ public class UtilsFile {
         }
     }
 
-    public static List<String> getFileLines(String path) {
-        return UtilsFile.getFileLines(new File(path));
-    }
-
-    public static List<String> getFileLines(File file) {
-        return UtilsFile.getFileLines(file);
-    }
-
     public static String getFileAsString(String path) {
         List<String> lines = UtilsFile.getFileLines(path);
         StringBuilder res = new StringBuilder();
@@ -76,6 +71,19 @@ public class UtilsFile {
         }
 
         return res.toString();
+    }
+
+    public static List<String> getFileLines(String path) {
+        return UtilsFile.getFileLines(new File(path));
+    }
+
+    public static List<String> getFileLines(File file) {
+        try {
+            return Files.readLines(file, Charset.defaultCharset());
+        } catch (IOException ex) {
+            MessageManager.logError(ex.getMessage());
+        }
+        return new ArrayList();
     }
 
     public static void delete(String path) {
@@ -88,20 +96,20 @@ public class UtilsFile {
     public static boolean createDirs(String path) {
         return new File(path).mkdirs();
     }
-    
+
     public static boolean createDirsFromFile(String path) {
         return new File(path).getParentFile().mkdirs();
     }
-    
+
     public static boolean createDir(String path) {
         return new File(path).mkdir();
     }
-    
+
     public static File[] getFilesIntoDir(String dir) {
         File f = new File(dir);
         if (f.exists()) {
-            return f.listFiles();    
-        }        
+            return f.listFiles();
+        }
         return new File[0];
     }
 }
