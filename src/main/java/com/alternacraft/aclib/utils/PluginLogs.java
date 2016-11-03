@@ -80,8 +80,8 @@ public class PluginLogs {
         }
         
         // Creating logs folder if not exists
-        if (!UtilsFile.exists(path)) {
-            if (!UtilsFile.createDir(path)) {
+        if (!FileUtils.exists(path)) {
+            if (!FileUtils.createDir(path)) {
                 MessageManager.logError("Couldn't create " + logs_folder + " folder");
                 return;
             }
@@ -92,9 +92,9 @@ public class PluginLogs {
         if (keep_old_values) {
             // Recovering old values
             List<String> old_values = new ArrayList<>();
-            if (UtilsFile.exists(fullpath)) {
-                old_values = UtilsFile.getFileLines(fullpath);
-                UtilsFile.delete(fullpath);
+            if (FileUtils.exists(fullpath)) {
+                old_values = FileUtils.getFileLines(fullpath);
+                FileUtils.delete(fullpath);
             }
 
             // Writing old values            
@@ -111,7 +111,7 @@ public class PluginLogs {
         for (String message : messages) {
             resul += message + "\n";
         }
-        UtilsFile.writeFile(fullpath, resul);
+        FileUtils.writeFile(fullpath, resul);
     }
 
     //<editor-fold defaultstate="collapsed" desc="STATIC METHODS">
@@ -125,7 +125,7 @@ public class PluginLogs {
     }
 
     public static File[] importLogs(String path) {
-        return UtilsFile.getFilesIntoDir(path);
+        return FileUtils.getFilesIntoDir(path);
     }
 
     /**
@@ -159,7 +159,7 @@ public class PluginLogs {
     }
 
     public static void removeLog(String path, String name) {
-        UtilsFile.delete(path + name);
+        FileUtils.delete(path + name);
     }
 
     /**
@@ -171,7 +171,7 @@ public class PluginLogs {
      */
     public static Map<Date, List<String>> parseLogFile(File log) {
         Map<Date, List<String>> data = new HashMap<>();
-        List<String> lines = UtilsFile.getFileLines(log);
+        List<String> lines = FileUtils.getFileLines(log);
 
         Date lastdate = null;
         DateFormat format = DateUtils.getDefaultDateFormat();

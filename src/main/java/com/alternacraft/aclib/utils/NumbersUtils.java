@@ -79,4 +79,28 @@ public class NumbersUtils {
         }
         return lower;
     }
+
+    /**
+     * Returns if a number is equals or between two other values.
+     *
+     * @param value
+     * @param lower
+     * @param bigger
+     * @return
+     */
+    public static boolean isEqualsOrBetween(float value, float lower, float bigger) {
+        return value >= lower && value <= bigger;
+    }
+
+    /**
+     * Returns if a number is between two other values.
+     *
+     * @param value
+     * @param lower
+     * @param bigger
+     * @return
+     */
+    public static boolean isBetween(float value, float lower, float bigger) {
+        return value > lower && value < bigger;
+    }
 }
