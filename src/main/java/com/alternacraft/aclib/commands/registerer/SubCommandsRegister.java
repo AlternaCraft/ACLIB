@@ -21,8 +21,9 @@ import com.alternacraft.aclib.commands.CommandListener;
 import com.alternacraft.aclib.commands.SubCommand;
 
 /**
- * Register subcommands for a 
+ * Register subcommands automaticaly
  * 
+ * @author AlternaCraft
  */
 public class SubCommandsRegister {
 

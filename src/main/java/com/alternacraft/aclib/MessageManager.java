@@ -21,7 +21,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Class for sending messages
+ * 
+ * @author AlternaCraft
+ */
 public class MessageManager {
+    
+    /**
+     * 
+     * @param message 
+     */
     public static void log(String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
@@ -31,6 +41,10 @@ public class MessageManager {
         }
     }
 
+    /**
+     * 
+     * @param message 
+     */
     public static void logInfo(String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
@@ -40,6 +54,10 @@ public class MessageManager {
         }
     }
     
+    /**
+     * 
+     * @param message 
+     */
     public static void logError(String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
@@ -49,6 +67,11 @@ public class MessageManager {
         }
     }
 
+    /**
+     * 
+     * @param player
+     * @param message 
+     */
     public static void sendPlayer(Player player, String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
@@ -58,6 +81,11 @@ public class MessageManager {
         }
     }
 
+    /**
+     * 
+     * @param cs
+     * @param message 
+     */
     public static void sendCommandSender(CommandSender cs, String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
@@ -67,6 +95,11 @@ public class MessageManager {
         }
     }
 
+    /**
+     * 
+     * @param message
+     * @return 
+     */
     public static String prepareString(String message) {
         return StringsUtils.translateColors(PluginBase.INSTANCE.pluginPrefix() + message);
     }

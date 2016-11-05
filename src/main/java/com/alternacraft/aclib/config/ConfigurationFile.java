@@ -82,7 +82,7 @@ public class ConfigurationFile {
     }
 
     /**
-     * Method for loading the main config params
+     * Loads the main configuration parameters
      *
      * @param <T> Loader Interface
      * @param cdi Loader
@@ -93,7 +93,11 @@ public class ConfigurationFile {
         cdi.loadParams(this.configFile);
     }
 
-    // File getter
+    /**
+     * Gets file configuration
+     * 
+     * @return 
+     */
     public FileConfiguration get() {
         return this.configFile;
     }

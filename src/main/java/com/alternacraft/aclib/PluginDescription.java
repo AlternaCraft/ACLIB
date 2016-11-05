@@ -19,6 +19,11 @@ package com.alternacraft.aclib;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Custom plugin description
+ * 
+ * @author AlternaCraft
+ */
 public class PluginDescription {
 
     private final List<String> lines = new ArrayList();

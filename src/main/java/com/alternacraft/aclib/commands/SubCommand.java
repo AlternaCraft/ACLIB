@@ -21,6 +21,8 @@ import com.alternacraft.aclib.langs.Langs;
 
 /**
  * Class for defining a command argument as a subcommand.
+ * 
+ * @author AlternaCraft
  */
 public class SubCommand {
 
@@ -34,26 +36,59 @@ public class SubCommand {
         this.description = desc;
     }
 
+    /**
+     * Gets subcommand
+     * 
+     * @return SubCommand
+     */
     public String getCommand() {
         return command;
     }
 
+    /**
+     * Gets command description by language
+     * 
+     * @param <T> Lang enum
+     * @param lang Language
+     * 
+     * @return SubCommand description
+     */
     public <T extends Enum & LangInterface> String getDescription(Langs lang) {
         return ((T) description).getDefaultText(lang);
     }
 
+    /**
+     * Gets usage
+     * 
+     * @return Usage
+     */
     public String getUsage() {
         return usage;
     }
 
+    /**
+     * Sets subcommand
+     * 
+     * @param cmd Subcommand
+     */
     public void setCommand(String cmd) {
         this.command = cmd;
     }
 
+    /**
+     * Sets description
+     * 
+     * @param description Subcommand description
+     */
     public void setDescription(Enum description) {
         this.description = description;
     }
 
+    /**
+     * Sets usage
+     * 
+     * @param usage Subcommand usage
+     */
     public void setUsage(String usage) {
         this.usage = usage;
     }

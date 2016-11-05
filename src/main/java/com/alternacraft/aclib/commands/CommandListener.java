@@ -29,6 +29,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Define command/subcommand listener
+ * 
+ * @author AlternaCraft
+ */
 public class CommandListener implements CommandExecutor {
 
     private final Map<SubCommand, SubCommandExecutor> arguments = new LinkedHashMap<>();

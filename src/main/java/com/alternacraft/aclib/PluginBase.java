@@ -24,6 +24,11 @@ import com.alternacraft.aclib.utils.StringsUtils;
 import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Singleton
+ * 
+ * @author AlternaCraft
+ */
 public class PluginBase {
     
     /**

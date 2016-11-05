@@ -18,6 +18,11 @@ package com.alternacraft.aclib.commands.registerer;
 
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 
+/**
+ * Subcommand structure
+ * 
+ * @author AlternaCraft
+ */
 public interface SubCommandsInterface {
 
     /**
