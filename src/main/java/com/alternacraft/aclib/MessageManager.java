@@ -22,15 +22,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * Class for sending messages
- * 
+ * Class for sending messages.
+ *
  * @author AlternaCraft
  */
 public class MessageManager {
-    
+
     /**
-     * 
-     * @param message 
+     * Logs a message into CONSOLE.
+     *
+     * @param message The message
      */
     public static void log(String message) {
         String[] messages = message.split("\n");
@@ -42,8 +43,9 @@ public class MessageManager {
     }
 
     /**
-     * 
-     * @param message 
+     * Logs a message into CONSOLE with 'INFO' prefix
+     *
+     * @param message The message
      */
     public static void logInfo(String message) {
         String[] messages = message.split("\n");
@@ -53,10 +55,11 @@ public class MessageManager {
             );
         }
     }
-    
+
     /**
-     * 
-     * @param message 
+     * Logs a message into CONSOLE with 'ERROR' prefix
+     *
+     * @param message The message
      */
     public static void logError(String message) {
         String[] messages = message.split("\n");
@@ -68,9 +71,10 @@ public class MessageManager {
     }
 
     /**
-     * 
-     * @param player
-     * @param message 
+     * Sends a message to a player
+     *
+     * @param player The player
+     * @param message The message
      */
     public static void sendPlayer(Player player, String message) {
         String[] messages = message.split("\n");
@@ -82,9 +86,10 @@ public class MessageManager {
     }
 
     /**
-     * 
-     * @param cs
-     * @param message 
+     * Sends a message to a command sender
+     *
+     * @param cs The command sender
+     * @param message The message
      */
     public static void sendCommandSender(CommandSender cs, String message) {
         String[] messages = message.split("\n");
@@ -96,11 +101,14 @@ public class MessageManager {
     }
 
     /**
-     * 
-     * @param message
-     * @return 
+     * Prepares a message, adding the plugin prefix and the space after it, all
+     * before the message.
+     *
+     * @param message The message
+     * @return The prepared message
      */
     public static String prepareString(String message) {
-        return StringsUtils.translateColors(PluginBase.INSTANCE.pluginPrefix() + message);
+        return StringsUtils.translateColors(
+                PluginBase.INSTANCE.pluginPrefix() + " &r" + message);
     }
 }
