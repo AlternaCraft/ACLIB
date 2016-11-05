@@ -102,7 +102,7 @@ public class PluginBase {
 
     // <editor-fold defaultstate="collapsed" desc="Setters">
     public void definePluginPrefix(String prefix) {
-        this.prefix = StringsUtils.translateColors(prefix);
+        this.prefix = StringsUtils.translateColors(prefix + "&r");
     }
 
     /**

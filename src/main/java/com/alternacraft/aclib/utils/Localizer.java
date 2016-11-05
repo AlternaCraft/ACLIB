@@ -27,7 +27,6 @@ import org.bukkit.entity.Player;
  * @see NMS
  */
 public enum Localizer {
-
     ENGLISH(Langs.EN, "en_US"),    
     SPANISH(Langs.ES, "es_ES"),
     ARGENTINEAN_SPANISH(Langs.ES, "es_AR"),

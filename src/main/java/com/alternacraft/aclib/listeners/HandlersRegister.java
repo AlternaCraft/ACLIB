@@ -20,7 +20,6 @@ import com.alternacraft.aclib.PluginBase;
 import org.bukkit.Bukkit;
 
 public class HandlersRegister {
-
     /**
      * Method for loading handlers
      * 
@@ -35,5 +34,4 @@ public class HandlersRegister {
                     handler.getListener(), PluginBase.INSTANCE.plugin());
         }
     }
-
 }
