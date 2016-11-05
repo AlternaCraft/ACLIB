@@ -25,11 +25,11 @@ import com.alternacraft.aclib.commands.SubCommand;
  * 
  * @author AlternaCraft
  */
-public class SubCommandsRegister {
+public class SubCommandsRegisterer {
 
     private final CommandListener cmd;
 
-    public SubCommandsRegister(String cmd, String alias) {
+    public SubCommandsRegisterer(String cmd, String alias) {
         this.cmd = new CommandListener(cmd, alias, PluginBase.INSTANCE.plugin());
     }
 

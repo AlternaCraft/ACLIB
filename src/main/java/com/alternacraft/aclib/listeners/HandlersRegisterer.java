@@ -19,7 +19,7 @@ package com.alternacraft.aclib.listeners;
 import com.alternacraft.aclib.PluginBase;
 import org.bukkit.Bukkit;
 
-public class HandlersRegister {
+public class HandlersRegisterer {
     /**
      * Method for loading handlers
      * 

@@ -23,14 +23,14 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ExternalPluginRegister {
+public class ExternalPluginRegisterer {
 
-    public static final ExternalPluginRegister INSTANCE = new ExternalPluginRegister();
+    public static final ExternalPluginRegisterer INSTANCE = new ExternalPluginRegisterer();
 
     private final Map<String, HookerInterface> plugins = new HashMap();
     private final Map<String, Boolean> enabled = new HashMap();
 
-    private ExternalPluginRegister() {
+    private ExternalPluginRegisterer() {
     }
 
     public void registerPlugin(String str, HookerInterface hooker) {
