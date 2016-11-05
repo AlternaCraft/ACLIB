@@ -16,7 +16,7 @@
  */
 package com.alternacraft.aclib.utils;
 
-import com.alternacraft.aclib.commands.CommandArgument;
+import com.alternacraft.aclib.commands.SubCommand;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,15 +93,15 @@ public class MapUtils {
      * @param map Map
      * @param argument String with the argument
      *
-     * @see CommandArgument
+     * @see SubCommand
      *
      * @return Key
      */
-    public static <K extends CommandArgument, V> K findArgument(Map<K, V> map,
+    public static <K extends SubCommand, V> K findArgument(Map<K, V> map,
             String argument) {
         Set<K> keys = map.keySet();
         for (K key : keys) {
-            if (key.getArgument().equals(argument)) {
+            if (key.getCommand().equals(argument)) {
                 return key;
             }
         }

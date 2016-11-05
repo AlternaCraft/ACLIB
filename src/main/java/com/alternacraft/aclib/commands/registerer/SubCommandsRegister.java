@@ -14,27 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.alternacraft.aclib.arguments;
+package com.alternacraft.aclib.commands.registerer;
 
 import com.alternacraft.aclib.PluginBase;
-import com.alternacraft.aclib.commands.CommandArgument;
 import com.alternacraft.aclib.commands.CommandListener;
+import com.alternacraft.aclib.commands.SubCommand;
 
 /**
- *
- * @author AlternaCraft
+ * Register subcommands for a 
+ * 
  */
-public class ArgumentsRegister {
+public class SubCommandsRegister {
 
     private final CommandListener cmd;
 
-    /**
-     * Constructor
-     *
-     * @param cmd Argument
-     * @param alias Abbreviation
-     */
-    public ArgumentsRegister(String cmd, String alias) {
+    public SubCommandsRegister(String cmd, String alias) {
         this.cmd = new CommandListener(cmd, alias, PluginBase.INSTANCE.plugin());
     }
 
@@ -44,13 +38,12 @@ public class ArgumentsRegister {
      * @param <T> Enum type
      * @param e Enum class
      *
-     * @see ArgumentsInterface
+     * @see SubCommandsInterface
      */
-    public <T extends ArgumentsInterface> void register(Class<T> e) {
+    public <T extends SubCommandsInterface> void register(Class<T> e) {
         for (T arg : e.getEnumConstants()) {
-            this.cmd.addArgument(
-                    new CommandArgument(arg.getArgument(), arg.getUsage(),
-                            arg.getDescription()), arg.getInstance());
+            this.cmd.addSubCommand(new SubCommand(arg.getSubCommand(), arg.getUsage(),
+                    arg.getDescription()), arg.getInstance());
         }
     }
 

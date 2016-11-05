@@ -30,7 +30,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandListener implements CommandExecutor {
-    private final Map<CommandArgument, ArgumentExecutor> arguments = new LinkedHashMap<>();
+
+    private final Map<SubCommand, SubCommandExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
     private final String prefix;
@@ -52,19 +53,14 @@ public class CommandListener implements CommandExecutor {
         this.plugin.getCommand(command).setExecutor(this);
     }
 
-    public void addArgument(CommandArgument arg, ArgumentExecutor argClass) {
-        arguments.put(arg, argClass);
-    }
-
     /**
-     * Get a command argument by an argument executor
+     * Add a subcommand
      *
-     * @param argExecutor ArgumentExecutor
-     * @return CommandArgument
-     * @since 0.0.6
+     * @param argument SubCommand
+     * @param executor Executor
      */
-    public CommandArgument getCmdArgument(ArgumentExecutor argExecutor) {
-        return MapUtils.getKeyFrom(arguments, argExecutor);
+    public void addSubCommand(SubCommand argument, SubCommandExecutor executor) {
+        arguments.put(argument, executor);
     }
 
     @Override
@@ -75,10 +71,10 @@ public class CommandListener implements CommandExecutor {
 
         Langs l = Localizer.getLocale(cs);
 
-        CommandArgument cmdArgument = MapUtils.findArgument(arguments, args[0]);
+        SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
-            if (cs instanceof Player && !cmdArgument.getArgument().isEmpty()) {
-                String permission = this.prefix + "." + cmdArgument.getArgument();
+            if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
+                String permission = this.prefix + "." + cmdArgument.getCommand();
                 if (!((Player) cs).hasPermission(permission)) {
                     MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
                 }
@@ -103,7 +99,7 @@ public class CommandListener implements CommandExecutor {
         return prefix;
     }
 
-    public Map<CommandArgument, ArgumentExecutor> arguments() {
+    public Map<SubCommand, SubCommandExecutor> arguments() {
         return arguments;
     }
 

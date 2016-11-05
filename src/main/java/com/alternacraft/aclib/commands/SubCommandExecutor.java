@@ -18,11 +18,14 @@ package com.alternacraft.aclib.commands;
 
 import org.bukkit.command.CommandSender;
 
-public interface ArgumentExecutor {
+public interface SubCommandExecutor {
+
     /**
      * Method for execute the command
+     *
      * @param cs CommandSender
      * @param args List of arguments
+     * 
      * @return Command result
      */
     public abstract boolean execute(CommandSender cs, String[] args);
