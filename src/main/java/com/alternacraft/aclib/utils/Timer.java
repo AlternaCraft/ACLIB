@@ -20,10 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.ChatColor;
 
 public class Timer {
 
-    private final Map<String, Long> timeAtStart = new HashMap();    
+    private final Map<String, Long> timeAtStart = new HashMap();
     private final Map<String, List<Long>> register = new HashMap();
 
     public void start(String id) {
@@ -43,24 +44,50 @@ public class Timer {
 
         this.register.get(id).add((finalTime - this.timeAtStart.get(id)));
     }
-    
+
+    public String showAverage() {
+        String v = ChatColor.YELLOW + "(Average) Load time of each process...\n";
+
+        for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
+            String key = entry.getKey();
+            List<Long> times = entry.getValue();
+
+            v += key + " (" + StringsUtils.splitToComponentTimes(
+                    (int) (getAverageInMillis(times) / 1000)) + "); ";
+        }
+
+        return v;
+    }
+
     public void saveToLog(String filename) {
-        PluginLogs pf = new PluginLogs(filename);
-        
+        PluginLog pf = new PluginLog(filename);
+
         for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
             String key = entry.getKey();
             List<Long> value = entry.getValue();
-            
+
             int size = value.size();
             int total = 0;
             for (Long record : value) {
                 total += record;
             }
             total /= size;
-            
+
             pf.addMessage(key + " - " + total);
         }
-        
+
         pf.export(false);
     }
+
+    //<editor-fold defaultstate="collapsed" desc="CLASS STUFF">
+    private static int getAverageInMillis(List<Long> times) {
+        int x = 0;
+
+        for (Long l : times) {
+            x += l;
+        }
+
+        return (x /= times.size());
+    }
+    //</editor-fold>    
 }

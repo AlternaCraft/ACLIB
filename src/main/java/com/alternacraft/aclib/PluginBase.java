@@ -19,7 +19,7 @@ package com.alternacraft.aclib;
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.config.ConfigurationFile;
 import com.alternacraft.aclib.langs.Langs;
-import com.alternacraft.aclib.utils.PluginLogs;
+import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -89,7 +89,7 @@ public class PluginBase {
         configurationFile = new ConfigurationFile(plugin);
         
         // Plugin logs
-        PluginLogs.setDefaultPath(plugin);
+        PluginLog.setDefaultPath(plugin);
     }
 
     /**

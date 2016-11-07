@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PluginLogs {
+public class PluginLog {
 
     private static String logs_folder = "logs";
     private static String default_path = "logs";
@@ -37,8 +37,8 @@ public class PluginLogs {
      *
      * @param filename File name
      */
-    public PluginLogs(String filename) {
-        this(PluginLogs.default_path, filename);
+    public PluginLog(String filename) {
+        this(PluginLog.default_path, filename);
     }
 
     /**
@@ -47,10 +47,10 @@ public class PluginLogs {
      * @param path Path
      * @param filename File name
      */
-    public PluginLogs(String path, String filename) {
+    public PluginLog(String path, String filename) {
         this.path = path;
         this.messages = new ArrayList();
-        this.fullpath = PluginLogs.default_path + filename;
+        this.fullpath = PluginLog.default_path + filename;
     }
 
     /**
@@ -135,11 +135,11 @@ public class PluginLogs {
     }
 
     public static final void setDefaultPath(JavaPlugin plugin) {
-        PluginLogs.default_path = PluginBase.DIRECTORY + logs_folder + File.separator;
+        PluginLog.default_path = PluginBase.DIRECTORY + logs_folder + File.separator;
     }
     
     public static final String getDefaultPath() {
-        return PluginLogs.default_path;
+        return PluginLog.default_path;
     }
     //</editor-fold>
 }

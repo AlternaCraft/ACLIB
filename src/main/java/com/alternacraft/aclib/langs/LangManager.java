@@ -27,10 +27,10 @@ import java.util.Map;
 
 public class LangManager {
 
-    public static final String LANG_DIRECTORY = 
-            new StringBuilder().append(
-                "langs").append(
-                    File.separator).toString();
+    public static final String LANG_DIRECTORY
+            = new StringBuilder().append(
+                    "langs").append(
+                            File.separator).toString();
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
@@ -77,15 +77,15 @@ public class LangManager {
                 List<Class> value = entry.getValue();
 
                 PluginFile langFile = new PluginFile(key + "_"
-                        + langType.name() + ".yml");
+                        + langType.name() + ".yml", false);
 
                 if (!langFile.exists()) {
                     createConfig(langFile, langType, value, false); // Not restore
-                }
-
-                if (!checkLocales(langFile, langType, value)) {
-                    MessageManager.logError("Couldn't load " + langType.name() + " locales, "
-                            + "a new one has been created.");
+                } else {
+                    if (!checkLocales(langFile, langType, value)) {
+                        MessageManager.logError("Couldn't load " + langType.name() + " locales, "
+                                + "a new one has been created.");
+                    }
                 }
             }
         }
@@ -99,7 +99,7 @@ public class LangManager {
      * @param lang Langs
      * @param messages List
      * @param restore boolean
-     * 
+     *
      * @see LangInterface
      */
     private static <T extends Enum & LangInterface> void createConfig(
@@ -145,16 +145,17 @@ public class LangManager {
      * @param langConf YamlConfiguration
      * @param langType Langs
      * @return true or false
-     * 
+     *
      * @see LangInterface
      */
     private static <T extends Enum> boolean checkLocales(
             PluginFile langFile, Langs langType, List<Class> messages) {
-        backupFile = new PluginFile(langFile.getParent(), 
+        backupFile = new PluginFile(langFile.getParent(),
                 new StringBuilder()
-                    .append(File.separator)
-                    .append(langFile.getNameWithoutExtension())
-                    .append("_backup.yml").toString()
+                        .append(File.separator)
+                        .append(langFile.getNameWithoutExtension())
+                        .append("_backup.yml").toString(), 
+                false // Disable auto creation
         );
         
         langFile.loadYamlConfiguration();
@@ -190,7 +191,7 @@ public class LangManager {
     public static void clearMessages() {
         LangManager.MESSAGES.clear();
     }
-    
+
     /**
      * Method for getting a lang value from locales files
      *
@@ -198,7 +199,7 @@ public class LangManager {
      * @param lang Langs
      * @param e Enum value
      * @return Value or null if it does not exist
-     * 
+     *
      * @see LangInterface
      */
     public static <T extends Enum> String getValueFromFile(

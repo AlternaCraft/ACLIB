@@ -28,6 +28,8 @@ public class PluginFile extends File {
     public YamlConfiguration yamlFile;
 
     /**
+     * Autocreate file if not exists into default directory
+     * 
      * @param path Path to file
      *
      * @since 1.0.2
@@ -37,6 +39,8 @@ public class PluginFile extends File {
     }
 
     /**
+     * Autocreate file if not exists
+     * 
      * @param base Default directory
      * @param path Path to file
      *
@@ -47,13 +51,15 @@ public class PluginFile extends File {
     }
 
     /**
+     * Load file inside default directory
+     * 
      * @param path Path to file
-     * @param create Defaults
+     * @param auto_creation Defaults
      *
      * @since 1.0.2
      */
-    public PluginFile(String path, boolean create) {
-        this(PluginBase.DIRECTORY, path, create);
+    public PluginFile(String path, boolean auto_creation) {
+        this(PluginBase.DIRECTORY, path, auto_creation);
     }
 
     /**
@@ -64,15 +70,15 @@ public class PluginFile extends File {
      *
      * @param base Default directory
      * @param path Custom path
-     * @param defaults Do extras
+     * @param auto_creation Do extras
      *
      * @since 1.0.2
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public PluginFile(String base, String path, boolean defaults) {        
+    public PluginFile(String base, String path, boolean auto_creation) {        
         super(base + path);
 
-        if (defaults) {
+        if (auto_creation) {
             if (!exists()) {
                 createConfig();
             }
