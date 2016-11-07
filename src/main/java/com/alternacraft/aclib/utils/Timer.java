@@ -20,71 +20,47 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.ChatColor;
 
 public class Timer {
 
-    private static final Map<String, List<Long>> REGISTER = new HashMap();
+    private final Map<String, Long> timeAtStart = new HashMap();    
+    private final Map<String, List<Long>> register = new HashMap();
 
-    private long timeAtStart = 0;
-
-    public void start() {
-        timeAtStart = System.currentTimeMillis();
+    public void start(String id) {
+        this.timeAtStart.put(id, System.currentTimeMillis());
     }
 
-    public long getStartTime() {
-        return this.timeAtStart;
+    public long getStartTime(String id) {
+        return this.timeAtStart.get(id);
     }
 
     public void recordValue(String id) {
         long finalTime = System.currentTimeMillis();
 
-        if (!Timer.REGISTER.containsKey(id)) {
-            Timer.REGISTER.put(id, new ArrayList());
+        if (!this.register.containsKey(id)) {
+            this.register.put(id, new ArrayList());
         }
 
-        Timer.REGISTER.get(id).add((finalTime - this.timeAtStart));
+        this.register.get(id).add((finalTime - this.timeAtStart.get(id)));
     }
-
-    //<editor-fold defaultstate="collapsed" desc="UTILS">
-    public static String showAverage() {
-        String v = ChatColor.YELLOW + "(Average) Load time of each process...\n";
-
-        for (Map.Entry<String, List<Long>> entry : REGISTER.entrySet()) {
+    
+    public void saveToLog(String filename) {
+        PluginLogs pf = new PluginLogs(filename);
+        
+        for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
             String key = entry.getKey();
-            List<Long> times = entry.getValue();
-
-            v += key + " (" + StringsUtils.splitToComponentTimes(
-                    (int) (getAverageInMillis(times) / 1000)) + "); ";
+            List<Long> value = entry.getValue();
+            
+            int size = value.size();
+            int total = 0;
+            for (Long record : value) {
+                total += record;
+            }
+            total /= size;
+            
+            pf.addMessage(key + " - " + total);
         }
-
-        return v;
+        
+        pf.export(false);
     }
-
-    public static void reportAverage() {
-        Timer.reportAverage("metrics.txt");
-    }
-
-    public static void reportAverage(String file) {
-        PluginLogs logs = new PluginLogs(file);
-
-        for (Map.Entry<String, List<Long>> entry : REGISTER.entrySet()) {
-            String type = entry.getKey();
-            List<Long> time = entry.getValue();
-            logs.addMessage("[ " + type + " ] " + getAverageInMillis(time));
-        }
-
-        logs.export(true);
-    }
-
-    private static int getAverageInMillis(List<Long> times) {
-        int x = 0;
-
-        for (Long l : times) {
-            x += l;
-        }
-
-        return (x /= times.size());
-    }
-    //</editor-fold>
 }
