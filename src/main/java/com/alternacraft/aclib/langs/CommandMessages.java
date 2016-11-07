@@ -26,8 +26,8 @@ public enum CommandMessages implements LangInterface {
             "&cYou do not have permission"
     ),
     INVALID_ARGUMENTS(
-            "&cArgumentos de comando inválidos",
-            "&cInvalid command arguments"
+            "&cEse subcomando no es válido",
+            "&cInvalid subcommand"
     ),
     COMMAND_USAGE(
             "&cUso: /%USAGE%",

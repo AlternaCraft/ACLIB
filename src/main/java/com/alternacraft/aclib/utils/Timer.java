@@ -52,8 +52,7 @@ public class Timer {
             String key = entry.getKey();
             List<Long> times = entry.getValue();
 
-            v += key + " (" + StringsUtils.splitToComponentTimes(
-                    (int) (getAverageInMillis(times) / 1000)) + "); ";
+            v += key + " (" + getAverageInMillis(times) + "ms); ";
         }
 
         return v;
