@@ -28,34 +28,31 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class PluginLog {
+public class PluginLog extends File {
 
     private static String logs_folder = "logs";
     private static String default_path = "logs";
 
     private final List<String> messages;
-    private final String fullpath;
-    private final String path;
 
     /**
      * Register a logger which will be saved into plugin folder
      *
-     * @param filename File name
+     * @param filename File name with extension
      */
-    public PluginLog(String filename) {
+    public PluginLog(String filename) {        
         this(PluginLog.default_path, filename);
     }
 
     /**
      * Register a logger which will be saved into path
      *
-     * @param path Path
-     * @param filename File name
+     * @param path Path without the last slash
+     * @param filename File name with extension
      */
     public PluginLog(String path, String filename) {
-        this.path = path;
+        super(path + File.separator + filename);
         this.messages = new ArrayList();
-        this.fullpath = PluginLog.default_path + filename;
     }
 
     /**
@@ -81,8 +78,8 @@ public class PluginLog {
         }
 
         // Creating logs folder if not exists
-        if (!FileUtils.exists(path)) {
-            if (!FileUtils.createDirs(path)) {
+        if (!this.getParentFile().exists()) {
+            if (!this.getParentFile().mkdirs()) {
                 MessageManager.logError("Couldn't create Logs folder");
                 return;
             }
@@ -94,8 +91,8 @@ public class PluginLog {
             // Recovering old values
             List<String> old_values = new ArrayList<>();
 
-            if (FileUtils.exists(fullpath)) {
-                old_values = FileUtils.getFileLines(fullpath);
+            if (this.exists()) {
+                old_values = FileUtils.getFileContentPerLines(this);
             }
 
             // Writing old values            
@@ -107,22 +104,21 @@ public class PluginLog {
             }
         }
 
-        if (FileUtils.exists(fullpath)) {
-            FileUtils.delete(fullpath);
+        if (this.exists()) {
+            this.delete();
         }
 
         // Writing new values
         resul += "### " + DateUtils.getCurrentTimeStamp() + " ###\n";
         for (String message : messages) {
             resul += message + "\n";
-        }
-        FileUtils.writeFile(fullpath, resul);
+        }                
+        FileUtils.writeFile(this, resul);
     }
 
-    public void importLog() {
-        File f = new File(this.fullpath);
-        if (f.exists()) {
-            this.messages.addAll(FileUtils.getFileLines(f));
+    public void importLog() {        
+        if (this.exists()) {
+            this.messages.addAll(FileUtils.getFileContentPerLines(this));
         }
     }
 
@@ -140,13 +136,20 @@ public class PluginLog {
     }
 
     public static final void setDefaultPath(JavaPlugin plugin) {
-        PluginLog.default_path = PluginBase.DIRECTORY + logs_folder + File.separator;
+        PluginLog.default_path = PluginBase.DIRECTORY + logs_folder;
     }
 
     public static final String getDefaultPath() {
         return PluginLog.default_path;
     }
 
+    /**
+     * Gets the values per date.
+     * 
+     * @param lines Values
+     * 
+     * @return Values per date
+     */
     public static Map<Date, List<String>> getValuesPerDate(List<String> lines) {
         Map<Date, List<String>> data = new HashMap<>();
 

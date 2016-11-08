@@ -116,7 +116,7 @@ public class FileUtils {
      * @return The file lines
      */
     public static List<String> getFileLines(String path) {
-        return FileUtils.getFileLines(new File(path));
+        return FileUtils.getFileContentPerLines(new File(path));
     }
 
     /**
@@ -125,7 +125,7 @@ public class FileUtils {
      * @param file The file
      * @return The file lines
      */
-    public static List<String> getFileLines(File file) {
+    public static List<String> getFileContentPerLines(File file) {
         try {
             return Files.readLines(file, Charset.defaultCharset());
         } catch (IOException ex) {
