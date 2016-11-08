@@ -19,8 +19,13 @@ package com.alternacraft.aclib.utils;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PluginLog {
@@ -74,7 +79,7 @@ public class PluginLog {
         if (messages.isEmpty()) {
             return;
         }
-        
+
         // Creating logs folder if not exists
         if (!FileUtils.exists(path)) {
             if (!FileUtils.createDirs(path)) {
@@ -137,9 +142,31 @@ public class PluginLog {
     public static final void setDefaultPath(JavaPlugin plugin) {
         PluginLog.default_path = PluginBase.DIRECTORY + logs_folder + File.separator;
     }
-    
+
     public static final String getDefaultPath() {
         return PluginLog.default_path;
+    }
+
+    public static Map<Date, List<String>> getValuesPerDate(List<String> lines) {
+        Map<Date, List<String>> data = new HashMap<>();
+
+        Date lastdate = null;
+        DateFormat format = DateUtils.getDefaultDateFormat();
+
+        for (String line : lines) {
+            if (line.matches("### .* ###")) {
+                try {
+                    lastdate = format.parse(line.replace("### ", "").replace(" ###", ""));
+                    data.put(lastdate, new ArrayList());
+                } catch (ParseException ex) {
+                    MessageManager.logError(ex.getMessage());
+                }
+            } else if (!line.isEmpty() && lastdate != null && data.containsKey(lastdate)) {
+                data.get(lastdate).add(line);
+            }
+        }
+
+        return data;
     }
     //</editor-fold>
 }

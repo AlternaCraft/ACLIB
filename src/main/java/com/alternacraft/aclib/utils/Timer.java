@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.ChatColor;
 
 public class Timer {
 
@@ -45,22 +44,15 @@ public class Timer {
         this.register.get(id).add((finalTime - this.timeAtStart.get(id)));
     }
 
-    public String showAverage() {
-        String v = ChatColor.YELLOW + "(Average) Load time of each process...\n";
-
-        for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
-            String key = entry.getKey();
-            List<Long> times = entry.getValue();
-
-            v += key + " (" + getAverageInMillis(times) + "ms); ";
-        }
-
-        return v;
-    }
-
-    public void saveToLog(String filename) {
-        PluginLog pf = new PluginLog(filename);
-
+    /**
+     * Gets parsed values.
+     * <i>The values will be replaced with the mean</i>
+     * 
+     * @return Parsed values
+     */
+    public Map<String, Integer> getParsedValues() {
+        Map<String, Integer> parsed = new HashMap<>();
+        
         for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
             String key = entry.getKey();
             List<Long> value = entry.getValue();
@@ -71,8 +63,20 @@ public class Timer {
                 total += record;
             }
             total /= size;
+            
+            parsed.put(key, total);
+        }
+        
+        return parsed;
+    }
 
-            pf.addMessage(key + " - " + total);
+    public void saveToLog(String filename) {
+        PluginLog pf = new PluginLog(filename);
+
+        for (Map.Entry<String, Integer> entry : this.getParsedValues().entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            pf.addMessage(key + " - " + value);
         }
 
         pf.export(false);
