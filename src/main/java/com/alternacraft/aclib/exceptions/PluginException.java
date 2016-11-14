@@ -20,6 +20,22 @@ import com.alternacraft.aclib.PluginBase;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Custom exception.
+ * <ul>This add some extras:
+ *  <li>Structured messages
+ *      <ul>There are three type:
+ *          <li>Simplified. Just for indicating an error</li>
+ *          <li>Essential. Essential information for finding a reason</li>
+ *          <li>Full. Complete error</li>
+ *      </ul>
+ *  </li>
+ *  <li>How to report</li>
+ *  <li>Functionality for finding a possible reason of the error</li>
+ * </ul>
+ * 
+ * @author AlternaCraft
+ */
 public abstract class PluginException extends Exception {
 
     protected final String REPORT = "If you don't know the error cause, please, report it.";

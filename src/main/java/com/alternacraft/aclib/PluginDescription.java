@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom plugin description
+ * Custom plugin description.
  * 
  * @author AlternaCraft
  */

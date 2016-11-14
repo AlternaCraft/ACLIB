@@ -19,13 +19,19 @@ package com.alternacraft.aclib.listeners;
 import com.alternacraft.aclib.PluginBase;
 import org.bukkit.Bukkit;
 
+/**
+ * This class is useful to register all your handlers by using an enum.
+ * 
+ * @author AlternaCraft
+ */
 public class HandlersRegisterer {
+
     /**
-     * Method for loading handlers
-     * 
-     * @param <T> Enum
-     * @param e Enum class
-     * 
+     * Registers handlers.
+     *
+     * @param <T> HandlersInterface
+     * @param e Enum class of type T
+     *
      * @since 1.0.1
      */
     public static <T extends HandlersInterface> void load(Class<T> e) {

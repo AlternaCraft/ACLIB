@@ -37,7 +37,7 @@ public class SubCommand {
     }
 
     /**
-     * Gets subcommand
+     * Returns subcommand.
      * 
      * @return SubCommand
      */
@@ -46,7 +46,7 @@ public class SubCommand {
     }
 
     /**
-     * Gets command description by language
+     * Returns command description by language.
      * 
      * @param <T> Lang enum
      * @param lang Language
@@ -58,7 +58,7 @@ public class SubCommand {
     }
 
     /**
-     * Gets usage
+     * Returns usage.
      * 
      * @return Usage
      */
@@ -67,7 +67,7 @@ public class SubCommand {
     }
 
     /**
-     * Sets subcommand
+     * Sets a subcommand.
      * 
      * @param cmd Subcommand
      */
@@ -76,7 +76,7 @@ public class SubCommand {
     }
 
     /**
-     * Sets description
+     * Sets description.
      * 
      * @param description Subcommand description
      */
@@ -85,7 +85,7 @@ public class SubCommand {
     }
 
     /**
-     * Sets usage
+     * Sets usage.
      * 
      * @param usage Subcommand usage
      */

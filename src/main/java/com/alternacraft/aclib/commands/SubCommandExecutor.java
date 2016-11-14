@@ -19,14 +19,14 @@ package com.alternacraft.aclib.commands;
 import org.bukkit.command.CommandSender;
 
 /**
- * Subcommand executor
+ * Subcommand executor.
  * 
  * @author AlternaCraft
  */
 public interface SubCommandExecutor {
 
     /**
-     * Method for execute the command
+     * Command logic.
      *
      * @param cs CommandSender
      * @param args List of arguments

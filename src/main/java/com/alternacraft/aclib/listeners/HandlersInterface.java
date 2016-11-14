@@ -18,7 +18,17 @@ package com.alternacraft.aclib.listeners;
 
 import org.bukkit.event.Listener;
 
+/**
+ * Handlers behavior
+ * 
+ * @author AlternaCraft
+ */
 public interface HandlersInterface {
 
+    /**
+     * Gets a listener
+     * 
+     * @return Listener
+     */
     public Listener getListener();
 }

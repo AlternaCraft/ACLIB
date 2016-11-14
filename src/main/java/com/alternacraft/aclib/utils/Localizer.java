@@ -23,8 +23,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
+ * This class contains some utils for locales.
  * 
- * @see NMS
+ * @author AlternaCraft
+ * @see NMS 
  */
 public enum Localizer {
     ENGLISH(Langs.EN, "en_US"),    

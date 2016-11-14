@@ -49,7 +49,7 @@ public class NumbersUtils {
     }
 
     /**
-     * Method for getting the difference between two numbers
+     * Method for getting the difference between two numbers.
      *
      * @param p1 int
      * @param p2 int
@@ -63,9 +63,10 @@ public class NumbersUtils {
     }
 
     /**
-     * Method for getting lower number
+     * Method for getting lower number.
      *
      * @param numbers int...
+     * 
      * @return lower
      */
     public static int getLower(int... numbers) {
@@ -83,10 +84,11 @@ public class NumbersUtils {
     /**
      * Returns if a number is equals or between two other values.
      *
-     * @param value
-     * @param lower
-     * @param bigger
-     * @return
+     * @param value Number to analyze
+     * @param lower Lower value
+     * @param bigger Bigger value
+     * 
+     * @return True if it is equals or between two other number; False if not
      */
     public static boolean isEqualsOrBetween(float value, float lower, float bigger) {
         return value >= lower && value <= bigger;
@@ -95,10 +97,11 @@ public class NumbersUtils {
     /**
      * Returns if a number is between two other values.
      *
-     * @param value
-     * @param lower
-     * @param bigger
-     * @return
+     * @param value Number to analyze
+     * @param lower Lower value
+     * @param bigger Bigger value
+     * 
+     * @return True if it is between two other number; False if not
      */
     public static boolean isBetween(float value, float lower, float bigger) {
         return value > lower && value < bigger;

@@ -25,7 +25,7 @@ import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Singleton
+ * Singleton.
  * 
  * @author AlternaCraft
  */
@@ -93,10 +93,10 @@ public class PluginBase {
     }
 
     /**
-     * Initializing the essentials and setting the main config data
+     * Initializing the essentials and setting the main config data.
      *
-     * @param plugin
-     * @param cdi
+     * @param plugin JavaPlugin
+     * @param cdi ConfigDataInterface
      * 
      * @since 0.0.9
      */    

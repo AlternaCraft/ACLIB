@@ -23,13 +23,18 @@ import java.io.IOException;
 import java.util.Set;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * Useful class for managing plugin files.
+ *
+ * @author AlternaCraft
+ */
 public class PluginFile extends File {
 
     public YamlConfiguration yamlFile;
 
     /**
-     * Autocreate file if not exists into default directory
-     * 
+     * Autocreate file if not exists into default directory.
+     *
      * @param path Path to file
      *
      * @since 1.0.2
@@ -39,8 +44,8 @@ public class PluginFile extends File {
     }
 
     /**
-     * Autocreate file if not exists
-     * 
+     * Autocreate file if not exists.
+     *
      * @param base Default directory
      * @param path Path to file
      *
@@ -51,8 +56,8 @@ public class PluginFile extends File {
     }
 
     /**
-     * Load file inside default directory
-     * 
+     * Load file inside default directory.
+     *
      * @param path Path to file
      * @param auto_creation Defaults
      *
@@ -75,7 +80,7 @@ public class PluginFile extends File {
      * @since 1.0.2
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public PluginFile(String base, String path, boolean auto_creation) {        
+    public PluginFile(String base, String path, boolean auto_creation) {
         super(base + path);
 
         if (auto_creation) {

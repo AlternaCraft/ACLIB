@@ -20,6 +20,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class contains a custom linked map.
+ * 
+ * @author AlternaCraft
+ */
 public class CustomLinkedMap<K, V> extends LinkedHashMap<K, V> {
 
     /**

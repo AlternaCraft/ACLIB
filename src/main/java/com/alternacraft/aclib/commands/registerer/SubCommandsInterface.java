@@ -19,35 +19,35 @@ package com.alternacraft.aclib.commands.registerer;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 
 /**
- * Subcommand structure
+ * Subcommand structure.
  * 
  * @author AlternaCraft
  */
 public interface SubCommandsInterface {
 
     /**
-     * Gets subcommand
+     * Returns subcommand.
      * 
      * @return String with the subcommand
      */
     public String getSubCommand();
 
     /**
-     * Gets usage
+     * Returns usage.
      * 
      * @return String with the usage
      */
     public String getUsage();
 
     /**
-     * Gets description
+     * Returns description.
      * 
      * @return Enum with the description
      */
     public Enum getDescription();
 
     /**
-     * Gets executor instance
+     * Returns executor instance.
      * 
      * @return Subcommand
      * 

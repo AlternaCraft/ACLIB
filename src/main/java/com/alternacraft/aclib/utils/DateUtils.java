@@ -20,6 +20,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This class contains some utils for Dates.
+ * 
+ * @author AlternaCraft
+ */
 public class DateUtils {
 
     private final static String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";

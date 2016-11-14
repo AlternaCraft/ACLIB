@@ -3,7 +3,7 @@ package com.alternacraft.aclib.utils;
 import org.bukkit.util.Vector;
 
 /**
- * This class contains some utils for generating randoms
+ * This class contains some utils for generating randoms.
  *
  * @author AlternaCraft
  */
@@ -13,7 +13,7 @@ public class Randomizer {
     }
 
     /**
-     * Get a random value between an interval
+     * Get a random value between an interval.
      *
      * @param max Max value
      * @param min Min value
@@ -25,7 +25,7 @@ public class Randomizer {
     }
 
     /**
-     * Get a random vector contained into the two vectors
+     * Get a random vector contained into the two vectors.
      *
      * @param p1 Vector 1
      * @param p2 Vector 2

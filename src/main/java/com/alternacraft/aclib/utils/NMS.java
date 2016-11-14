@@ -21,8 +21,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import org.bukkit.entity.Player;
 
-
+/**
+ * This class contains some utils for locales.
+ *
+ * @author AlternaCraft
+ */
 public class NMS {
+
     private static final String PACKAGENAME = PluginBase.INSTANCE.plugin().getServer().getClass().getPackage().getName();
     public static final String VERSION = PACKAGENAME.substring(PACKAGENAME.lastIndexOf(".") + 1);
 

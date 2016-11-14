@@ -33,6 +33,7 @@ import java.util.List;
  * @author AlternaCraft
  */
 public class FileUtils {
+
     /**
      * Check if a file in the specified path exists.
      *
@@ -54,7 +55,7 @@ public class FileUtils {
     }
 
     /**
-     * Writes the file from the specified path with the specified content
+     * Writes the file from the specified path with the specified content.
      *
      * @param path The file path
      * @param cont The content
@@ -64,7 +65,7 @@ public class FileUtils {
     }
 
     /**
-     * Writes the specified file with the specified content
+     * Writes the specified file with the specified content.
      *
      * @param fout The file
      * @param cont The content
@@ -96,6 +97,7 @@ public class FileUtils {
      * Returns the file from the specified path as a String instance.
      *
      * @param path The file path
+     * 
      * @return The file as a String instance
      */
     public static String getFileAsString(String path) {
@@ -110,9 +112,10 @@ public class FileUtils {
     }
 
     /**
-     * Returns the lines from the file from the specified path
+     * Returns the lines from the file from the specified path.
      *
      * @param path The file path
+     * 
      * @return The file lines
      */
     public static List<String> getFileLines(String path) {
@@ -123,6 +126,7 @@ public class FileUtils {
      * Returns the lines from the specified file
      *
      * @param file The file
+     * 
      * @return The file lines
      */
     public static List<String> getFileContentPerLines(File file) {
@@ -135,21 +139,34 @@ public class FileUtils {
     }
 
     /**
-     * Deletes the file from the specified path
+     * Deletes the file from the specified path.
+     * <i>This won't try to delete the file on exit</i>
      *
      * @param path The file path
      */
     public static void delete(String path) {
+        delete(path, false);
+    }
+
+    /**
+     * Deletes the file from the specified path.
+     *
+     * @param path The file path
+     * 
+     * @param delete_on_exit Delete on exit
+     */
+    public static void delete(String path, boolean delete_on_exit) {
         File todelete = new File(path);
-        if (!todelete.delete()) {
+        if (!todelete.delete() && delete_on_exit) {
             todelete.deleteOnExit();
         }
     }
 
     /**
-     * Create all the non-existent directories from the specified path
+     * Create all the non-existent directories from the specified path.
      *
      * @param path The directory path
+     * 
      * @return True if success; false if not
      */
     public static boolean createDirs(String path) {
@@ -157,9 +174,10 @@ public class FileUtils {
     }
 
     /**
-     * Create all the non-existent directories from the specified file path
+     * Create all the non-existent directories from the specified file path.
      *
      * @param path The file path
+     * 
      * @return True if success; false if not
      */
     public static boolean createDirsFromFile(String path) {
@@ -170,6 +188,7 @@ public class FileUtils {
      * Create the directory from the specified path.
      *
      * @param path The directory path
+     * 
      * @return True if success; false if not
      */
     public static boolean createDir(String path) {
@@ -177,9 +196,10 @@ public class FileUtils {
     }
 
     /**
-     * Returns the files from an specified directory path
+     * Returns the files from an specified directory path.
      *
      * @param dir The directory path
+     * 
      * @return The files from the directory
      */
     public static File[] getFilesIntoDir(String dir) {
@@ -194,6 +214,7 @@ public class FileUtils {
      * Returns the extension from the specified file.
      *
      * @param file The file with the extension
+     * 
      * @return The file extension
      */
     public static String getFileExtension(File file) {

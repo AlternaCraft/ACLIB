@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Define command/subcommand listener
+ * Define command/subcommand listener.
  * 
  * @author AlternaCraft
  */
@@ -43,7 +43,7 @@ public class CommandListener implements CommandExecutor {
     private final JavaPlugin plugin;
 
     /**
-     * Main constructor
+     * Main constructor.
      *
      * @param command Main command
      * @param prefix Permissions prefix
@@ -59,7 +59,7 @@ public class CommandListener implements CommandExecutor {
     }
 
     /**
-     * Add a subcommand
+     * Adds a subcommand.
      *
      * @param argument SubCommand
      * @param executor Executor

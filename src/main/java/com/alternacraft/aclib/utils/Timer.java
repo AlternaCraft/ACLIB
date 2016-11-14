@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class allows you to record times for managing performance.
+ * 
+ * @author AlternaCraft
+ */
 public class Timer {
 
     private final Map<String, Long> timeAtStart = new HashMap();
@@ -45,7 +50,7 @@ public class Timer {
     }
 
     /**
-     * Gets parsed values.
+     * Returns parsed values.
      * <i>The values will be replaced with the mean</i>
      * 
      * @return Parsed values
@@ -70,6 +75,12 @@ public class Timer {
         return parsed;
     }
 
+    /**
+     * Save the messages to a log file.
+     * <i>If the file already exists will be deleted</i>
+     * 
+     * @param filename File to export the content
+     */
     public void saveToLog(String filename) {
         PluginLog pf = new PluginLog(filename);
 

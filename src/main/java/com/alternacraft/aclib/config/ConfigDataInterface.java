@@ -19,14 +19,14 @@ package com.alternacraft.aclib.config;
 import org.bukkit.configuration.file.FileConfiguration;
 
 /**
- * Main configuration
+ * Main configuration.
  * 
  * @author AlternaCraft
  */
 public interface ConfigDataInterface {
 
     /**
-     * Loads configuration
+     * Loads configuration.
      * 
      * @param fc File configuration
      */

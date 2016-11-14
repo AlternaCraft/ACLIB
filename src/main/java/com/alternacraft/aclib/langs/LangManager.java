@@ -25,6 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Language manager
+ * 
+ * @author AlternaCraft
+ */
 public class LangManager {
 
     public static final String LANG_DIRECTORY
@@ -41,7 +46,7 @@ public class LangManager {
     }
 
     /**
-     * Method to register an Enum with a custom path
+     * Registers an Enum with a custom path.
      *
      * @param e Enum class
      * @param path Path to save the file
@@ -58,7 +63,7 @@ public class LangManager {
     }
 
     /**
-     * Method to register an Enum with the default path
+     * Registers an Enum with the default path.
      *
      * @param e Enum class
      */
@@ -68,7 +73,7 @@ public class LangManager {
     }
 
     /**
-     * Method for loading locales
+     * Loads message files.
      */
     public static void loadMessages() {
         for (Langs langType : keys) {
@@ -92,7 +97,7 @@ public class LangManager {
     }
 
     /**
-     * Method to create a new file
+     * Creates a new language file.
      *
      * @param <T> Enum type
      * @param langfile PluginFile
@@ -139,7 +144,7 @@ public class LangManager {
     }
 
     /**
-     * Method for checking the values
+     * Checks the inner values.
      *
      * @param langFile PluginFile
      * @param langConf YamlConfiguration
@@ -177,7 +182,7 @@ public class LangManager {
     }
 
     /**
-     * Method for setting the default languages
+     * Sets the main languages.
      *
      * @param locales Map
      */
@@ -186,14 +191,14 @@ public class LangManager {
     }
 
     /**
-     * Method for cleaning all registered messages
+     * Cleans all registered messages.
      */
     public static void clearMessages() {
         LangManager.MESSAGES.clear();
     }
 
     /**
-     * Method for getting a lang value from locales files
+     * Returns a language value from locales files.
      *
      * @param <T> Enum type
      * @param lang Langs

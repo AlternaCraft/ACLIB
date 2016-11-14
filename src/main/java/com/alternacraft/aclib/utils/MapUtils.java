@@ -22,18 +22,19 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class contains some utils for Maps
+ * This class contains some utils for Maps.
  * 
  * @author AlternaCraft
  */
 public class MapUtils {
 
     /**
-     * Method for getting the map keys as an array
+     * Method for getting the map keys as an array.
      *
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
+     * 
      * @return Key array
      */
     public static <K, V> K[] getKeys(Map<K, V> map) {
@@ -41,12 +42,13 @@ public class MapUtils {
     }
 
     /**
-     * Method for getting a key by value
+     * Method for getting a key by value.
      *
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
      * @param value value
+     * 
      * @return Key
      */
     public static <K, V> K getKeyFrom(Map<K, V> map, V value) {
@@ -64,12 +66,13 @@ public class MapUtils {
     }
 
     /**
-     * Method for getting a key by value in a List
+     * Method for getting a key by value in a List.
      *
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
      * @param listValue Value
+     * 
      * @return Key
      */
     public static <K, V extends List> K getKeyFromList(Map<K, V> map, Object listValue) {
@@ -86,22 +89,21 @@ public class MapUtils {
     }
 
     /**
-     * Method for getting a map key by argument from CommandArgument
+     * Method for getting a map key by argument from SubCommand.
      *
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
-     * @param argument String with the argument
+     * @param subcommand String with the argument
      *
      * @see SubCommand
-     *
      * @return Key
      */
     public static <K extends SubCommand, V> K findArgument(Map<K, V> map,
-            String argument) {
+            String subcommand) {
         Set<K> keys = map.keySet();
         for (K key : keys) {
-            if (key.getCommand().equals(argument)) {
+            if (key.getCommand().equals(subcommand)) {
                 return key;
             }
         }

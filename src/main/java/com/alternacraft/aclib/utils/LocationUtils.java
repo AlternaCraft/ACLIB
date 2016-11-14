@@ -35,8 +35,9 @@ public class LocationUtils {
     /**
      * Returns the facing direction from an specified yaw.
      *
-     * @param bf
-     * @return
+     * @param bf Block face
+     * 
+     * @return Block face to yaw
      */
     public static float blockFaceToYaw(BlockFace bf) {
         switch (bf) {
@@ -64,8 +65,9 @@ public class LocationUtils {
     /**
      * Returns the facing direction from an specified yaw.
      *
-     * @param yaw
-     * @return
+     * @param yaw Yaw value
+     * 
+     * @return Block face
      */
     public static BlockFace yawToFace(float yaw) {
         double rotation = (yaw - 90) % 360;

@@ -28,6 +28,11 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Useful class for managing plugin logs.
+ * 
+ * @author AlternaCraft
+ */
 public class PluginLog extends File {
 
     private static String logs_folder = "logs";
@@ -36,7 +41,7 @@ public class PluginLog extends File {
     private final List<String> messages;
 
     /**
-     * Register a logger which will be saved into plugin folder
+     * Register a logger which will be saved into plugin folder.
      *
      * @param filename File name with extension
      */
@@ -45,7 +50,7 @@ public class PluginLog extends File {
     }
 
     /**
-     * Register a logger which will be saved into path
+     * Register a logger which will be saved into path.
      *
      * @param path Path without the last slash
      * @param filename File name with extension
@@ -56,7 +61,7 @@ public class PluginLog extends File {
     }
 
     /**
-     * Add a new record to log
+     * Add a new record to log.
      *
      * @param str Record value
      */
@@ -67,7 +72,7 @@ public class PluginLog extends File {
     }
 
     /**
-     * Export records to log file
+     * Export records to log file.
      *
      * @param keep_old_values Keep old values?
      */
@@ -144,7 +149,7 @@ public class PluginLog extends File {
     }
 
     /**
-     * Gets the values per date.
+     * Returns the values per date.
      * 
      * @param lines Values
      * 

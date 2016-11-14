@@ -19,36 +19,50 @@ package com.alternacraft.aclib.utils;
 import org.bukkit.ChatColor;
 
 /**
- * This class contains some utils for Strings
+ * This class contains some utils for Strings.
  *
  * @author AlternaCraft
  */
 public class StringsUtils {
 
+    /**
+     * Translates all ChatColors from a String.
+     *
+     * @param s String to format
+     *
+     * @return String formatted
+     */
     public static String translateColors(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
+    /**
+     * Removes all ChatColors from a String.
+     *
+     * @param s String to format
+     *
+     * @return String formatted
+     */
     public static String stripColors(String s) {
         return ChatColor.stripColor(s);
     }
 
     /**
-     * Method for formatting in time components
+     * Formattes a number in time components.
      *
      * @param s Time in seconds
-     * @return String formatted as, for example, "4d 5h 3m 2s" without quotes
      *
+     * @return String formatted as, for example, "4d 5h 3m 2s" without quotes
      * @since 0.0.9
      */
     public static String splitToComponentTimes(int s) {
         String resul = "";
         int days, hours, mins, secs, remainder;
-        
+
         // Lógica        
         days = s / 3600 / 24;
         remainder = s - days * 3600 * 24;
-        hours = remainder / 3600;        
+        hours = remainder / 3600;
         remainder = remainder - hours * 3600;
         mins = remainder / 60;
         remainder = remainder - mins * 60;
@@ -59,8 +73,7 @@ public class StringsUtils {
         if (days > 0) {
             resul += hours + "h ";
             resul += mins + "m ";
-        }
-        else {
+        } else {
             resul += (hours > 0) ? (hours + "h ") : "";
             if (hours > 0) {
                 resul += mins + "m ";
@@ -74,7 +87,7 @@ public class StringsUtils {
     }
 
     /**
-     * Method for getting the higher length of multiple Strings
+     * Method for getting the higher length of multiple Strings.
      *
      * @param strs String...
      *
@@ -100,10 +113,10 @@ public class StringsUtils {
     }
 
     /**
-     * Method for setting the same length into multiple Strings by using a char
+     * Sets the same length into multiple Strings by using a Char.
      * <p>
-     * So far, this is a bit useless because lettes in Minecraft don't occupy
-     * the same space</p>
+     * So far, this is a bit useless because letters in Minecraft does not
+     * occupy the same space</p>
      *
      * @param size Maximum size
      * @param e Char to add

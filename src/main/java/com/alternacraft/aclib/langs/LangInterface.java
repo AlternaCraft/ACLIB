@@ -16,20 +16,27 @@
  */
 package com.alternacraft.aclib.langs;
 
+/**
+ * Languages behavior
+ * 
+ * @author AlternaCraft
+ */
 public interface LangInterface {
 
     /**
-     * Method for getting a message with colors translated
+     * Gets a message with translated colors.
      *
-     * @param lang Langs
+     * @param lang Languages
+     * 
      * @return String
      */
     public String getText(Langs lang);
 
     /**
-     * Method for getting a message without colors translated
+     * Gets a message without translated colors.
      *
-     * @param lang Langs
+     * @param lang Languages
+     * 
      * @return String
      */
     public String getDefaultText(Langs lang);
