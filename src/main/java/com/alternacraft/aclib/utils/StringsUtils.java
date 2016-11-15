@@ -55,9 +55,9 @@ public class StringsUtils {
      * @return String formatted as, for example, "4d 5h 3m 2s" without quotes
      * @since 0.0.9
      */
-    public static String splitToComponentTimes(int s) {
+    public static String splitToComponentTimes(long s) {
         String resul = "";
-        int days, hours, mins, secs, remainder;
+        long days, hours, mins, secs, remainder;
 
         // Lógica        
         days = s / 3600 / 24;
