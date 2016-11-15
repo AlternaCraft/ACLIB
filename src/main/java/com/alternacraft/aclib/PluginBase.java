@@ -26,26 +26,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Singleton.
- * 
+ *
  * @author AlternaCraft
  */
 public class PluginBase {
-    
+
     /**
-      * Gets plugin's directory 
-      * 
-      * @since 1.0.2
-      */
+     * Gets plugin's directory
+     *
+     * @since 1.0.2
+     */
     public static String DIRECTORY;
-    
+
     /**
-     * Ticks Per Seconds
+     * Ticks Per Second
      *
      * @since 0.0.9
      */
     public static final int TPS = 20;
 
     /**
+     * Gets singleton.
+     * 
      * @since 0.0.6
      */
     public static final PluginBase INSTANCE = new PluginBase();
@@ -78,16 +80,16 @@ public class PluginBase {
      *
      * @param plugin
      */
-    public final void init(JavaPlugin plugin) {        
+    public final void init(JavaPlugin plugin) {
         this.pluginInstance = plugin;
-        
+
         DIRECTORY = new StringBuilder().append(
-            plugin.getDataFolder()).append(
-                    File.separator).toString();
-        
+                plugin.getDataFolder()).append(
+                File.separator).toString();
+
         pluginDescription = new PluginDescription();
         configurationFile = new ConfigurationFile(plugin);
-        
+
         // Plugin logs
         PluginLog.setDefaultPath(plugin);
     }
@@ -97,21 +99,28 @@ public class PluginBase {
      *
      * @param plugin JavaPlugin
      * @param cdi ConfigDataInterface
-     * 
+     *
      * @since 0.0.9
-     */    
+     */
     public final void init(JavaPlugin plugin, ConfigDataInterface cdi) {
-        this.init(plugin);        
+        this.init(plugin);
         this.configurationFile.loadParams(cdi);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Setters">
+    /**
+     * Sets plugin prefix.
+     * 
+     * @param prefix Prefix
+     */
     public void definePluginPrefix(String prefix) {
         this.prefix = StringsUtils.translateColors(prefix + "&r");
     }
 
     /**
-     * @param lang Langs
+     * Sets the main language of the plugin.
+     * 
+     * @param lang Language
      * @since 0.0.6
      */
     public void defineMainLanguage(Langs lang) {
@@ -119,6 +128,8 @@ public class PluginBase {
     }
 
     /**
+     * Sets error format.
+     * 
      * @param n Error format
      * @since 0.0.6
      */
@@ -132,20 +143,28 @@ public class PluginBase {
         return pluginInstance;
     }
 
-    public String pluginPrefix() {
-        return prefix;
-    }
-
     public ConfigurationFile config() {
         return configurationFile;
     }
 
-    public PluginDescription getPluginDescription() {
+    public PluginDescription pluginDescription() {
         return pluginDescription;
     }
 
     /**
-     * @return Langs
+     * Returns plugin prefix.
+     * 
+     * @return Plugin prefix
+     * @since 0.0.6
+     */
+    public String pluginPrefix() {
+        return prefix;
+    }
+
+    /**
+     * Return main language.
+     * 
+     * @return Language
      * @since 0.0.6
      */
     public Langs getMainLanguage() {
@@ -153,7 +172,9 @@ public class PluginBase {
     }
 
     /**
-     * @return short
+     * Return error format.
+     * 
+     * @return Error format number
      * @since 0.0.6
      */
     public short getErrorFormat() {

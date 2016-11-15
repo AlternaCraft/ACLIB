@@ -28,6 +28,9 @@ import org.bukkit.entity.Player;
  */
 public class MessageManager {
 
+    private static final String ERROR = "&cERROR: &f";
+    private static final String INFO = "&eINFO: &f";
+    
     /**
      * Logs a message into CONSOLE.
      *
@@ -43,7 +46,7 @@ public class MessageManager {
     }
 
     /**
-     * Logs a message into CONSOLE with 'INFO' prefix
+     * Logs a message into CONSOLE with 'INFO' prefix.
      *
      * @param message The message
      */
@@ -51,13 +54,13 @@ public class MessageManager {
         String[] messages = message.split("\n");
         for (String _message : messages) {
             Bukkit.getConsoleSender().sendMessage(
-                    prepareString("&eINFO: &f" + _message)
+                    prepareString(INFO + _message)
             );
         }
     }
 
     /**
-     * Logs a message into CONSOLE with 'ERROR' prefix
+     * Logs a message into CONSOLE with 'ERROR' prefix.
      *
      * @param message The message
      */
@@ -65,13 +68,13 @@ public class MessageManager {
         String[] messages = message.split("\n");
         for (String _message : messages) {
             Bukkit.getConsoleSender().sendMessage(
-                    prepareString("&cERROR: &f" + _message)
+                    prepareString(ERROR + _message)
             );
         }
     }
 
     /**
-     * Sends a message to a player
+     * Sends a message to a player.
      *
      * @param player The player
      * @param message The message
@@ -86,7 +89,7 @@ public class MessageManager {
     }
 
     /**
-     * Sends a message to a command sender
+     * Sends a message to a command sender.
      *
      * @param cs The command sender
      * @param message The message
