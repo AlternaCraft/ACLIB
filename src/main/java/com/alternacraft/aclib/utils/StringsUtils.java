@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -114,8 +114,7 @@ public class StringsUtils {
 
     /**
      * Sets the same length into multiple Strings by using a Char.
-     * <p>
-     * So far, this is a bit useless because letters in Minecraft does not
+     * <p>So far, this is a bit useless because letters in Minecraft does not
      * occupy the same space</p>
      *
      * @param size Maximum size

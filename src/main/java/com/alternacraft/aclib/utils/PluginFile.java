@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,8 +69,8 @@ public class PluginFile extends File {
 
     /**
      * <ul>Some extras:
-     * <li>Create a new file if not exists</li>
-     * <li>Load YAML configuration</li>
+     *   <li>Create a new file if not exists</li>
+     *   <li>Load YAML configuration</li>
      * </ul>
      *
      * @param base Default directory

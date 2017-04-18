@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,6 +73,17 @@ public class MessageManager {
         }
     }
 
+    /**
+     * Logs the message from an array into CONSOLE
+     * 
+     * @param messages Array of messages
+     */
+    public static void logArrayError(Object[] messages) {
+        for (Object msg : messages) {            
+            logError(msg.toString());
+        }
+    }
+    
     /**
      * Sends a message to a player.
      *

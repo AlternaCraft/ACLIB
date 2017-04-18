@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,12 @@
 package com.alternacraft.aclib.exceptions;
 
 import com.alternacraft.aclib.PluginBase;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 /**
  * Custom exception.
@@ -33,12 +37,22 @@ import java.util.Map;
  *  <li>How to report</li>
  *  <li>Functionality for finding a possible reason of the error</li>
  * </ul>
- * 
+ *
  * @author AlternaCraft
  */
 public abstract class PluginException extends Exception {
 
-    protected final String REPORT = "If you don't know the error cause, please, report it.";
+    protected static final PluginBase PLUGIN = PluginBase.INSTANCE;
+
+    protected static final String NAME = PLUGIN.plugin().getDescription().getName();
+    protected static final String VERSION = PLUGIN.plugin().getDescription().getVersion();
+
+    protected static final ChatColor V = ChatColor.GREEN;
+    protected static final ChatColor G = ChatColor.GRAY;
+    protected static final ChatColor R = ChatColor.RED;
+    protected static final ChatColor L = ChatColor.RESET;
+
+    protected final String REPORT = "If you don't know the error cause please, report it.";
 
     protected static final short SIMPLIFIED = 0;
     protected static final short ESSENTIAL = 1;
@@ -47,7 +61,7 @@ public abstract class PluginException extends Exception {
     protected Map<String, Object> data = new LinkedHashMap();
     protected String custom_error = null;
 
-    // <editor-fold defaultstate="collapsed" desc="CONSTRUCTS">    
+    // <editor-fold defaultstate="collapsed" desc="CONSTRUCTORS">    
     public PluginException(String message) {
         super(message);
     }
@@ -63,82 +77,107 @@ public abstract class PluginException extends Exception {
     }
     // </editor-fold>
 
-    public String getCustomMessage() {
+    public Object[] getCustomMessage() {
         int n = PluginBase.INSTANCE.getErrorFormat();
+        List result = new ArrayList();
 
         switch (n) {
             case SIMPLIFIED:
-                return getHeader();
+                result.addAll(getHeader());
+                break;
             case ESSENTIAL:
-                return new StringBuilder(getHeader())
-                        .append(getBody())
-                        .append("\n").toString();
+                result.addAll(getHeader());
+                result.addAll(getBody());
+                break;
             case FULL:
-                return new StringBuilder(getHeader())
-                        .append(getExtraData())
-                        .append(getBody())
-                        .append(getPossibleReasons())
-                        .append(getReportMessage()).toString();
-            default:
-                return "";
+                result.add("-------------------------------------------------------------");
+                result.addAll(getHeader());
+                result.add("-------------------------------------------------------------");
+                result.addAll(getExtraData());
+                result.addAll(getBody());
+                result.addAll(getPossibleReasons());
+                result.addAll(getReportMessage());
         }
+
+        return result.toArray();
     }
 
     // <editor-fold defaultstate="collapsed" desc="ABSTRACT METHODS">
-    protected abstract String getHeader();
-    protected abstract String getPossibleReasons();
+    protected abstract List getHeader();
+
+    protected abstract List getPossibleReasons();
     // </editor-fold>
-    
+
     // <editor-fold defaultstate="collapsed" desc="DEFAULT TEMPLATES">
-    protected String getBody() {
-        return new StringBuilder()
-                .append("\n\nStackTrace:")
-                .append("\n-----------")
-                .append(getSource()).toString();
-    }
-
-    protected String getExtraData() {
-        String extradata = "";
-
-        if (!this.data.isEmpty()) {
-            extradata = "\n\nMore information:";
-            extradata += "\n-----------------";
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
-                extradata += new StringBuilder().append("\n- ").append(key)
-                        .append(": ").append(value).toString();
+    protected List getBody() {
+        return new ArrayList<String>() {
+            {
+                this.add("          " + G + "====== " + V + "STACK TRACE" + G + " ======");
+                this.addAll(getSource());
+                this.add("          " + G + "====== " + V + "DUMP" + G + " ======");
+                this.addAll(getPluginInformation());
             }
-        } else if (this.custom_error != null) {
-            extradata = "\nMore information: " + this.custom_error;
-        }
-
-        return extradata;
+        };
     }
 
-    protected String getReportMessage() {
-        return new StringBuilder()
-                .append("\n\n-------------------------------------------------------------\n")
-                .append(this.REPORT)
-                .append("\n-------------------------------------------------------------").toString();
+    protected List getExtraData() {
+        return new ArrayList<String>() {
+            {
+                this.add("          " + G + "====== " + V + "MORE INFORMATION" + G + " ======");
+                if (!data.isEmpty()) {
+                    for (Map.Entry<String, Object> entry : data.entrySet()) {
+                        String key = entry.getKey();
+                        Object value = entry.getValue();
+                        this.add(new StringBuilder().append("- ").append(key)
+                                .append(": ").append(value).toString());
+                    }
+                } else if (custom_error != null) {
+                    this.add(custom_error);
+                }
+            }
+        };
+    }
+
+    protected List getReportMessage() {
+        return new ArrayList<String>() {
+            {
+                this.add("-------------------------------------------------------------");
+                this.add(R + REPORT);
+                this.add("-------------------------------------------------------------");
+            }
+        };
     }
     // </editor-fold>
 
     /* UTILS */
-    protected String getSource() {
-        String source = "";
-
-        for (StackTraceElement stackTrace : this.getStackTrace()) {
-            String str = stackTrace.toString();
-            if (str.contains(PluginBase.INSTANCE.plugin().getDescription()
-                    .getName().toLowerCase())) {
-                source += "\n" + str;
-            } else {
-                break;
+    protected List getSource() {
+        return new ArrayList() {
+            {
+                for (StackTraceElement stackTrace : getStackTrace()) {
+                    String str = stackTrace.toString();
+                    if (str.contains(NAME.toLowerCase())) {                        
+                        this.add(
+                          new StringBuilder()
+                                .append(stackTrace.getClassName())
+                                .append("(")
+                                  .append(stackTrace.getMethodName())
+                                  .append(" -> ")
+                                  .append(stackTrace.getLineNumber())
+                                .append(")").toString()
+                        );
+                    }
+                }
             }
-        }
-
-        return source;
+        };
     }
 
+    protected List getPluginInformation() {
+        return new ArrayList<String>() {
+            {
+                this.add(G + "Plugin name: " + L + NAME);
+                this.add(G + "Plugin version: " + L + VERSION);
+                this.add(G + "Bukkit version: " + L + Bukkit.getBukkitVersion());
+            }
+        };
+    }
 }

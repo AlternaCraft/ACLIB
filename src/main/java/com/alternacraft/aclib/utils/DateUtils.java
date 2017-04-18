@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * This class contains some utils for Dates.
+ * This class contains some utils for managing Dates.
  * 
  * @author AlternaCraft
  */
@@ -54,6 +54,11 @@ public class DateUtils {
         return strDate;
     }
     
+    /**
+     * Return the default date format.
+     * 
+     * @return DateFormat
+     */
     public static DateFormat getDefaultDateFormat() {
         return new SimpleDateFormat(DEFAULT_FORMAT);
     }

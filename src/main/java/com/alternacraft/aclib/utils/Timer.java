@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 AlternaCraft
+ * Copyright (C) 2017 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,22 +31,44 @@ public class Timer {
     private final Map<String, Long> timeAtStart = new HashMap();
     private final Map<String, List<Long>> register = new HashMap();
 
+    /**
+     * Save the current time for "id".
+     * 
+     * @param id Name for the process
+     */
     public void start(String id) {
         this.timeAtStart.put(id, System.currentTimeMillis());
     }
 
+    /**
+     * Returns the start time for "id"
+     * 
+     * @param id Process name
+     * 
+     * @return Time in milliseconds
+     */
     public long getStartTime(String id) {
         return this.timeAtStart.get(id);
     }
 
-    public void recordValue(String id) {
+    /**
+     * Returns the difference between the final time and the start time.
+     * Also, it saves the value into the variable: "register".
+     * 
+     * @param id Process name
+     * 
+     * @return Time in milliseconds
+     */
+    public long recordValue(String id) {
         long finalTime = System.currentTimeMillis();
 
         if (!this.register.containsKey(id)) {
             this.register.put(id, new ArrayList());
         }
 
-        this.register.get(id).add((finalTime - this.timeAtStart.get(id)));
+        long elapsedtime = finalTime - getStartTime(id);
+        this.register.get(id).add(elapsedtime);
+        return elapsedtime;
     }
 
     /**
