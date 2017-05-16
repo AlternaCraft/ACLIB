@@ -24,5 +24,14 @@ import java.util.Map;
  */
 public interface ErrorExecutor {
     
-    public boolean matches(Map<String, Object> data);
+    /**
+     * Checks what could be the cause of the error.
+     * 
+     * @param msg Exception message.
+     * @param data (Optional) Added data to the exception.
+     * @param c_error (Optional) Another exception message.
+     * 
+     * @return True if it matches; False if not
+     */
+    public boolean matches(String msg, Map<String, Object> data, String c_error);
 }

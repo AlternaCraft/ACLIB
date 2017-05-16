@@ -81,7 +81,8 @@ public class PluginException extends Exception {
         int n = PluginBase.INSTANCE.getErrorFormat();
         List result = new ArrayList();
         
-        ErrorManager.analyzePossibleReasons(this.data); // Keep data
+        ErrorManager.analyzePossibleReasons(this.getMessage(), this.data, 
+                this.custom_error); // Keep data
         
         switch (n) {
             case SIMPLIFIED:

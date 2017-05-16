@@ -51,14 +51,17 @@ public class ErrorManager {
      * Errors analysis.
      * <b>This method saves the result into this vars: LAST_MESSAGES & LAST_CODES</b>
      * 
+     * @param msg Exception message.
      * @param data Custom data.
+     * @param c_error Another exception message.
      */
-    public static void analyzePossibleReasons(Map<String, Object> data) {
+    public static void analyzePossibleReasons(String msg, Map<String, Object> data, 
+            String c_error) {
         LAST_MESSAGES.clear();
         LAST_CODES.clear();
         
         for (Error e : VAULT) {
-            if (e.getExecutor().matches(data)) {
+            if (e.getExecutor().matches(msg, data, c_error)) {
                 LAST_MESSAGES.add(new StringBuilder("- ").append(e.getMessage()).toString());
                 LAST_CODES.add(e.getCode().errorCode());
             }
