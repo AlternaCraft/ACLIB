@@ -102,17 +102,24 @@ public class Timer {
      * <i>If the file already exists will be deleted</i>
      * 
      * @param filename File to export the content
-     */
+     */    
     public void saveToLog(String filename) {
-        PluginLog pf = new PluginLog(filename);
-
+        this.saveToLog(new PluginLog(filename));
+    }
+    
+    /**
+     * Save the messages to a log file.
+     * <i>If the file already exists will be deleted</i>
+     * 
+     * @param pl PluginLog
+     */
+    public void saveToLog(PluginLog pl) {
         for (Map.Entry<String, Integer> entry : this.getParsedValues().entrySet()) {
             String key = entry.getKey();
             Integer value = entry.getValue();
-            pf.addMessage(key + " - " + value);
+            pl.addMessage(key + " - " + value);
         }
-
-        pf.export(false);
+        pl.export(false);
     }
 
     //<editor-fold defaultstate="collapsed" desc="CLASS STUFF">
