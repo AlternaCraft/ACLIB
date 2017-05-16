@@ -26,9 +26,11 @@ import java.util.Map;
  * 
  * @author AlternaCraft
  */
-public class Timer {
+public class Recorder {
 
+    // If you want to measure times
     private final Map<String, Long> timeAtStart = new HashMap();
+    
     private final Map<String, List<Long>> register = new HashMap();
 
     /**
@@ -52,14 +54,14 @@ public class Timer {
     }
 
     /**
-     * Returns the difference between the final time and the start time.
-     * Also, it saves the value into the variable: "register".
+     * Saves the value and returns the difference between the final time and 
+     * the start time.
      * 
      * @param id Process name
      * 
      * @return Time in milliseconds
      */
-    public long recordValue(String id) {
+    public long recordTime(String id) {
         long finalTime = System.currentTimeMillis();
 
         if (!this.register.containsKey(id)) {
@@ -69,6 +71,19 @@ public class Timer {
         long elapsedtime = finalTime - getStartTime(id);
         this.register.get(id).add(elapsedtime);
         return elapsedtime;
+    }
+    
+    /**
+     * Saves the value.
+     * 
+     * @param id Process name
+     * @param value Number to save
+     */
+    public void recordNumber(String id, long value) {
+        if (!this.register.containsKey(id)) {
+            this.register.put(id, new ArrayList());
+        }
+        this.register.get(id).add(value);
     }
 
     /**
@@ -83,13 +98,8 @@ public class Timer {
         for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
             String key = entry.getKey();
             List<Long> value = entry.getValue();
-
-            int size = value.size();
-            int total = 0;
-            for (Long record : value) {
-                total += record;
-            }
-            total /= size;
+            
+            int total = getAverage(value);
             
             parsed.put(key, total);
         }
@@ -123,14 +133,14 @@ public class Timer {
     }
 
     //<editor-fold defaultstate="collapsed" desc="CLASS STUFF">
-    private static int getAverageInMillis(List<Long> times) {
+    private static int getAverage(List<Long> times) {
         int x = 0;
 
         for (Long l : times) {
             x += l;
         }
 
-        return (x /= times.size());
+        return x / times.size();
     }
     //</editor-fold>    
 }
