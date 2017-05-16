@@ -75,6 +75,38 @@ public class PluginException extends Exception {
         this(message);
         this.custom_error = custom_error;
     }
+    
+    /* With previous stacktrace */
+    public PluginException(String message, StackTraceElement[] ste) {
+        super(message);
+        this.setStackTrace(ste);
+    }
+
+    public PluginException(String message, StackTraceElement[] ste, Map<String, Object> data) {
+        this(message, ste);
+        this.data = data;
+    }
+
+    public PluginException(String message, StackTraceElement[] ste, String custom_error) {
+        this(message, ste);
+        this.custom_error = custom_error;
+    }
+
+    /* Even easier */
+    public PluginException(Exception ex) {
+        super(ex.getMessage());
+        this.setStackTrace(ex.getStackTrace());
+    }
+
+    public PluginException(Exception ex, Map<String, Object> data) {
+        this(ex.getMessage(), ex.getStackTrace());
+        this.data = data;
+    }
+
+    public PluginException(Exception ex, String custom_error) {
+        this(ex.getMessage(), ex.getStackTrace());
+        this.custom_error = custom_error;
+    }
     // </editor-fold>
 
     public Object[] getCustomStacktrace() {
