@@ -36,7 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PluginLog extends File {
 
     private static String logs_folder = "logs";
-    private static String default_path = "logs";
+    private static String default_path = "";
 
     private final List<String> messages;
 
