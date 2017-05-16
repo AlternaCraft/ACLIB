@@ -30,8 +30,8 @@ import org.bukkit.ChatColor;
  *  <li>Structured messages
  *      <ul>There are three type:
  *          <li>Simplified. Just for indicating an error</li>
- *          <li>Essential. Essential information for finding a reason</li>
- *          <li>Full. Complete error</li>
+ *          <li>Essential. Essential information to find a reason</li>
+ *          <li>Full. All the data</li>
  *      </ul>
  *  </li>
  *  <li>How to report</li>
@@ -40,7 +40,7 @@ import org.bukkit.ChatColor;
  *
  * @author AlternaCraft
  */
-public abstract class PluginException extends Exception {
+public class PluginException extends Exception {
 
     protected static final PluginBase PLUGIN = PluginBase.INSTANCE;
 
@@ -56,8 +56,8 @@ public abstract class PluginException extends Exception {
 
     protected static final short SIMPLIFIED = 0;
     protected static final short ESSENTIAL = 1;
-    protected static final short FULL = 2;
-
+    protected static final short FULL = 2;  
+    
     protected Map<String, Object> data = new LinkedHashMap();
     protected String custom_error = null;
 
@@ -77,10 +77,12 @@ public abstract class PluginException extends Exception {
     }
     // </editor-fold>
 
-    public Object[] getCustomMessage() {
+    public Object[] getCustomStacktrace() {
         int n = PluginBase.INSTANCE.getErrorFormat();
         List result = new ArrayList();
-
+        
+        ErrorManager.analyzePossibleReasons(this.data); // Keep data
+        
         switch (n) {
             case SIMPLIFIED:
                 result.addAll(getHeader());
@@ -102,13 +104,21 @@ public abstract class PluginException extends Exception {
         return result.toArray();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="ABSTRACT METHODS">
-    protected abstract List getHeader();
-
-    protected abstract List getPossibleReasons();
-    // </editor-fold>
-
     // <editor-fold defaultstate="collapsed" desc="DEFAULT TEMPLATES">
+    protected List getHeader() {
+        return new ArrayList<String>() {{ 
+            this.add(new StringBuilder(getMessage())
+                    .append(ErrorManager.getLastCodes()).toString()); 
+        }};
+    }
+
+    protected List getPossibleReasons() {
+        return new ArrayList() {{ 
+            this.add("          " + G + "====== " + V + "POSSIBLE REASONS" + G + " ======");
+            this.addAll(ErrorManager.getLastMessages());
+        }};
+    }
+
     protected List getBody() {
         return new ArrayList<String>() {
             {
@@ -158,7 +168,8 @@ public abstract class PluginException extends Exception {
                     if (str.contains(NAME.toLowerCase())) {                        
                         this.add(
                           new StringBuilder()
-                                .append(stackTrace.getClassName())
+                                .append(stackTrace.getClassName()
+                                  .replaceAll(".*\\." + NAME.toLowerCase() + "\\.", ""))
                                 .append("(")
                                   .append(stackTrace.getMethodName())
                                   .append(" -> ")
