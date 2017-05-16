@@ -77,6 +77,7 @@ public class PluginException extends Exception {
     }
     
     /* With previous stacktrace */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public PluginException(String message, StackTraceElement[] ste) {
         super(message);
         this.setStackTrace(ste);
@@ -93,6 +94,7 @@ public class PluginException extends Exception {
     }
 
     /* Even easier */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public PluginException(Exception ex) {
         super(ex.getMessage());
         this.setStackTrace(ex.getStackTrace());
