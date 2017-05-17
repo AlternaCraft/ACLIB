@@ -12,3 +12,9 @@ This is a custom library used in plugins created by AlternaCraft.
 * Hookers
 * Exceptions
 * Some utils
+
+Also, you can consult the javadoc by using the following URL:
+
+* https://alternacraft.github.io/ACLIB/javadoc/x.x.x
+
+where **"x.x.x"** has to be the version number that you want to consult.
