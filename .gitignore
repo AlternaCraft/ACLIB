@@ -1,8 +1,17 @@
 # Netbeans
 /target/
 /nbproject/
-/nbactions-deployer.xml
-/nb-configuration.xml
-/.utility/*.txt
-/changes
 /nbactions-release-profile.xml
+/nb-configuration.xml
+
+# Dependencies
+/.travis/*.txt
+
+# Jetbrains
+/*.iml
+/.idea
+
+# Eclipse
+/.classpath
+/.project
+/.settings
