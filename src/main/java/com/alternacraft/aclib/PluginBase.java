@@ -30,7 +30,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author AlternaCraft
  */
 public class PluginBase {
-
+    
+    //<editor-fold defaultstate="collapsed" desc="Vars + Constructor">
     /**
      * Gets plugin's directory
      *
@@ -72,13 +73,22 @@ public class PluginBase {
      */
     private short errorFormat = 2;
 
-    private PluginBase() {
+    /**
+     * Custom nodes of the configuration file to keep previous data.
+     * 
+     * @since 1.2.1
+     */
+    private String[] nodes = {};
+    
+    // Singleton
+    private PluginBase() {    
     }
+    //</editor-fold>
 
     /**
      * Initializing the essentials
      *
-     * @param plugin
+     * @param plugin Java plugin
      */
     public final void init(JavaPlugin plugin) {
         this.pluginInstance = plugin;
@@ -109,6 +119,15 @@ public class PluginBase {
 
     // <editor-fold defaultstate="collapsed" desc="Setters">
     /**
+     * Sets custom nodes.
+     * 
+     * @param nodes Array of nodes
+     */
+    public void defineCustomNodes(String... nodes) {
+        this.nodes = nodes;
+    }
+    
+    /**
      * Sets plugin prefix.
      * 
      * @param prefix Prefix
@@ -135,7 +154,7 @@ public class PluginBase {
      */
     public void defineErrorFormat(short n) {
         this.errorFormat = n;
-    }
+    }       
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters">
@@ -149,6 +168,16 @@ public class PluginBase {
 
     public PluginDescription pluginDescription() {
         return pluginDescription;
+    }
+
+    /**
+     * Returns custom nodes.
+     * 
+     * @return Array of strings
+     * @since 1.2.1
+     */
+    public String[] getCustomNodes() {
+        return nodes;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.alternacraft.aclib.utils;
 
+import java.util.Random;
 import org.bukkit.util.Vector;
 
 /**
@@ -20,8 +21,8 @@ public class Randomizer {
      *
      * @return int
      */
-    public static int rand(double max, double min) {
-        return (int) (min + Math.random() * ((max - min) + 1));
+    public static int rand(int max, int min) {
+        return new Random().nextInt(max) + min;
     }
 
     /**

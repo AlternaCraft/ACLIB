@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.config;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.PluginBase;
 import static com.alternacraft.aclib.PluginBase.DIRECTORY;
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -65,9 +67,7 @@ public class ConfigurationFile {
     public ConfigurationFile(JavaPlugin plugin) {
         this.plugin = plugin;
 
-        File cfile = new File(new StringBuilder().append(
-                DIRECTORY).append(
-                        "config.yml").toString());
+        File cfile = new File(DIRECTORY, "config.yml");
 
         if (!cfile.exists() || mismatchVersion(cfile)) {
             plugin.saveDefaultConfig();
@@ -80,7 +80,7 @@ public class ConfigurationFile {
         plugin.reloadConfig();
         configFile = plugin.getConfig();
     }
-
+    
     /**
      * Loads the main configuration parameters
      *
@@ -96,7 +96,7 @@ public class ConfigurationFile {
     /**
      * Gets file configuration
      * 
-     * @return 
+     * @return Configuration file
      */
     public FileConfiguration get() {
         return this.configFile;
@@ -104,9 +104,7 @@ public class ConfigurationFile {
 
     // <editor-fold defaultstate="collapsed" desc="Internal stuff">
     private boolean mismatchVersion(File cFile) {
-        File backup = new File(new StringBuilder().append(
-                DIRECTORY).append(
-                        "config.backup.yml").toString());
+        File backup = new File(DIRECTORY, "config.backup.yml");
 
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(cFile);
         Configuration defaults = plugin.getConfig().getDefaults();
@@ -133,17 +131,28 @@ public class ConfigurationFile {
         YamlConfiguration newFile = YamlConfiguration.loadConfiguration(outFile);
         YamlConfiguration oldFile = YamlConfiguration.loadConfiguration(backupFile);
 
-        File temp = new File(new StringBuilder().append(
-                DIRECTORY).append(
-                        "config_temp.yml").toString());
+        File temp = new File(DIRECTORY, "config_temp.yml");
 
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
                 FileWriter fw = new FileWriter(temp)) {
 
             String line;
+            boolean avoid = false;
             while ((line = br.readLine()) != null) {
-                // List
-                if (line.matches("\\s*-\\s?.+")) {
+                if (avoid) {
+                    if (!line.matches("[^#]?\\s+\\w+:.*") && !line.matches("\\s*#.*")) {
+                        avoid = false;
+                    }
+                } else {
+                    for (String node : PluginBase.INSTANCE.getCustomNodes()) {
+                        if (getKey(line).equals(node) && oldFile.contains(node)) {
+                            fw.write(parseCustomNode(node, oldFile));
+                            avoid = true;
+                        }
+                    }
+                }
+                // List or subnode
+                if (line.matches("\\s*-\\s?.+") || avoid) {
                     continue;
                 }
                 String nline = replace(line, newFile, oldFile);
@@ -162,6 +171,26 @@ public class ConfigurationFile {
                 + "into the new one.");
         MessageManager.log(ChatColor.YELLOW + "Just in case, check the result.");
     }
+    
+    private String parseCustomNode(String key, YamlConfiguration oldFile) {
+        String result = key + ":" + System.lineSeparator();
+
+        Set<String> values = oldFile.getConfigurationSection(key).getKeys(true);
+        for (String value : values) {
+            String spaces = fillSpaces(value.split("\\.").length);
+            String kkey = value.split("\\.")[value.split("\\.").length - 1];
+
+            Object content = oldFile.get(key + "." + value);
+            String val = "";
+
+            if (!(content instanceof MemorySection)) {
+                val = getFilteredString(String.valueOf(content));
+            }
+
+            result += spaces + kkey + ": " + val + System.lineSeparator();
+        }
+        return result;
+    }    
 
     private String replace(String line, YamlConfiguration newFile, YamlConfiguration oldFile) {
         // Ignore values
