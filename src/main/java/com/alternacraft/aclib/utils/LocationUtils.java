@@ -75,26 +75,20 @@ public class LocationUtils {
             rotation += 360.0;
         }
 
-        if (0 <= rotation && rotation < 22.5) {
+        BlockFace[] bfs = {NORTH_EAST, EAST, SOUTH_EAST,SOUTH, SOUTH_WEST, WEST, NORTH_WEST};
+        
+        // + 22.5
+        if ((0 <= rotation && rotation < 22.5) || (337.5 <= rotation && rotation < 360.0)) {
             return BlockFace.NORTH;
-        } else if (22.5 <= rotation && rotation < 67.5) {
-            return BlockFace.NORTH_EAST;
-        } else if (67.5 <= rotation && rotation < 112.5) {
-            return BlockFace.EAST;
-        } else if (112.5 <= rotation && rotation < 157.5) {
-            return BlockFace.SOUTH_EAST;
-        } else if (157.5 <= rotation && rotation < 202.5) {
-            return BlockFace.SOUTH;
-        } else if (202.5 <= rotation && rotation < 247.5) {
-            return BlockFace.SOUTH_WEST;
-        } else if (247.5 <= rotation && rotation < 292.5) {
-            return BlockFace.WEST;
-        } else if (292.5 <= rotation && rotation < 337.5) {
-            return BlockFace.NORTH_WEST;
-        } else if (337.5 <= rotation && rotation < 360.0) {
-            return BlockFace.NORTH;
-        } else {
-            return null;
         }
+        // + 45
+        double angle = 22.5;
+        for (BlockFace bf : bfs) {
+            if (angle <= rotation && rotation < angle + 45) {
+                return bf;
+            }
+            angle += 45;
+        }        
+        return null;        
     }
 }

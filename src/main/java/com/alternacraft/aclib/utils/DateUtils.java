@@ -50,8 +50,7 @@ public class DateUtils {
     public static String getCurrentTimeStamp(String format) {
         SimpleDateFormat sdfDate = new SimpleDateFormat(format);
         Date now = new Date();
-        String strDate = sdfDate.format(now);
-        return strDate;
+        return sdfDate.format(now);
     }
     
     /**

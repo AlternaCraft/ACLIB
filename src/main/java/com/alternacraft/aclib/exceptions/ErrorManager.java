@@ -49,7 +49,7 @@ public class ErrorManager {
     
     /**
      * Errors analysis.
-     * <b>This method saves the result into this vars: LAST_MESSAGES & LAST_CODES</b>
+     * <b>This method saves the result within this vars: LAST_MESSAGES &amp; LAST_CODES</b>
      * 
      * @param msg Exception message.
      * @param data Custom data.

@@ -26,12 +26,17 @@ import org.bukkit.ChatColor;
 
 /**
  * Custom exception.
- * <ul>This add some extras:
+ * This add some extras:
+ * <ul>
  *  <li>Structured messages
- *      <ul>There are three type:
- *          <li>Simplified. Just for indicating an error</li>
- *          <li>Essential. Essential information to find a reason</li>
- *          <li>Full. All the data</li>
+ *      <ul>
+ *          <li>There are three types:
+ *              <ul>
+ *                  <li><b>Simplified</b>. Just for indicating an error</li>
+ *                  <li><b>Essential</b>. Essential information to find a reason</li>
+ *                  <li><b>Full</b>. All the data</li>
+ *              </ul>
+ *          </li>
  *      </ul>
  *  </li>
  *  <li>How to report</li>

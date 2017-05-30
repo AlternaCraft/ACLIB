@@ -68,7 +68,8 @@ public class PluginFile extends File {
     }
 
     /**
-     * <ul>Some extras:
+     * Some extras:
+     * <ul>
      *   <li>Create a new file if not exists</li>
      *   <li>Load YAML configuration</li>
      * </ul>
