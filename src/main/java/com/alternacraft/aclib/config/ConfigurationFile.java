@@ -132,19 +132,19 @@ public class ConfigurationFile {
         YamlConfiguration oldFile = YamlConfiguration.loadConfiguration(backupFile);
 
         File temp = new File(DIRECTORY, "config_temp.yml");
+        String[] cnodes = PluginBase.INSTANCE.getCustomNodes();
 
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
                 FileWriter fw = new FileWriter(temp)) {
-
             String line;
-            boolean avoid = false;
+            boolean avoid = false;            
             while ((line = br.readLine()) != null) {
                 if (avoid) {
                     if (!line.matches("[^#]?\\s+\\w+:.*") && !line.matches("\\s*#.*")) {
                         avoid = false;
                     }
                 } else {
-                    for (String node : PluginBase.INSTANCE.getCustomNodes()) {
+                    for (String node : cnodes) {
                         if (getKey(line).equals(node) && oldFile.contains(node)) {
                             fw.write(parseCustomNode(node, oldFile));
                             avoid = true;
