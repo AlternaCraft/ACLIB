@@ -16,8 +16,12 @@
         </repository>
         <!-- BStats -->
         <repository>
-            <id>bstats-repo</id>
+            <id>bstats-repo-r</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>     
+        <repository>
+            <id>bstats-repo-s</id>
+            <url>http://repo.bstats.org/content/repositories/snapshots/</url>
         </repository>     
     </repositories>
     
@@ -33,7 +37,7 @@
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.1</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         
         <!-- TESTING DEPENDENCIES -->

@@ -123,8 +123,12 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
-      <id>bstats-repo</id>
+      <id>bstats-repo-r</id>
       <url>http://repo.bstats.org/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>bstats-repo-s</id>
+      <url>http://repo.bstats.org/content/repositories/snapshots/</url>
     </repository>
   </repositories>
   <dependencies>
