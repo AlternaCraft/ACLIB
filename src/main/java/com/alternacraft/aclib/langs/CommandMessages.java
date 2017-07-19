@@ -16,14 +16,15 @@
  */
 package com.alternacraft.aclib.langs;
 
+import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 
 public enum CommandMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
     NO_PERMISSION(
-            "&cNo tienes permiso",
-            "&cYou do not have permission"
+            "&c¡No tienes suficiente permiso para hacer eso!",
+            "&cYou don’t have enough permission to do this!"
     ),
     INVALID_ARGUMENTS(
             "&cEse subcomando no es válido",
@@ -36,7 +37,7 @@ public enum CommandMessages implements LangInterface {
     // </editor-fold>
 
     public final HashMap<Langs, String> locales = new HashMap();
-    
+
     /**
      * Define the default languages to load
      *
@@ -55,11 +56,12 @@ public enum CommandMessages implements LangInterface {
 
     @Override
     public String getDefaultText(Langs lang) {
-        String value = (this.locales.get(lang) == null)
-                ? this.locales.get(Langs.EN) : this.locales.get(lang);
-        
-        String v = LangManager.getValueFromFile(lang, this);
-
-        return (v == null) ? value:v;
+        String result = this.locales.get(lang);
+        if (result == null) {
+            result = LangManager.getValueFromFile(lang, this);
+        }
+        return (result == null) ? this.locales.get(
+                PluginBase.INSTANCE.getMainLanguage()
+        ) : result;
     }
 }

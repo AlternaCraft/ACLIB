@@ -1,4 +1,4 @@
-package com.alternacraft.aclib.utils;
+package com.alternacraft.aclib.extras;
 
 import java.util.Random;
 import org.bukkit.util.Vector;

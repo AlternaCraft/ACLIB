@@ -1,4 +1,4 @@
-package com.alternacraft.aclib.utils;
+package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.MessageManager;
 import java.io.*;
