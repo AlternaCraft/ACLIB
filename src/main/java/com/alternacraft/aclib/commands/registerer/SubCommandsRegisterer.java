@@ -29,8 +29,8 @@ public class SubCommandsRegisterer {
 
     private final CommandListener cmd;
 
-    public SubCommandsRegisterer(String cmd, String alias) {
-        this.cmd = new CommandListener(cmd, alias, PluginBase.INSTANCE.plugin());
+    public SubCommandsRegisterer(String cmd, String perm_prefix) {
+        this.cmd = new CommandListener(cmd, perm_prefix, PluginBase.INSTANCE.plugin());
     }
 
     /**

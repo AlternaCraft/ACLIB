@@ -25,12 +25,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ExternalPluginRegisterer {
 
-    public static final ExternalPluginRegisterer INSTANCE = new ExternalPluginRegisterer();
+    private final boolean shouldDisplay;
 
     private final Map<String, HookerInterface> plugins = new HashMap();
     private final Map<String, Boolean> enabled = new HashMap();
 
-    private ExternalPluginRegisterer() {
+    public ExternalPluginRegisterer() {
+        this.shouldDisplay = true;
+    }
+
+    public ExternalPluginRegisterer(boolean shouldDisplay) {
+        this.shouldDisplay = shouldDisplay;
     }
 
     public void registerPlugin(String str, HookerInterface hooker) {
@@ -50,21 +55,37 @@ public class ExternalPluginRegisterer {
     }
 
     public void loadPlugins() {
+        loadPlugins(5L, new StringBuilder()
+                .append(ChatColor.YELLOW)
+                .append("%p%")
+                .append(ChatColor.AQUA)
+                .append(" integrated correctly")
+                .toString()
+        );
+    }
+
+    /**
+     * Loads added plugins.
+     *
+     * @param time Time to execute the task.
+     * @param format String with the text to display. %p% will be replaced with
+     * the plugin name.
+     */
+    public void loadPlugins(long time, String format) {
         final JavaPlugin plugin = PluginBase.INSTANCE.plugin();
 
         // Tareas posteriores
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            plugins.keySet().forEach(key -> loadPlugin(key));
+            if (this.shouldDisplay) {
                 MessageManager.log(ChatColor.GRAY + "# STARTING INTEGRATION MODULE #");
-
-                for (String key : plugins.keySet()) {
-                    loadPlugin(key);
-                }
-
+                this.enabled.keySet()
+                        .stream()
+                        .map(e -> format.replace("%p%", e))
+                        .forEach(MessageManager::log);
                 MessageManager.log(ChatColor.GRAY + "# ENDING INTEGRATION MODULE #");
             }
-        }, 5L);
+        }, time);
     }
 
     public boolean isPluginEnabled(String pl) {

@@ -56,12 +56,10 @@ public enum CommandMessages implements LangInterface {
 
     @Override
     public String getDefaultText(Langs lang) {
-        String result = this.locales.get(lang);
-        if (result == null) {
-            result = LangManager.getValueFromFile(lang, this);
-        }
-        return (result == null) ? this.locales.get(
-                PluginBase.INSTANCE.getMainLanguage()
-        ) : result;
+        Langs main = PluginBase.INSTANCE.getMainLanguage();
+        String v = LangManager.getValueFromFile(lang, this);
+        v = (v == null) ? LangManager.getValueFromFile(main, this) : v;
+        return (v == null) ? (this.locales.get(lang) == null) ? 
+                this.locales.get(main) : this.locales.get(lang) : v;
     }
 }

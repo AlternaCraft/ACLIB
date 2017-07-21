@@ -49,7 +49,18 @@ public class LangManager {
      * Registers an Enum with a custom path.
      *
      * @param e Enum class
-     * @param path Path to save the file
+     * @param filename File name without extension.
+     * @param path File path.
+     */    
+    public static void saveMessages(String path, String filename, Class... e) {
+        saveMessages(path + "/" + filename);
+    }
+    
+    /**
+     * Registers an Enum with a custom path.
+     *
+     * @param e Enum class
+     * @param path Filepath + filename without extension.
      */
     public static void saveMessages(String path, Class... e) {
         if (MESSAGES.get(path) == null) {
@@ -212,7 +223,7 @@ public class LangManager {
 
         // File access to get custom message (if exists)
         PluginFile pluginFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES,
-                e.getDeclaringClass()) + "_" + lang.name() + ".yml");
+                e.getDeclaringClass()) + "_" + lang.name() + ".yml", false);
         pluginFile.loadYamlConfiguration();
 
         // Value from the file (externally)

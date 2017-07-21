@@ -39,7 +39,7 @@ public class CommandListener implements CommandExecutor {
     private final Map<SubCommand, SubCommandExecutor> arguments = new LinkedHashMap<>();
 
     private final String command;
-    private final String prefix;
+    private final String perm_prefix;
     private final JavaPlugin plugin;
 
     /**
@@ -52,9 +52,9 @@ public class CommandListener implements CommandExecutor {
     @SuppressWarnings("LeakingThisInConstructor")
     public CommandListener(String command, String prefix, JavaPlugin plugin) {
         this.command = command;
-        this.prefix = prefix;
+        this.perm_prefix = prefix;
         this.plugin = plugin;
-
+        
         this.plugin.getCommand(command).setExecutor(this);
     }
 
@@ -79,7 +79,7 @@ public class CommandListener implements CommandExecutor {
         SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
             if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
-                String permission = this.prefix + "." + cmdArgument.getCommand();
+                String permission = this.perm_prefix + "." + cmdArgument.getCommand();
                 if (!((Player) cs).hasPermission(permission)) {
                     MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
                 }
@@ -101,7 +101,7 @@ public class CommandListener implements CommandExecutor {
     }
 
     public String prefix() {
-        return prefix;
+        return perm_prefix;
     }
 
     public Map<SubCommand, SubCommandExecutor> arguments() {
