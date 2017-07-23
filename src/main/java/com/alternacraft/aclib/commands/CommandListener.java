@@ -82,6 +82,7 @@ public class CommandListener implements CommandExecutor {
                 String permission = this.perm_prefix + "." + cmdArgument.getCommand();
                 if (!((Player) cs).hasPermission(permission)) {
                     MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
+                    return true;
                 }
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
