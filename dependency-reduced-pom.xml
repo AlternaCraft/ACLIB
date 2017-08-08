@@ -4,7 +4,7 @@
   <groupId>com.alternacraft</groupId>
   <artifactId>aclib</artifactId>
   <name>ACLIB</name>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   <description>Library for bukkit plugins</description>
   <inceptionYear>2016</inceptionYear>
   <developers>

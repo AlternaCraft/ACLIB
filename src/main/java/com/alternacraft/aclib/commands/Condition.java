@@ -22,15 +22,15 @@ import org.bukkit.entity.Player;
  *
  * @author cube
  */
-public interface CustomCondition {
+public interface Condition {
     
     /**
      * Method to execute a custom condition.
      * 
      * @param pl Player player
-     * @param others Other arguments
+     * @param arguments Command arguments
      * 
      * @return True if it satisfies the condition; False if not
      */
-    public boolean testCondition(Player pl, Object... others);
+    public boolean testCondition(Player pl, String[] arguments);
 }

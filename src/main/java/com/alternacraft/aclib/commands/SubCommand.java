@@ -29,9 +29,9 @@ public class SubCommand {
     private final String command;
     private final String usage;
     private final Enum description;
-    private final CustomCondition condition;
+    private final Condition condition;
 
-    public SubCommand(String cmd, String usage, Enum desc, CustomCondition condition) {
+    public SubCommand(String cmd, String usage, Enum desc, Condition condition) {
         this.command = cmd;
         this.usage = usage;
         this.description = desc;
@@ -73,7 +73,7 @@ public class SubCommand {
      * 
      * @return Condition condition
      */
-    public CustomCondition getCondition() {
+    public Condition getCondition() {
         return condition;
     }
 }

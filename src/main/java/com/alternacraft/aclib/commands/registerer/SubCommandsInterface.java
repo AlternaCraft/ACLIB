@@ -16,8 +16,8 @@
  */
 package com.alternacraft.aclib.commands.registerer;
 
-import com.alternacraft.aclib.commands.CustomCondition;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
+import com.alternacraft.aclib.commands.Condition;
 
 /**
  * Subcommand structure.
@@ -52,7 +52,7 @@ public interface SubCommandsInterface {
      * 
      * @return Condition
      */
-    public CustomCondition getCustomCondition();
+    public Condition getCustomCondition();
     
     /**
      * Returns executor instance.

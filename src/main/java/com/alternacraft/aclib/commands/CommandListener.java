@@ -79,20 +79,21 @@ public class CommandListener implements CommandExecutor {
 
         SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
-            if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
-                Player pl = (Player) cs;
-                String permission = this.perm_prefix + "." + cmdArgument.getCommand();
-                if (!pl.hasPermission(permission) && 
-                        (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl))) {
-                    MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
-                    return true;
-                }
-            }
             // Removing first argument
             if (args.length == 1) {
                 args = new String[0];
             } else {
                 args = Arrays.copyOfRange(args, 1, args.length);
+            }
+            // Checking sender permissions            
+            if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
+                Player pl = (Player) cs;
+                String permission = this.perm_prefix + "." + cmdArgument.getCommand();
+                if (!pl.hasPermission(permission) && 
+                        (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl, args))) {
+                    MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
+                    return true;
+                }
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
                 MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE
