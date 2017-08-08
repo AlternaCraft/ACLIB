@@ -16,7 +16,10 @@
  */
 package com.alternacraft.aclib.utils;
 
+import com.alternacraft.aclib.MessageManager;
+import java.lang.reflect.Field;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 
 /**
  * This class contains some utils for Strings.
@@ -150,5 +153,26 @@ public class StringsUtils {
         }
 
         return strs;
+    }
+    
+    /**
+     * Return the Color by name.
+     * 
+     * @param color Color name
+     * 
+     * @return Bukkit Color
+     */
+    public static Color getColorByName(String color) {
+        Field[] fields = Color.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equalsIgnoreCase(color)) {
+                try {
+                    return (Color) field.get(Color.class);
+                } catch (IllegalAccessException ex) {
+                    MessageManager.logError("Color " + color + " doesn't exist...");
+                }
+            }
+        }
+        return null;
     }
 }

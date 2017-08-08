@@ -46,7 +46,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({Bukkit.class, PluginBase.class})
 public class MessageManagerTest {
 
-    static String error = null, info = null;
+    static String error = null, info = null, debug = null;
     String lastmessage = "";
     ConsoleCommandSender cs = null;
     Player player = null;
@@ -62,11 +62,12 @@ public class MessageManagerTest {
             f.setAccessible(true);
             try {
                 if (f.getName().equals("ERROR")) {
-                    error = (String) f.get(null);
+                    error = (String) f.get(new String());
                 } else if (f.getName().equals("INFO")) {
-                    info = (String) f.get(null);
+                    info = (String) f.get(new String());
+                } else if (f.getName().equals("DEBUG")) {
+                    debug = (String) f.get(new String());
                 }
-
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 fail();
             }
@@ -85,23 +86,17 @@ public class MessageManagerTest {
         cs = mock(ConsoleCommandSender.class);
         when(Bukkit.getConsoleSender()).thenReturn(cs);
 
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                lastmessage = (String) args[0];
-                return null;
-            }
+        doAnswer((Answer<Void>) (InvocationOnMock invocation) -> {
+            Object[] args = invocation.getArguments();
+            lastmessage = (String) args[0];
+            return null;
         }).when(cs).sendMessage(anyString());
 
         player = mock(Player.class);
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                lastmessage = (String) args[0];
-                return null;
-            }
+        doAnswer((Answer<Void>) (InvocationOnMock invocation) -> {
+            Object[] args = invocation.getArguments();
+            lastmessage = (String) args[0];
+            return null;
         }).when(player).sendMessage(anyString());
     }
 
@@ -132,11 +127,22 @@ public class MessageManagerTest {
     }
 
     /**
+     * Test of logDebug method, of class MessageManager.
+     */
+    @Test
+    public void testLogDebug() {
+        String message = "test3";
+        MessageManager.logDebug(message);
+        String expResult = MessageManager.prepareString(debug + message);
+        assertEquals(expResult, lastmessage);
+    }
+
+    /**
      * Test of logError method, of class MessageManager.
      */
     @Test
     public void testLogError() {
-        String message = "test3";
+        String message = "test4";
         MessageManager.logError(message);
         String expResult = MessageManager.prepareString(error + message);
         assertEquals(expResult, lastmessage);
@@ -147,7 +153,7 @@ public class MessageManagerTest {
      */
     @Test
     public void testSendPlayer() {
-        String message = "test4";
+        String message = "test5";
         MessageManager.sendPlayer(player, message);
         String expResult = MessageManager.prepareString(message);
         assertEquals(expResult, lastmessage);
@@ -158,7 +164,7 @@ public class MessageManagerTest {
      */
     @Test
     public void testSendCommandSender() {
-        String message = "test5";
+        String message = "test6";
         MessageManager.sendCommandSender(cs, message);
         String expResult = MessageManager.prepareString(message);
         assertEquals(expResult, lastmessage);

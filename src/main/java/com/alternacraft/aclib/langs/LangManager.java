@@ -24,10 +24,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Language manager
- * 
+ *
  * @author AlternaCraft
  */
 public class LangManager {
@@ -51,11 +53,11 @@ public class LangManager {
      * @param e Enum class
      * @param filename File name without extension.
      * @param path File path.
-     */    
+     */
     public static void saveMessages(String path, String filename, Class... e) {
         saveMessages(path + "/" + filename);
     }
-    
+
     /**
      * Registers an Enum with a custom path.
      *
@@ -170,10 +172,10 @@ public class LangManager {
                 new StringBuilder()
                         .append(File.separator)
                         .append(langFile.getNameWithoutExtension())
-                        .append("_backup.yml").toString(), 
+                        .append("_backup.yml").toString(),
                 false // Disable auto creation
         );
-        
+
         langFile.loadYamlConfiguration();
 
         Boolean resul = true;
@@ -232,5 +234,21 @@ public class LangManager {
         }
 
         return null;
+    }
+
+    /**
+     * Returns a list with the variables of the translation
+     * 
+     * @param text Locale translated
+     * @return Variables
+     */
+    public static List<String> getVariables(String text) {
+        List<String> variables = new ArrayList<>();
+        Pattern vars = Pattern.compile("(%[\\w_]+%)");
+        Matcher matcher = vars.matcher(text);
+        while (matcher.find()) {
+            variables.add(matcher.group());
+        }
+        return variables;
     }
 }

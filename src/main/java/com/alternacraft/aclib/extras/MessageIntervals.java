@@ -35,25 +35,35 @@ public class MessageIntervals {
     private static long MUTE_TIME = 3 * 1000; // Seconds
     
     /** const LAST to check the time when it was sent */    
-    private static final Map<UUID, Map<LangInterface, Long>> LAST = new HashMap<>();    
+    private static final Map<UUID, Map<String, Long>> LAST = new HashMap<>();    
     
     public static void sendMessage(Player pl, LangInterface li, Langs lang) {
+        sendMessage(pl, li.getText(lang));
+    } 
+    
+    /**
+     * Sends a message avoiding spam.
+     * 
+     * @param pl Player
+     * @param message Message
+     */
+    public static void sendMessage(Player pl, String message) {
         UUID playerUUID = pl.getUniqueId();
-        
+
         if (!LAST.containsKey(playerUUID)) {
-            LAST.put(playerUUID, new HashMap<LangInterface, Long>());
+            LAST.put(playerUUID, new HashMap<>());
         }
                 
-        if (LAST.get(playerUUID).containsKey(li)) {
-            long last = LAST.get(playerUUID).get(li);
+        if (LAST.get(playerUUID).containsKey(message)) {
+            long last = LAST.get(playerUUID).get(message);
             if (new Date(last + MUTE_TIME).after(new Date())) {
                 return;
             }
         }        
         
-        MessageManager.sendPlayer(pl, li.getText(lang));        
-        LAST.get(playerUUID).put(li, new Date().getTime());
-    } 
+        MessageManager.sendPlayer(pl, message);        
+        LAST.get(playerUUID).put(message, new Date().getTime());
+    }
     
     /**
      * Redefines the mute time in seconds

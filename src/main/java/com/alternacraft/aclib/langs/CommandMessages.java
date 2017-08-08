@@ -33,6 +33,10 @@ public enum CommandMessages implements LangInterface {
     COMMAND_USAGE(
             "&cUso: /%USAGE%",
             "&cUsage: /%USAGE%"
+    ),
+    ONLY_PLAYERS(
+            "&c¡No puedes ejecutar ese comando!",
+            "&cYou can't execute that command!"
     );
     // </editor-fold>
 

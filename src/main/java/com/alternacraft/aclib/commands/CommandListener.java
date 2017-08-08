@@ -21,6 +21,7 @@ import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.bukkit.command.Command;
@@ -31,7 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Define command/subcommand listener.
- * 
+ *
  * @author AlternaCraft
  */
 public class CommandListener implements CommandExecutor {
@@ -54,7 +55,7 @@ public class CommandListener implements CommandExecutor {
         this.command = command;
         this.perm_prefix = prefix;
         this.plugin = plugin;
-        
+
         this.plugin.getCommand(command).setExecutor(this);
     }
 
@@ -79,11 +80,19 @@ public class CommandListener implements CommandExecutor {
         SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
         if (cmdArgument != null) {
             if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
+                Player pl = (Player) cs;
                 String permission = this.perm_prefix + "." + cmdArgument.getCommand();
-                if (!((Player) cs).hasPermission(permission)) {
+                if (!pl.hasPermission(permission) && 
+                        (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl))) {
                     MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
                     return true;
                 }
+            }
+            // Removing first argument
+            if (args.length == 1) {
+                args = new String[0];
+            } else {
+                args = Arrays.copyOfRange(args, 1, args.length);
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
                 MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE

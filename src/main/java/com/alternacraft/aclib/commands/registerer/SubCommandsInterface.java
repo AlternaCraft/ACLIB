@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.commands.registerer;
 
+import com.alternacraft.aclib.commands.CustomCondition;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 
 /**
@@ -46,6 +47,13 @@ public interface SubCommandsInterface {
      */
     public Enum getDescription();
 
+    /**
+     * Returns the custom condition.
+     * 
+     * @return Condition
+     */
+    public CustomCondition getCustomCondition();
+    
     /**
      * Returns executor instance.
      * 

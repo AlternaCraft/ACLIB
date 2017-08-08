@@ -16,6 +16,8 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.langs.LangInterface;
+import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.StringsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -30,19 +32,30 @@ public class MessageManager {
 
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
+    private static final String DEBUG = "&cDEBUG: &f";
     
+    /**
+     * Logs a message into CONSOLE with a prefix.
+     *
+     * @param message The message
+     * @param prefix Prefix message
+     */
+    public static void log(String message, String prefix) {
+        String[] messages = message.split("\n");
+        for (String _message : messages) {
+            Bukkit.getConsoleSender().sendMessage(
+                    prepareString(prefix + _message)
+            );
+        }
+    }
+
     /**
      * Logs a message into CONSOLE.
      *
      * @param message The message
      */
     public static void log(String message) {
-        String[] messages = message.split("\n");
-        for (String _message : messages) {
-            Bukkit.getConsoleSender().sendMessage(
-                    prepareString(_message)
-            );
-        }
+        log(message, "");
     }
 
     /**
@@ -51,12 +64,16 @@ public class MessageManager {
      * @param message The message
      */
     public static void logInfo(String message) {
-        String[] messages = message.split("\n");
-        for (String _message : messages) {
-            Bukkit.getConsoleSender().sendMessage(
-                    prepareString(INFO + _message)
-            );
-        }
+        log(message, INFO);
+    }
+
+    /**
+     * Logs a message into CONSOLE with 'DEBUG' prefix.
+     *
+     * @param message The message
+     */
+    public static void logDebug(String message) {
+        log(message, DEBUG);
     }
 
     /**
@@ -65,12 +82,7 @@ public class MessageManager {
      * @param message The message
      */
     public static void logError(String message) {
-        String[] messages = message.split("\n");
-        for (String _message : messages) {
-            Bukkit.getConsoleSender().sendMessage(
-                    prepareString(ERROR + _message)
-            );
-        }
+        log(message, ERROR);
     }
 
     /**
@@ -82,6 +94,17 @@ public class MessageManager {
         for (Object msg : messages) {            
             logError(msg.toString());
         }
+    }
+    
+    /**
+     * Send a message to all the players.
+     * 
+     * @param message Message to translate
+     */
+    public static void sendServer(LangInterface message) {
+        Bukkit.getOnlinePlayers().forEach((p) -> {
+            sendPlayer(p, message.getText(Localizer.getLocale(p)));
+        });
     }
     
     /**
@@ -98,7 +121,7 @@ public class MessageManager {
             );
         }
     }
-
+    
     /**
      * Sends a message to a command sender.
      *

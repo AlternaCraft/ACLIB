@@ -26,14 +26,16 @@ import com.alternacraft.aclib.langs.Langs;
  */
 public class SubCommand {
 
-    private String command;
-    private String usage;
-    private Enum description;
+    private final String command;
+    private final String usage;
+    private final Enum description;
+    private final CustomCondition condition;
 
-    public SubCommand(String cmd, String usage, Enum desc) {
+    public SubCommand(String cmd, String usage, Enum desc, CustomCondition condition) {
         this.command = cmd;
         this.usage = usage;
         this.description = desc;
+        this.condition = condition;
     }
 
     /**
@@ -67,29 +69,11 @@ public class SubCommand {
     }
 
     /**
-     * Sets a subcommand.
+     * Returns custom condition
      * 
-     * @param cmd Subcommand
+     * @return Condition condition
      */
-    public void setCommand(String cmd) {
-        this.command = cmd;
-    }
-
-    /**
-     * Sets description.
-     * 
-     * @param description Subcommand description
-     */
-    public void setDescription(Enum description) {
-        this.description = description;
-    }
-
-    /**
-     * Sets usage.
-     * 
-     * @param usage Subcommand usage
-     */
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public CustomCondition getCondition() {
+        return condition;
     }
 }
