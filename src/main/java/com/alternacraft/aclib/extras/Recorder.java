@@ -108,14 +108,23 @@ public class Recorder {
         return parsed;
     }
 
+    public void saveToLog(String filename) {
+        this.saveToLog(new PluginLog(filename), false);
+    }
+    
     /**
      * Save the messages to a log file.
      * <i>If the file already exists will be deleted</i>
      * 
      * @param filename File to export the content
+     * @param keep Keep previous data
      */    
-    public void saveToLog(String filename) {
-        this.saveToLog(new PluginLog(filename));
+    public void saveToLog(String filename, boolean keep) {
+        this.saveToLog(new PluginLog(filename), keep);
+    }
+    
+    public void saveToLog(PluginLog pl) {
+        this.saveToLog(pl, false);
     }
     
     /**
@@ -123,14 +132,15 @@ public class Recorder {
      * <i>If the file already exists will be deleted</i>
      * 
      * @param pl PluginLog
+     * @param keep Keep previous data
      */
-    public void saveToLog(PluginLog pl) {
-        for (Map.Entry<String, Integer> entry : this.getParsedValues().entrySet()) {
+    public void saveToLog(PluginLog pl, boolean keep) {
+        this.getParsedValues().entrySet().stream().forEach(entry -> {
             String key = entry.getKey();
             Integer value = entry.getValue();
             pl.addMessage(key + " - " + value);
-        }
-        pl.export(false);
+        });
+        pl.export(keep);
     }
 
     //<editor-fold defaultstate="collapsed" desc="CLASS STUFF">

@@ -62,8 +62,9 @@ public enum CommandMessages implements LangInterface {
     public String getDefaultText(Langs lang) {
         Langs main = PluginBase.INSTANCE.getMainLanguage();
         String v = LangManager.getValueFromFile(lang, this);
+        v = (v == null) ? this.locales.get(lang) : v;
         v = (v == null) ? LangManager.getValueFromFile(main, this) : v;
-        return (v == null) ? (this.locales.get(lang) == null) ? 
-                this.locales.get(main) : this.locales.get(lang) : v;
+        v = (v == null) ? this.locales.get(main) : v;
+        return v;
     }
 }

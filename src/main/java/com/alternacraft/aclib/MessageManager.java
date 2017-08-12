@@ -17,8 +17,10 @@
 package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.langs.LangInterface;
+import com.alternacraft.aclib.langs.LangManager;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.StringsUtils;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +34,7 @@ public class MessageManager {
 
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
-    private static final String DEBUG = "&cDEBUG: &f";
+    private static final String DEBUG = "&6DEBUG: &f";
     
     /**
      * Logs a message into CONSOLE with a prefix.
@@ -100,10 +102,16 @@ public class MessageManager {
      * Send a message to all the players.
      * 
      * @param message Message to translate
+     * @param replace items in order to replace variables
      */
-    public static void sendServer(LangInterface message) {
+    public static void sendServer(LangInterface message, String... replace) {
         Bukkit.getOnlinePlayers().forEach((p) -> {
-            sendPlayer(p, message.getText(Localizer.getLocale(p)));
+            String msg = message.getText(Localizer.getLocale(p));
+            List<String> variables = LangManager.getVariables(msg);
+            for (int i = 0; i < replace.length; i++) {
+                msg = msg.replace(variables.get(i), replace[i]);
+            }
+            sendPlayer(p, msg);
         });
     }
     

@@ -79,9 +79,10 @@ public class ExternalPluginRegisterer {
             plugins.keySet().forEach(key -> loadPlugin(key));
             if (this.shouldDisplay) {
                 MessageManager.log(ChatColor.GRAY + "# STARTING INTEGRATION MODULE #");
-                this.enabled.keySet()
+                this.enabled.entrySet()
                         .stream()
-                        .map(e -> format.replace("%p%", e))
+                        .filter(e -> e.getValue())
+                        .map(e -> format.replace("%p%", e.getKey()))
                         .forEach(MessageManager::log);
                 MessageManager.log(ChatColor.GRAY + "# ENDING INTEGRATION MODULE #");
             }

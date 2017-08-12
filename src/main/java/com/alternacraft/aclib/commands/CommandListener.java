@@ -88,7 +88,7 @@ public class CommandListener implements CommandExecutor {
             // Checking sender permissions            
             if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
                 Player pl = (Player) cs;
-                String permission = this.perm_prefix + "." + cmdArgument.getCommand();
+                String permission = this.getPermission(cmdArgument.getCommand());
                 if (!pl.hasPermission(permission) && 
                         (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl, args))) {
                     MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
@@ -109,6 +109,10 @@ public class CommandListener implements CommandExecutor {
     // <editor-fold defaultstate="collapsed" desc="GETTERS">
     public String getCommand() {
         return command;
+    }
+    
+    public String getPermission(String subcmd) {
+        return this.perm_prefix + "." + subcmd;
     }
 
     public String prefix() {

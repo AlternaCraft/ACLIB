@@ -44,7 +44,8 @@ public class SubCommandsRegisterer {
     public <T extends SubCommandsInterface> void register(Class<T> e) {
         for (T arg : e.getEnumConstants()) {
             this.cmd.addSubCommand(new SubCommand(arg.getSubCommand(), arg.getUsage(),
-                    arg.getDescription(), arg.getCustomCondition()), arg.getInstance());
+                    arg.getDescription(), arg.getCustomCondition(), arg.getAliases()), 
+                    arg.getInstance());
         }
     }
 
@@ -56,5 +57,4 @@ public class SubCommandsRegisterer {
     public CommandListener cmdListener() {
         return cmd;
     }
-
 }

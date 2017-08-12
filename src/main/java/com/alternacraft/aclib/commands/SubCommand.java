@@ -21,7 +21,7 @@ import com.alternacraft.aclib.langs.Langs;
 
 /**
  * Class for defining a command argument as a subcommand.
- * 
+ *
  * @author AlternaCraft
  */
 public class SubCommand {
@@ -30,17 +30,20 @@ public class SubCommand {
     private final String usage;
     private final Enum description;
     private final Condition condition;
+    private final String[] aliases;
 
-    public SubCommand(String cmd, String usage, Enum desc, Condition condition) {
+    public SubCommand(String cmd, String usage, Enum desc, Condition condition,
+            String[] aliases) {
         this.command = cmd;
         this.usage = usage;
         this.description = desc;
         this.condition = condition;
+        this.aliases = aliases;
     }
 
     /**
      * Returns subcommand.
-     * 
+     *
      * @return SubCommand
      */
     public String getCommand() {
@@ -48,20 +51,8 @@ public class SubCommand {
     }
 
     /**
-     * Returns command description by language.
-     * 
-     * @param <T> Lang enum
-     * @param lang Language
-     * 
-     * @return SubCommand description
-     */
-    public <T extends Enum & LangInterface> String getDescription(Langs lang) {
-        return ((T) description).getDefaultText(lang);
-    }
-
-    /**
      * Returns usage.
-     * 
+     *
      * @return Usage
      */
     public String getUsage() {
@@ -69,11 +60,32 @@ public class SubCommand {
     }
 
     /**
+     * Returns command description by language.
+     *
+     * @param <T> Lang enum
+     * @param lang Language
+     *
+     * @return SubCommand description
+     */
+    public <T extends Enum & LangInterface> String getDescription(Langs lang) {
+        return ((T) description).getDefaultText(lang);
+    }
+
+    /**
      * Returns custom condition
-     * 
+     *
      * @return Condition condition
      */
     public Condition getCondition() {
         return condition;
+    }
+
+    /**
+     * Returns the aliases
+     *
+     * @return Array of aliases
+     */
+    public String[] getAliases() {
+        return aliases;
     }
 }

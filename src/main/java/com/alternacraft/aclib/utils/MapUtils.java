@@ -17,13 +17,14 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.commands.SubCommand;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
  * This class contains some utils for Maps.
- * 
+ *
  * @author AlternaCraft
  */
 public class MapUtils {
@@ -34,7 +35,7 @@ public class MapUtils {
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
-     * 
+     *
      * @return Key array
      */
     public static <K, V> K[] getKeys(Map<K, V> map) {
@@ -48,7 +49,7 @@ public class MapUtils {
      * @param <V> Map value
      * @param map Map
      * @param value value
-     * 
+     *
      * @return Key
      */
     public static <K, V> K getKeyFrom(Map<K, V> map, V value) {
@@ -72,7 +73,7 @@ public class MapUtils {
      * @param <V> Map value
      * @param map Map
      * @param listValue Value
-     * 
+     *
      * @return Key
      */
     public static <K, V extends List> K getKeyFromList(Map<K, V> map, Object listValue) {
@@ -103,11 +104,12 @@ public class MapUtils {
             String subcommand) {
         Set<K> keys = map.keySet();
         for (K key : keys) {
-            if (key.getCommand().equals(subcommand)) {
+            if (key.getCommand().equals(subcommand) || Arrays
+                    .stream(key.getAliases())
+                    .anyMatch(a -> a.equalsIgnoreCase(subcommand))) {
                 return key;
             }
         }
         return null;
     }
-
 }
