@@ -31,7 +31,7 @@ public class ExternalPluginRegisterer {
     private final Map<String, Boolean> enabled = new HashMap();
 
     public ExternalPluginRegisterer() {
-        this.shouldDisplay = true;
+        this(true);
     }
 
     public ExternalPluginRegisterer(boolean shouldDisplay) {

@@ -35,7 +35,7 @@ public class MessageManager {
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
     private static final String DEBUG = "&6DEBUG: &f";
-    
+
     /**
      * Logs a message into CONSOLE with a prefix.
      *
@@ -70,12 +70,14 @@ public class MessageManager {
     }
 
     /**
-     * Logs a message into CONSOLE with 'DEBUG' prefix.
+     * Logs a message into CONSOLE with 'DEBUG' prefix if debug mode is enabled.
      *
      * @param message The message
      */
     public static void logDebug(String message) {
-        log(message, DEBUG);
+        if (PluginBase.INSTANCE.isDebug()) {
+            log(message, DEBUG);
+        }
     }
 
     /**
@@ -89,18 +91,18 @@ public class MessageManager {
 
     /**
      * Logs the message from an array into CONSOLE
-     * 
+     *
      * @param messages Array of messages
      */
     public static void logArrayError(Object[] messages) {
-        for (Object msg : messages) {            
+        for (Object msg : messages) {
             logError(msg.toString());
         }
     }
-    
+
     /**
      * Send a message to all the players.
-     * 
+     *
      * @param message Message to translate
      * @param replace items in order to replace variables
      */
@@ -114,7 +116,21 @@ public class MessageManager {
             sendPlayer(p, msg);
         });
     }
-    
+
+    /**
+     * Sends a message to a player.
+     *
+     * @param player The player
+     * @param message The message
+     * @param perm Permission
+     */
+    public static void sendPlayer(Player player, String message, String perm) {
+        String[] messages = message.split("\n");
+        for (String _message : messages) {
+            Bukkit.broadcast(prepareString(_message), perm);
+        }
+    }
+
     /**
      * Sends a message to a player.
      *
@@ -124,12 +140,10 @@ public class MessageManager {
     public static void sendPlayer(Player player, String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
-            player.sendMessage(
-                    prepareString(_message)
-            );
+            Bukkit.broadcastMessage(prepareString(_message));
         }
     }
-    
+
     /**
      * Sends a message to a command sender.
      *

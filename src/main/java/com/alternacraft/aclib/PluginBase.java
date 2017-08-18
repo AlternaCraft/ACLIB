@@ -22,6 +22,8 @@ import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.io.File;
+import java.util.Arrays;
+import java.util.logging.LogRecord;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -55,6 +57,7 @@ public class PluginBase {
 
     private JavaPlugin pluginInstance = null;
     private String prefix = null;
+    private boolean debug = false;
 
     private PluginDescription pluginDescription = null;
     private ConfigurationFile configurationFile = null;
@@ -155,6 +158,29 @@ public class PluginBase {
     public void defineErrorFormat(short n) {
         this.errorFormat = n;
     }       
+    
+    /**
+     * Define custom filters for logger.
+     * 
+     * @param cmds Regular expressions 
+     * @since 1.4.1
+     */
+    public void defineFilters(String... cmds) {
+        this.pluginInstance.getServer().getLogger().setFilter((LogRecord record) -> {
+            return !Arrays.stream(cmds).anyMatch(cmd -> 
+                    record.getMessage().matches(cmd));
+        });
+    }
+    
+    /**
+     * Define debug mode.
+     * 
+     * @param debug Should enable debug?
+     * @since 1.4.1
+     */
+    public void defineDebugMode(boolean debug) {
+        this.debug = debug;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Getters">
@@ -191,7 +217,7 @@ public class PluginBase {
     }
 
     /**
-     * Return main language.
+     * Returns main language.
      * 
      * @return Language
      * @since 0.0.6
@@ -201,13 +227,23 @@ public class PluginBase {
     }
 
     /**
-     * Return error format.
+     * Returns error format.
      * 
      * @return Error format number
      * @since 0.0.6
      */
     public short getErrorFormat() {
         return this.errorFormat;
+    }
+    
+    /**
+     * Returns debug mode
+     * 
+     * @return True if it is enabled; False if not
+     * @since 1.4.1
+     */
+    public boolean isDebug() {
+        return this.debug;
     }
     //</editor-fold>
 }

@@ -127,17 +127,6 @@ public class MessageManagerTest {
     }
 
     /**
-     * Test of logDebug method, of class MessageManager.
-     */
-    @Test
-    public void testLogDebug() {
-        String message = "test3";
-        MessageManager.logDebug(message);
-        String expResult = MessageManager.prepareString(debug + message);
-        assertEquals(expResult, lastmessage);
-    }
-
-    /**
      * Test of logError method, of class MessageManager.
      */
     @Test
@@ -145,17 +134,6 @@ public class MessageManagerTest {
         String message = "test4";
         MessageManager.logError(message);
         String expResult = MessageManager.prepareString(error + message);
-        assertEquals(expResult, lastmessage);
-    }
-
-    /**
-     * Test of sendPlayer method, of class MessageManager.
-     */
-    @Test
-    public void testSendPlayer() {
-        String message = "test5";
-        MessageManager.sendPlayer(player, message);
-        String expResult = MessageManager.prepareString(message);
         assertEquals(expResult, lastmessage);
     }
 
