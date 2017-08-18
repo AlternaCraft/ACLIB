@@ -107,7 +107,7 @@ public class MessageManager {
      * @param replace items in order to replace variables
      */
     public static void sendServer(LangInterface message, String... replace) {
-        Bukkit.getOnlinePlayers().forEach((p) -> {
+        Bukkit.getOnlinePlayers().forEach(p -> {
             String msg = message.getText(Localizer.getLocale(p));
             List<String> variables = LangManager.getVariables(msg);
             for (int i = 0; i < replace.length; i++) {
@@ -122,25 +122,11 @@ public class MessageManager {
      *
      * @param player The player
      * @param message The message
-     * @param perm Permission
-     */
-    public static void sendPlayer(Player player, String message, String perm) {
-        String[] messages = message.split("\n");
-        for (String _message : messages) {
-            Bukkit.broadcast(prepareString(_message), perm);
-        }
-    }
-
-    /**
-     * Sends a message to a player.
-     *
-     * @param player The player
-     * @param message The message
      */
     public static void sendPlayer(Player player, String message) {
         String[] messages = message.split("\n");
         for (String _message : messages) {
-            Bukkit.broadcastMessage(prepareString(_message));
+            player.sendMessage(prepareString(_message));
         }
     }
 
