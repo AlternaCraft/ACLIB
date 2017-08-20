@@ -18,6 +18,7 @@ package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.config.ConfigurationFile;
+import com.alternacraft.aclib.extras.Recorder;
 import com.alternacraft.aclib.langs.Langs;
 import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.StringsUtils;
@@ -82,6 +83,11 @@ public class PluginBase {
      * @since 1.2.1
      */
     private String[] nodes = {};
+    
+    /**
+     * Static variable to record times.
+     */
+    public static final Recorder METER = new Recorder();
     
     // Singleton
     private PluginBase() {    
