@@ -32,13 +32,6 @@ public interface SubCommandsInterface {
      * @return String with the subcommand
      */
     public String getSubCommand();
-
-    /**
-     * Returns alias.
-     * 
-     * @return Array with the alias
-     */
-    public String[] getAliases();
     
     /**
      * Returns usage.
@@ -69,5 +62,11 @@ public interface SubCommandsInterface {
      * @since 1.0.1
      */
     public SubCommandExecutor getInstance();
-
+    
+    /**
+     * Returns alias.
+     * 
+     * @return Array with the alias
+     */
+    public String[] getAliases();
 }
