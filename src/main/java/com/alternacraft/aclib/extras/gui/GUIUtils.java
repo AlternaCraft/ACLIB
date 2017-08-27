@@ -40,16 +40,27 @@ public class GUIUtils {
         return list.subList(from, to);
     }
     
+    /**
+     * Returns if an inventory is custom.
+     * 
+     * @param title Inventory title
+     * 
+     * @return True if it is an inventory custom; False if not
+     */
+    public static boolean isCustom(String title) {
+        boolean has_a_gift = HiddenStringUtils.hasHiddenString(title);
+        String the_gift = HiddenStringUtils.extractHiddenString(title);
+        return has_a_gift && the_gift.equals(CI_META);
+    }
+    
+    /**
+     * Closes all the custom active inventories.
+     */
     public static void closeInventories() {
         Bukkit.getOnlinePlayers().forEach(p -> {
             InventoryView inv = p.getOpenInventory();
-            if (inv != null) {
-                String inv_name = inv.getTopInventory().getName();
-                boolean has_a_gift = HiddenStringUtils.hasHiddenString(inv_name);
-                String the_gift = HiddenStringUtils.extractHiddenString(inv_name);
-                if (has_a_gift && the_gift.equals(CI_META)) {
-                    inv.close();
-                }
+            if (inv != null && isCustom(inv.getTopInventory().getName())) {
+                inv.close();
             }
         });
     }
