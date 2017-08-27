@@ -48,9 +48,20 @@ public class GUIUtils {
      * @return True if it is an inventory custom; False if not
      */
     public static boolean isCustom(String title) {
-        boolean has_a_gift = HiddenStringUtils.hasHiddenString(title);
-        String the_gift = HiddenStringUtils.extractHiddenString(title);
-        return has_a_gift && the_gift.equals(CI_META);
+        String str = getHiddenString(title);
+        return str != null && str.equals(CI_META);
+    }
+    
+    /**
+     * Returns the hidden string.
+     * 
+     * @param str Complete string
+     * 
+     * @return Hidden string or null.
+     */
+    public static String getHiddenString(String str) {
+        boolean has_a_gift = HiddenStringUtils.hasHiddenString(str);
+        return (has_a_gift) ? HiddenStringUtils.extractHiddenString(str) : null;
     }
     
     /**
