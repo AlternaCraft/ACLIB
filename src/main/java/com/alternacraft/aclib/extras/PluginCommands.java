@@ -20,7 +20,7 @@ import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.CommandListener;
 import com.alternacraft.aclib.commands.SubCommand;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -65,7 +65,7 @@ public class PluginCommands implements SubCommandExecutor {
 
     @Override
     public boolean execute(CommandSender cs, String[] args) {
-        Langs lang = Localizer.getLocale(cs);
+        Lang lang = Localizer.getLocale(cs);
 
         cs.sendMessage("");
         cs.sendMessage(this.title);

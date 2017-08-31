@@ -21,6 +21,7 @@ import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class LangManager {
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
 
     private static PluginFile backupFile = null;
-    private static Langs[] keys = {Langs.EN}; // Default value
+    private static Lang[] keys = {Lang.EN}; // Default value
 
     private LangManager() {
     }
@@ -59,7 +60,17 @@ public class LangManager {
     }
 
     /**
-     * Registers an Enum with a custom path.
+     * Registers an Enum with the default path.
+     *
+     * @param e Enum class
+     */
+    public static void saveMessages(Class... e) {
+        saveMessages(new StringBuilder(LANG_DIRECTORY)
+                .append("messages").toString(), e);
+    }
+
+    /**
+     * Registers an Enum.
      *
      * @param e Enum class
      * @param path Filepath + filename without extension.
@@ -76,20 +87,10 @@ public class LangManager {
     }
 
     /**
-     * Registers an Enum with the default path.
-     *
-     * @param e Enum class
-     */
-    public static void saveMessages(Class... e) {
-        LangManager.saveMessages(new StringBuilder(LANG_DIRECTORY)
-                .append("messages").toString(), e);
-    }
-
-    /**
      * Loads message files.
      */
     public static void loadMessages() {
-        for (Langs langType : keys) {
+        for (Lang langType : keys) {
             for (Map.Entry<String, List<Class>> entry : MESSAGES.entrySet()) {
                 String key = entry.getKey();
                 List<Class> value = entry.getValue();
@@ -121,7 +122,7 @@ public class LangManager {
      * @see LangInterface
      */
     private static <T extends Enum & LangInterface> void createConfig(
-            PluginFile langfile, Langs lang, List<Class> messages, boolean restore) {
+            PluginFile langfile, Lang lang, List<Class> messages, boolean restore) {
 
         langfile.resetYamlConfiguration();
 
@@ -167,7 +168,7 @@ public class LangManager {
      * @see LangInterface
      */
     private static <T extends Enum> boolean checkLocales(
-            PluginFile langFile, Langs langType, List<Class> messages) {
+            PluginFile langFile, Lang langType, List<Class> messages) {
         backupFile = new PluginFile(langFile.getParent(),
                 new StringBuilder()
                         .append(File.separator)
@@ -199,7 +200,7 @@ public class LangManager {
      *
      * @param locales Map
      */
-    public static void setKeys(Langs... locales) {
+    public static void setKeys(Lang... locales) {
         LangManager.keys = locales;
     }
 
@@ -208,6 +209,51 @@ public class LangManager {
      */
     public static void clearMessages() {
         LangManager.MESSAGES.clear();
+    }
+    
+    private static String findMessageByKey(String path, String lang, String key) {
+        PluginFile pluginFile = new PluginFile(path + "_" + lang + ".yml", false);
+        // Value from the file (externally)
+        if (pluginFile.yamlFile != null && pluginFile.hasNode(key)) {
+            return (String) pluginFile.getNode(key);
+        }
+        return null;
+    }
+
+    /**
+     * Find a language value in the registered files
+     *
+     * @param lang Language
+     * @param key Key
+     *
+     * @return Message or null
+     */
+    public static String findValueInAllFiles(Lang lang, String key) {
+        return Arrays.stream(MapUtils.getKeys(MESSAGES))
+                .map(m -> findMessageByKey((String) m, lang.name(), key))
+                .filter(m -> m != null)
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
+     * Find a language value in a file. (if exists)
+     * 
+     * @param fname File name without extension
+     * @param lang Language
+     * @param key Language key
+     * 
+     * @return Translated value or null
+     */
+    public static String findValueInFile(String fname, Lang lang, String key) {
+        String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
+                .filter(p -> p.matches(".*\\" + File.separator + fname))
+                .findFirst()
+                .orElse(null);
+        if (aux != null) {
+            aux = findMessageByKey(aux, lang.name(), key);
+        }
+        return aux;
     }
 
     /**
@@ -221,24 +267,14 @@ public class LangManager {
      * @see LangInterface
      */
     public static <T extends Enum> String getValueFromFile(
-            Langs lang, T e) {
-
-        // File access to get custom message (if exists)
-        PluginFile pluginFile = new PluginFile(MapUtils.getKeyFromList(MESSAGES,
-                e.getDeclaringClass()) + "_" + lang.name() + ".yml", false);
-        pluginFile.loadYamlConfiguration();
-
-        // Value from the file (externally)
-        if (pluginFile.yamlFile != null && pluginFile.hasNode(e.name())) {
-            return (String) pluginFile.getNode(e.name());
-        }
-
-        return null;
+            Lang lang, T e) {
+        String path = MapUtils.getKeyFromList(MESSAGES, e.getDeclaringClass());
+        return findMessageByKey(path, lang.name(), e.name());
     }
 
     /**
      * Returns a list with the variables of the translation
-     * 
+     *
      * @param text Locale translated
      * @return Variables
      */

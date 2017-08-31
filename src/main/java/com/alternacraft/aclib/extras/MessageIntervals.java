@@ -18,7 +18,7 @@ package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.langs.LangInterface;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class MessageIntervals {
     /** const LAST to check the time when it was sent */    
     private static final Map<UUID, Map<String, Long>> LAST = new HashMap<>();    
     
-    public static void sendMessage(Player pl, LangInterface li, Langs lang) {
+    public static void sendMessage(Player pl, LangInterface li, Lang lang) {
         sendMessage(pl, li.getText(lang));
     } 
     

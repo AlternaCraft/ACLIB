@@ -11,14 +11,28 @@ import org.bukkit.inventory.Inventory;
  */
 public abstract class GUI {
 
+    private static final String DEF_NAME = "Chest";
+    
     protected final String title;
     protected final Map<Integer, GUIItem> options;
 
+    public GUI() {
+        this(DEF_NAME);
+    }
+    
     public GUI(String title) {
         this.title = title;
         this.options = new HashMap<>();
     }
+    
+    public String getTitle() {
+        return title;
+    }
 
+    public Map<Integer, GUIItem> getOptions() {
+        return options;
+    }
+    
     public void addItem(int slot, GUIItem item) {
         if (slot < 0 || slot >= this.getMaxSlots()) {
             return;

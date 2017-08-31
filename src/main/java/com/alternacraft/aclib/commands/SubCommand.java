@@ -17,7 +17,7 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.langs.LangInterface;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 
 /**
  * Class for defining a command argument as a subcommand.
@@ -67,7 +67,7 @@ public class SubCommand {
      *
      * @return SubCommand description
      */
-    public <T extends Enum & LangInterface> String getDescription(Langs lang) {
+    public <T extends Enum & LangInterface> String getDescription(Lang lang) {
         return ((T) description).getDefaultText(lang);
     }
 

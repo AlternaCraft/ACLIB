@@ -17,7 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.PluginBase;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import java.lang.reflect.Field;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,44 +29,44 @@ import org.bukkit.entity.Player;
  * @see NMS 
  */
 public enum Localizer {
-    ENGLISH(Langs.EN, "en_US"),    
-    SPANISH(Langs.ES, "es_ES"),
-    ARGENTINEAN_SPANISH(Langs.ES, "es_AR"),
-    MEXICO_SPANISH(Langs.ES, "es_MX"),
-    URUGUAY_SPANISH(Langs.ES, "es_UY"),
-    VENEZUELA_SPANISH(Langs.ES, "es_VE"),    
-    CZECH(Langs.CS, "cs_CZ"),
-    EUSKARA(Langs.EU, "eu_ES"),
-    GALICIAN(Langs.GL, "gl_ES"),
-    CATALAN(Langs.CA, "ca_ES"),
-    CROATIAN(Langs.HR, "hr_HR"),
-    KOREAN(Langs.KO, "ko_KR"),
-    UKRAINIAN(Langs.UK, "uk_UA"),
-    POLISH(Langs.PL, "pl_PL"),
-    SLOVENIAN(Langs.SL, "sl_SI"),
-    SERBIAN(Langs.SR, "sr_SP"),
-    ROMANIAN(Langs.RO, "ro_RO"),    
-    SWEDISH(Langs.SV, "sv_SE"),
-    PORTUGUESE_BR(Langs.PT, "pt_BR"),
-    PORTUGUESE_PT(Langs.PT, "pt_PT"),
-    DEUTSCH(Langs.DE, "de_DE"),
-    GREEK(Langs.GR, "el_GR"),
-    FRENCH_CA(Langs.FR, "fr_CA"), 
-    FRENCH(Langs.FR, "fr_FR"),
-    JAPANESE(Langs.JP, "ja_JP"),
-    SIMPLIFIED_CHINESE(Langs.CN, "zh_CN"),    
-    TRADITIONAL_CHINESE(Langs.CH, "zh_TW"),    
-    RUSSIAN(Langs.RU, "ru_RU");
+    ENGLISH(Lang.EN, "en_US"),    
+    SPANISH(Lang.ES, "es_ES"),
+    ARGENTINEAN_SPANISH(Lang.ES, "es_AR"),
+    MEXICO_SPANISH(Lang.ES, "es_MX"),
+    URUGUAY_SPANISH(Lang.ES, "es_UY"),
+    VENEZUELA_SPANISH(Lang.ES, "es_VE"),    
+    CZECH(Lang.CS, "cs_CZ"),
+    EUSKARA(Lang.EU, "eu_ES"),
+    GALICIAN(Lang.GL, "gl_ES"),
+    CATALAN(Lang.CA, "ca_ES"),
+    CROATIAN(Lang.HR, "hr_HR"),
+    KOREAN(Lang.KO, "ko_KR"),
+    UKRAINIAN(Lang.UK, "uk_UA"),
+    POLISH(Lang.PL, "pl_PL"),
+    SLOVENIAN(Lang.SL, "sl_SI"),
+    SERBIAN(Lang.SR, "sr_SP"),
+    ROMANIAN(Lang.RO, "ro_RO"),    
+    SWEDISH(Lang.SV, "sv_SE"),
+    PORTUGUESE_BR(Lang.PT, "pt_BR"),
+    PORTUGUESE_PT(Lang.PT, "pt_PT"),
+    DEUTSCH(Lang.DE, "de_DE"),
+    GREEK(Lang.GR, "el_GR"),
+    FRENCH_CA(Lang.FR, "fr_CA"), 
+    FRENCH(Lang.FR, "fr_FR"),
+    JAPANESE(Lang.JP, "ja_JP"),
+    SIMPLIFIED_CHINESE(Lang.CN, "zh_CN"),    
+    TRADITIONAL_CHINESE(Lang.CH, "zh_TW"),    
+    RUSSIAN(Lang.RU, "ru_RU");
 
-    private final Langs type;
+    private final Lang type;
     private final String code;
 
-    private Localizer(Langs type, String code) {
+    private Localizer(Lang type, String code) {
         this.type = type;
         this.code = code;
     }
 
-    public Langs getType() {
+    public Lang getType() {
         return type;
     }
 
@@ -84,12 +84,12 @@ public enum Localizer {
      * 
      * @since 0.0.9
      */
-    public static Langs getLocale(CommandSender cs) {
+    public static Lang getLocale(CommandSender cs) {
         return (cs instanceof Player) ? Localizer.getLocale((Player) cs)
                 : PluginBase.INSTANCE.getMainLanguage();
     }
     
-    public static Langs getLocale(Player inPlayer) {
+    public static Lang getLocale(Player inPlayer) {
         try {
             Object nms = NMS.castToNMS(inPlayer);
 

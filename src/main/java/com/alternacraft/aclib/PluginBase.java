@@ -19,7 +19,7 @@ package com.alternacraft.aclib;
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.config.ConfigurationFile;
 import com.alternacraft.aclib.extras.Recorder;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.io.File;
@@ -68,7 +68,7 @@ public class PluginBase {
      *
      * @since 0.0.6
      */
-    private Langs messages = Langs.EN;
+    private Lang messages = Lang.EN;
 
     /**
      * Default language for translations
@@ -151,7 +151,7 @@ public class PluginBase {
      * @param lang Language
      * @since 0.0.6
      */
-    public void defineMainLanguage(Langs lang) {
+    public void defineMainLanguage(Lang lang) {
         this.messages = lang;
     }
 
@@ -228,7 +228,7 @@ public class PluginBase {
      * @return Language
      * @since 0.0.6
      */
-    public Langs getMainLanguage() {
+    public Lang getMainLanguage() {
         return this.messages;
     }
 

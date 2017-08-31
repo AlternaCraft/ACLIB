@@ -30,7 +30,7 @@ public interface LangInterface {
      * 
      * @return String
      */
-    public String getText(Langs lang);
+    public String getText(Lang lang);
 
     /**
      * Gets a message without translated colors.
@@ -39,5 +39,5 @@ public interface LangInterface {
      * 
      * @return String
      */
-    public String getDefaultText(Langs lang);
+    public String getDefaultText(Lang lang);
 }

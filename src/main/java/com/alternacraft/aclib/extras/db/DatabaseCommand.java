@@ -1,9 +1,7 @@
 package com.alternacraft.aclib.extras.db;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
-import com.alternacraft.aclib.extras.db.CustomStatement;
 import com.alternacraft.aclib.extras.db.CustomStatement.COMPARATOR;
 import com.alternacraft.aclib.extras.db.CustomStatement.Field;
 import com.alternacraft.aclib.extras.db.CustomStatement.GroupedCondition;
@@ -11,7 +9,6 @@ import com.alternacraft.aclib.extras.db.CustomStatement.LOGIC;
 import com.alternacraft.aclib.extras.db.CustomStatement.METHOD;
 import com.alternacraft.aclib.extras.db.CustomStatement.TYPES;
 import com.alternacraft.aclib.extras.db.CustomStatement.Table;
-import com.alternacraft.aclib.extras.db.SQLConnection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;

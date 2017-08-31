@@ -3,7 +3,7 @@ package com.alternacraft.aclib.extras.gui;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.langs.LangInterface;
 import com.alternacraft.aclib.langs.LangManager;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 
@@ -20,9 +20,9 @@ public enum GUIMessages implements LangInterface {
     NEXT_ACTION("Click to go to the next page.", "Clic para pasar de página"),
     PREVIOUS("Previous", "Anterior"),
     PREVIOUS_ACTION("Click to go to the previous page", "Clic para volver a la anterior");
-    // </editor-fold>
+    // </editor-fold>// </editor-fold>
 
-    private final HashMap<Langs, String> locales = new HashMap();
+    private final HashMap<Lang, String> locales = new HashMap();
 
     /**
      * Define the default languages to load
@@ -31,18 +31,18 @@ public enum GUIMessages implements LangInterface {
      * @param es Spanish
      */
     private GUIMessages(String en, String es) {
-        this.locales.put(Langs.EN, en);
-        this.locales.put(Langs.ES, es);
+        this.locales.put(Lang.EN, en);
+        this.locales.put(Lang.ES, es);
     }
 
     @Override
-    public String getText(Langs lang) {
+    public String getText(Lang lang) {
         return StringsUtils.translateColors(getDefaultText(lang));
     }
 
     @Override
-    public String getDefaultText(Langs lang) {    
-        Langs main = PluginBase.INSTANCE.getMainLanguage();
+    public String getDefaultText(Lang lang) {    
+        Lang main = PluginBase.INSTANCE.getMainLanguage();
         String v = LangManager.getValueFromFile(lang, this);
         v = (v == null) ? this.locales.get(lang) : v;
         v = (v == null) ? LangManager.getValueFromFile(main, this) : v;

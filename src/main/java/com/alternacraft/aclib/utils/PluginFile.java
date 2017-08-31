@@ -83,15 +83,12 @@ public class PluginFile extends File {
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public PluginFile(String base, String path, boolean auto_creation) {
         super(base + path);
-
-        if (auto_creation) {
-            if (!exists()) {
-                createConfig();
-            }
-            if (exists()) {
-                loadYamlConfiguration();
-            }
+        if (auto_creation && !exists()) {
+            createConfig();
         }
+        if (exists()) {
+            loadYamlConfiguration();
+        }        
     }
 
     /**
@@ -145,7 +142,11 @@ public class PluginFile extends File {
     }
 
     public Set<String> getNodes(String path) {
-        return yamlFile.getConfigurationSection(path).getKeys(false);
+        return this.getNodes(path, false);
+    }
+    
+    public Set<String> getNodes(String path, boolean deep) {
+        return yamlFile.getConfigurationSection(path).getKeys(deep);
     }
 
     public String getNameWithoutExtension() {

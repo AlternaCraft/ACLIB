@@ -18,7 +18,7 @@ package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.config.ConfigurationFile;
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.junit.After;
@@ -109,7 +109,7 @@ public class PluginBaseTest {
      */
     @Test
     public void testDefineMainLanguage() {
-        Langs lang = null;
+        Lang lang = null;
         PluginBase.INSTANCE.defineMainLanguage(lang);
         assertEquals(lang, PluginBase.INSTANCE.getMainLanguage());
     }

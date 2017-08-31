@@ -1,6 +1,6 @@
 package com.alternacraft.aclib.extras.gui;
 
-import com.alternacraft.aclib.langs.Langs;
+import com.alternacraft.aclib.langs.Lang;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -14,7 +14,7 @@ public class GUIPagination extends GUI {
         super(title);
     }
     
-    public void addControls(int page, int max_size, Langs lang, String... subkeys) {
+    public void addControls(int page, int max_size, Lang lang, String... subkeys) {
         if (page > 0) {
             GUIItem item = new GUIItem(new ItemStack(Material.ARROW),
                     GUIMessages.PREVIOUS.getText(lang));
@@ -39,7 +39,7 @@ public class GUIPagination extends GUI {
         }
     }
     
-    public void addExitItem(Langs lang) {
+    public void addExitItem(Lang lang) {
         GUIItem item = new GUIItem(new ItemStack(Material.DOUBLE_PLANT),
                 GUIMessages.EXIT.getText(lang));
         item.addInfo(GUIMessages.EXIT_ACTION.getText(lang));
