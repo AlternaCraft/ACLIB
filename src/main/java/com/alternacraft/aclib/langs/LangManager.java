@@ -35,12 +35,13 @@ import java.util.regex.Pattern;
  */
 public class LangManager {
 
-    public static final String LANG_DIRECTORY
-            = new StringBuilder().append(
-                    "langs").append(
-                            File.separator).toString();
+    public static final String LANG_DIRECTORY = new StringBuilder()
+            .append("langs")
+            .append(File.separator)
+            .toString();
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
+    private static final Map<String, PluginFile> LOADED_FILES = new HashMap<>();
 
     private static PluginFile backupFile = null;
     private static Lang[] keys = {Lang.EN}; // Default value
@@ -91,7 +92,7 @@ public class LangManager {
      */
     public static void loadMessages() {
         for (Lang langType : keys) {
-            for (Map.Entry<String, List<Class>> entry : MESSAGES.entrySet()) {
+            MESSAGES.entrySet().forEach(entry -> {
                 String key = entry.getKey();
                 List<Class> value = entry.getValue();
 
@@ -106,7 +107,8 @@ public class LangManager {
                                 + "a new one has been created.");
                     }
                 }
-            }
+                LOADED_FILES.put(key + "_" + langType.name() + ".yml", langFile);
+            });
         }
     }
 
@@ -210,9 +212,9 @@ public class LangManager {
     public static void clearMessages() {
         LangManager.MESSAGES.clear();
     }
-    
+
     private static String findMessageByKey(String path, String lang, String key) {
-        PluginFile pluginFile = new PluginFile(path + "_" + lang + ".yml", false);
+        PluginFile pluginFile = LOADED_FILES.get(path + "_" + lang + ".yml");
         // Value from the file (externally)
         if (pluginFile.yamlFile != null && pluginFile.hasNode(key)) {
             return (String) pluginFile.getNode(key);
@@ -238,11 +240,11 @@ public class LangManager {
 
     /**
      * Find a language value in a file. (if exists)
-     * 
+     *
      * @param fname File name without extension
      * @param lang Language
      * @param key Language key
-     * 
+     *
      * @return Translated value or null
      */
     public static String findValueInFile(String fname, Lang lang, String key) {

@@ -1,6 +1,7 @@
 package com.alternacraft.aclib.extras.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import org.bukkit.enchantments.Enchantment;
@@ -38,8 +39,7 @@ public class GUIItem {
 
     private ItemStack removeAttributes(ItemStack item) {
         ItemMeta iM = item.getItemMeta();
-        iM.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        iM.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        Arrays.stream(ItemFlag.values()).forEach(iM::addItemFlags);
         item.setItemMeta(iM);
         return item;
     }

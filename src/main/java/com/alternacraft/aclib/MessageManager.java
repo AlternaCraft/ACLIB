@@ -32,6 +32,8 @@ import org.bukkit.entity.Player;
  */
 public class MessageManager {
 
+    private static final String BREAK_LINE = "\\r\\n|\\n|\\r";
+    
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
     private static final String DEBUG = "&6DEBUG: &f";
@@ -43,7 +45,7 @@ public class MessageManager {
      * @param prefix Prefix message
      */
     public static void log(String message, String prefix) {
-        String[] messages = message.split("\n");
+        String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
             Bukkit.getConsoleSender().sendMessage(
                     prepareString(prefix + _message)
@@ -124,7 +126,7 @@ public class MessageManager {
      * @param message The message
      */
     public static void sendPlayer(Player player, String message) {
-        String[] messages = message.split("\n");
+        String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
             player.sendMessage(prepareString(_message));
         }
@@ -137,7 +139,7 @@ public class MessageManager {
      * @param message The message
      */
     public static void sendCommandSender(CommandSender cs, String message) {
-        String[] messages = message.split("\n");
+        String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
             cs.sendMessage(
                     prepareString(_message)

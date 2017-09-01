@@ -11,9 +11,9 @@ import org.bukkit.inventory.Inventory;
  */
 public abstract class GUI {
 
-    private static final String DEF_NAME = "Chest";
+    protected static final String DEF_NAME = "Chest";
     
-    protected final String title;
+    protected String title;
     protected final Map<Integer, GUIItem> options;
 
     public GUI() {
@@ -27,6 +27,10 @@ public abstract class GUI {
     
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Map<Integer, GUIItem> getOptions() {
