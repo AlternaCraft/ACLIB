@@ -108,14 +108,19 @@ public class GUIUtils {
         };
         gui.getOptions().entrySet().forEach(option -> {
             GUIItem item = new GUIItem(option.getValue().getItem());
+            
             item.setTitle(option.getValue().getTitle());
+            item.setGlow(option.getValue().isGlow());
+            item.setPlayer_head(option.getValue().isPlayer_head());
+            
             JSONObject meta = new JSONObject();
             option.getValue().getMeta().forEach((k, v) -> {
                 meta.put(k, v);
             });
             item.setMeta(meta);
+            
             item.setInfo(new ArrayList<>(option.getValue().getInfo()));
-            item.setGlow(option.getValue().isGlow());
+            
             r_gui.addItem(option.getKey(), item);
         });
         return r_gui;
