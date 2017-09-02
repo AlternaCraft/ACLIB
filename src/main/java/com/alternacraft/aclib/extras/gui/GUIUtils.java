@@ -111,7 +111,7 @@ public class GUIUtils {
             
             item.setTitle(option.getValue().getTitle());
             item.setGlow(option.getValue().isGlow());
-            item.setPlayer_head(option.getValue().isPlayer_head());
+            item.setPlayerHead(option.getValue().getPlayerHead());
             
             JSONObject meta = new JSONObject();
             option.getValue().getMeta().forEach((k, v) -> {

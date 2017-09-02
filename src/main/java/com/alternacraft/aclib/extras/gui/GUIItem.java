@@ -22,20 +22,20 @@ public class GUIItem {
 
     private String title;
     private boolean glow;
-    private boolean player_head;
+    private String player_head;
 
     private List<String> info;
     private JSONObject meta;
 
     public GUIItem(ItemStack item) {
-        this(item, null, false, false);
+        this(item, null, false, null);
     }
 
     public GUIItem(ItemStack item, String title) {
-        this(item, title, false, false);
+        this(item, title, false, null);
     }
 
-    public GUIItem(ItemStack item, String title, boolean glow, boolean player_head) {
+    public GUIItem(ItemStack item, String title, boolean glow, String player_head) {
         this.item = GUIUtils.removeAttributes(item);
 
         this.title = title;
@@ -99,11 +99,11 @@ public class GUIItem {
     public ItemStack getCompleteItem() {
         ItemStack aux = new ItemStack(this.item);
         ItemMeta metaaux = aux.getItemMeta();
-        String title = this.title;
+        String aux_title = this.title;
         if (this.title == null) {
-            title = " ";
+            aux_title = " ";
         }
-        metaaux.setDisplayName(title + ((this.meta.size() > 0)
+        metaaux.setDisplayName(aux_title + ((this.meta.size() > 0)
                 ? HiddenStringUtils.encodeString(this.meta.toString()) : ""));
         if (this.glow) {
             metaaux.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -137,11 +137,11 @@ public class GUIItem {
         this.glow = glow;
     }
 
-    public boolean isPlayer_head() {
+    public String getPlayerHead() {
         return player_head;
     }
 
-    public void setPlayer_head(boolean player_head) {
+    public void setPlayerHead(String player_head) {
         this.player_head = player_head;
     }
 
