@@ -216,7 +216,8 @@ public class LangManager {
     private static String findMessageByKey(String path, String lang, String key) {
         PluginFile pluginFile = LOADED_FILES.get(path + "_" + lang + ".yml");
         // Value from the file (externally)
-        if (pluginFile.yamlFile != null && pluginFile.hasNode(key)) {
+        if (pluginFile != null && pluginFile.yamlFile != null && !key.equals("")
+                && pluginFile.hasNode(key)) {
             return (String) pluginFile.getNode(key);
         }
         return null;

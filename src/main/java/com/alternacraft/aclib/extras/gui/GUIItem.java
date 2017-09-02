@@ -31,17 +31,10 @@ public class GUIItem {
     }
     
     public GUIItem(ItemStack item, String title, boolean glow) {
-        this.item = removeAttributes(item);
+        this.item = GUIUtils.removeAttributes(item);
         this.title = title;
         this.info = new ArrayList<>();
         this.meta = new JSONObject();
-    }
-
-    private ItemStack removeAttributes(ItemStack item) {
-        ItemMeta iM = item.getItemMeta();
-        Arrays.stream(ItemFlag.values()).forEach(iM::addItemFlags);
-        item.setItemMeta(iM);
-        return item;
     }
 
     public void addInfo(String msg) {
@@ -87,6 +80,10 @@ public class GUIItem {
         return aux;
     }
 
+    public void setItem(ItemStack item) {
+        this.item = item;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -113,5 +110,5 @@ public class GUIItem {
 
     public JSONObject getMeta() {
         return meta;
-    }    
+    }
 }

@@ -13,6 +13,8 @@ public abstract class GUI {
 
     protected static final String DEF_NAME = "Chest";
     
+    protected static final int MAX_COLS = 9;
+    
     protected String title;
     protected final Map<Integer, GUIItem> options;
 
@@ -77,9 +79,10 @@ public abstract class GUI {
         return this.getRows() * this.getCols();
     }
 
+    public int getCols() {
+        return MAX_COLS;
+    }
+
     public abstract int getRows();
-
-    public abstract int getCols();
-
     public abstract int getMaxSlots();
 }
