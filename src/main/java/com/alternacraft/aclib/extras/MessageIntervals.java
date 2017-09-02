@@ -17,8 +17,8 @@
 package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.MessageManager;
-import com.alternacraft.aclib.langs.LangInterface;
 import com.alternacraft.aclib.langs.Lang;
+import com.alternacraft.aclib.langs.LangInterface;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

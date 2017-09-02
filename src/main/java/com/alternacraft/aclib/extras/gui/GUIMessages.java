@@ -1,9 +1,9 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.langs.LangInterface;
 import com.alternacraft.aclib.langs.LangManager;
-import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
 

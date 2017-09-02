@@ -16,8 +16,8 @@
  */
 package com.alternacraft.aclib.commands;
 
-import com.alternacraft.aclib.langs.LangInterface;
 import com.alternacraft.aclib.langs.Lang;
+import com.alternacraft.aclib.langs.LangInterface;
 
 /**
  * Class for defining a command argument as a subcommand.
