@@ -16,7 +16,6 @@
  */
 package com.alternacraft.aclib.extras.gui;
 
-import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import static com.alternacraft.aclib.PluginBase.TPS;
 import java.util.HashMap;
