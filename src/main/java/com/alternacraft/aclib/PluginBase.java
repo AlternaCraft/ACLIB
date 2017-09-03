@@ -36,19 +36,33 @@ public class PluginBase {
     
     //<editor-fold defaultstate="collapsed" desc="Vars + Constructor">
     /**
-     * Gets plugin's directory
+     * Gets plugin's directory.
      *
      * @since 1.0.2
      */
     public static String DIRECTORY;
 
     /**
-     * Ticks Per Second
+     * Ticks Per Second.
      *
      * @since 0.0.9
      */
     public static final int TPS = 20;
-
+    
+    /**
+     * Player maximum health.
+     *
+     * @since 1.5.1
+     */
+    public static final double MAX_HEALTH = 20.0;
+    
+    /**
+     * Player maximum food.
+     *
+     * @since 1.5.1
+     */
+    public static final int MAX_FOOD = 20;
+    
     /**
      * Gets singleton.
      * 
