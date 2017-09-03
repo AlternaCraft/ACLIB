@@ -1,15 +1,23 @@
 package com.alternacraft.aclib.extras.gui;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.IntStream;
+import static org.apache.commons.lang.CharRange.is;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -18,6 +26,7 @@ import org.json.simple.JSONObject;
 public class GUIUtils {
 
     // Inventory identificator
+    public static final String CI_KEY = "ci_key";
     public static final String CI_META = UUID.randomUUID().toString();
 
     // Meta key
@@ -28,6 +37,9 @@ public class GUIUtils {
     public static final String NEXT_PAGE_META = "npm";
     public static final String PREVIOUS_PAGE_META = "ppm";
     public static final String CI_PAGINATION_META = "cip";
+
+    // Refresh options
+    public static final String UPDATE_INTERVAL = "ui";
 
     public static int calculateSlot(int i, int j, int ROWS, int COLS) {
         if (i > 0 && i <= ROWS && j > 0 && j <= COLS) {
@@ -55,7 +67,38 @@ public class GUIUtils {
      */
     public static boolean isCustom(String title) {
         String str = getHiddenString(title);
-        return str != null && str.equals(CI_META);
+        if (str != null) {
+            try {
+                JSONObject data = (JSONObject) new JSONParser().parse(str);
+                return (data.get(CI_KEY) != null)
+                        ? data.get(CI_KEY).equals(CI_META) : false;
+            } catch (ParseException ex) {
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get update interval value.
+     *
+     * @param title Inventory title
+     *
+     * @return Update interval value
+     */
+    public static int getUpdateInterval(String title) {
+        int def = 0;
+
+        String str = getHiddenString(title);
+        if (str != null) {
+            try {
+                JSONObject data = (JSONObject) new JSONParser().parse(str);
+                def = (data.get(UPDATE_INTERVAL) != null)
+                        ? Integer.valueOf(data.get(UPDATE_INTERVAL).toString()) : def;
+            } catch (ParseException ex) {
+            }
+        }
+
+        return def;
     }
 
     /**
@@ -106,31 +149,43 @@ public class GUIUtils {
                 return gui.getMaxSlots();
             }
         };
+
+        r_gui.setUpdate_interval(gui.getUpdate_interval());
+        gui.getMeta().forEach((k, v)
+                -> r_gui.addMeta(k.toString(), v));
+
         gui.getOptions().entrySet().forEach(option -> {
             GUIItem item = new GUIItem(option.getValue().getItem());
-            
+
             item.setTitle(option.getValue().getTitle());
             item.setGlow(option.getValue().isGlow());
             item.setPlayerHead(option.getValue().getPlayerHead());
-            
-            JSONObject meta = new JSONObject();
-            option.getValue().getMeta().forEach((k, v) -> {
-                meta.put(k, v);
-            });
-            item.setMeta(meta);
-            
+
+            option.getValue().getMeta().forEach((k, v)
+                    -> item.addMeta(k.toString(), v));
+
             item.setInfo(new ArrayList<>(option.getValue().getInfo()));
-            
+
             r_gui.addItem(option.getKey(), item);
         });
         return r_gui;
     }
 
+    public static Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
+        Map<Integer, ItemStack> aux = new HashMap<>();
+        IntStream.range(0, items.length)
+                .filter(idx -> items[idx] != null 
+                        && items[idx].getType().equals(Material.SKULL_ITEM) 
+                        && items[idx].getDurability() == 3)
+                .forEach(idx -> aux.put(idx, new ItemStack(items[idx])));
+        return aux;
+    }
+
     /**
      * Removes the item attributes.
-     * 
+     *
      * @param item ItemStack
-     * 
+     *
      * @return Parsed ItemStack
      */
     public static final ItemStack removeAttributes(ItemStack item) {
