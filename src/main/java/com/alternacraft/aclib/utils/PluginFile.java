@@ -18,9 +18,11 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.exceptions.PluginException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
@@ -86,9 +88,6 @@ public class PluginFile extends File {
         if (auto_creation && !exists()) {
             createConfig();
         }
-        if (exists()) {
-            loadYamlConfiguration();
-        }        
     }
 
     /**
