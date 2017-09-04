@@ -26,8 +26,8 @@ import org.json.simple.parser.ParseException;
  */
 public class GUIUtils {
 
-    public static int MAX_LORE_LENGTH = 45;
-    
+    private static int MAX_LORE_LENGTH = 45;
+
     // Inventory identificator
     public static final String CI_KEY = "ci_key";
     public static final String CI_META = UUID.randomUUID().toString();
@@ -177,9 +177,9 @@ public class GUIUtils {
     public static final Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
         Map<Integer, ItemStack> aux = new HashMap<>();
         IntStream.range(0, items.length)
-                .filter(idx -> items[idx] != null 
-                        && items[idx].getType().equals(Material.SKULL_ITEM) 
-                        && items[idx].getDurability() == 3)
+                .filter(idx -> items[idx] != null
+                && items[idx].getType().equals(Material.SKULL_ITEM)
+                && items[idx].getDurability() == 3)
                 .forEach(idx -> aux.put(idx, new ItemStack(items[idx])));
         return aux;
     }
@@ -197,7 +197,7 @@ public class GUIUtils {
         item.setItemMeta(iM);
         return item;
     }
-    
+
     public static final List<String> parseLoreLines(List<String> lore) {
         List<String> aux = new ArrayList<>();
         lore.forEach(line -> {
@@ -205,7 +205,7 @@ public class GUIUtils {
         });
         return aux;
     }
-    
+
     private static List<String> recurrentParser(String msg) {
         List<String> aux = new ArrayList<>();
         if (StringsUtils.stripColors(msg).length() > MAX_LORE_LENGTH) {
@@ -220,6 +220,10 @@ public class GUIUtils {
             Matcher m = pattern.matcher(sub);
             if (m.find()) {
                 last_color = m.group(1);
+                int start = m.start(1);
+                if (start > 1 && sub.substring(start - 2, start).matches("&\\w|§\\w")) {
+                    last_color = sub.substring(start - 2, start) + last_color;
+                }
             }
             // Analyze new text line
             aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));
@@ -227,5 +231,9 @@ public class GUIUtils {
             aux.add(msg);
         }
         return aux;
+    }
+
+    public static final void setMaxLoreLength(int length) {
+        MAX_LORE_LENGTH = length;
     }
 }
