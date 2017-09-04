@@ -1,11 +1,14 @@
 package com.alternacraft.aclib.extras.gui;
 
+import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,6 +26,8 @@ import org.json.simple.parser.ParseException;
  */
 public class GUIUtils {
 
+    public static int MAX_LORE_LENGTH = 45;
+    
     // Inventory identificator
     public static final String CI_KEY = "ci_key";
     public static final String CI_META = UUID.randomUUID().toString();
@@ -39,7 +44,7 @@ public class GUIUtils {
     // Refresh options
     public static final String UPDATE_INTERVAL = "ui";
 
-    public static int calculateSlot(int i, int j, int ROWS, int COLS) {
+    public static final int calculateSlot(int i, int j, int ROWS, int COLS) {
         if (i > 0 && i <= ROWS && j > 0 && j <= COLS) {
             return i * COLS - (COLS - j) - 1;
         } else {
@@ -47,7 +52,7 @@ public class GUIUtils {
         }
     }
 
-    public static <T> List<T> paginate(List<T> list, int page, int max_slots) {
+    public static final <T> List<T> paginate(List<T> list, int page, int max_slots) {
         int from = page * (max_slots - 1);
         int to = (page + 1) * (max_slots - 1);
         if (to > list.size()) {
@@ -63,7 +68,7 @@ public class GUIUtils {
      *
      * @return True if it is an inventory custom; False if not
      */
-    public static boolean isCustom(String title) {
+    public static final boolean isCustom(String title) {
         String str = getHiddenString(title);
         if (str != null) {
             try {
@@ -83,7 +88,7 @@ public class GUIUtils {
      *
      * @return Update interval value
      */
-    public static int getUpdateInterval(String title) {
+    public static final int getUpdateInterval(String title) {
         int def = 0;
 
         String str = getHiddenString(title);
@@ -106,7 +111,7 @@ public class GUIUtils {
      *
      * @return Hidden string or null.
      */
-    public static String getHiddenString(String str) {
+    public static final String getHiddenString(String str) {
         boolean has_a_gift = HiddenStringUtils.hasHiddenString(str);
         return (has_a_gift) ? HiddenStringUtils.extractHiddenString(str) : null;
     }
@@ -114,7 +119,7 @@ public class GUIUtils {
     /**
      * Closes all the custom active inventories.
      */
-    public static void closeInventories() {
+    public static final void closeInventories() {
         Bukkit.getOnlinePlayers().forEach(p -> {
             InventoryView inv = p.getOpenInventory();
             if (inv != null && isCustom(inv.getTopInventory().getName())) {
@@ -130,7 +135,7 @@ public class GUIUtils {
      *
      * @return GUI cloned
      */
-    public static GUI cloneGUI(GUI gui) {
+    public static final GUI cloneGUI(GUI gui) {
         GUI r_gui = new GUI(gui.getTitle()) {
             @Override
             public int getRows() {
@@ -169,7 +174,7 @@ public class GUIUtils {
         return r_gui;
     }
 
-    public static Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
+    public static final Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
         Map<Integer, ItemStack> aux = new HashMap<>();
         IntStream.range(0, items.length)
                 .filter(idx -> items[idx] != null 
@@ -191,5 +196,36 @@ public class GUIUtils {
         Arrays.stream(ItemFlag.values()).forEach(iM::addItemFlags);
         item.setItemMeta(iM);
         return item;
+    }
+    
+    public static final List<String> parseLoreLines(List<String> lore) {
+        List<String> aux = new ArrayList<>();
+        lore.forEach(line -> {
+            aux.addAll(recurrentParser(line));
+        });
+        return aux;
+    }
+    
+    private static List<String> recurrentParser(String msg) {
+        List<String> aux = new ArrayList<>();
+        if (StringsUtils.stripColors(msg).length() > MAX_LORE_LENGTH) {
+            // Cut before
+            String sub = msg.substring(0, MAX_LORE_LENGTH);
+            int cut = sub.lastIndexOf(" ");
+            sub = sub.substring(0, cut);
+            aux.add(sub);
+            // Get previous color
+            String last_color = "";
+            Pattern pattern = Pattern.compile(".*(&\\w|§\\w)");
+            Matcher m = pattern.matcher(sub);
+            if (m.find()) {
+                last_color = m.group(1);
+            }
+            // Analyze new text line
+            aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));
+        } else {
+            aux.add(msg);
+        }
+        return aux;
     }
 }

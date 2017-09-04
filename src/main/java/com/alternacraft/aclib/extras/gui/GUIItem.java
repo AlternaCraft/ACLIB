@@ -108,7 +108,7 @@ public class GUIItem {
         if (this.glow) {
             metaaux.addEnchant(Enchantment.DURABILITY, 1, true);
         }
-        metaaux.setLore(this.info);
+        metaaux.setLore(GUIUtils.parseLoreLines(this.info));
         aux.setItemMeta(metaaux);
         return aux;
     }
