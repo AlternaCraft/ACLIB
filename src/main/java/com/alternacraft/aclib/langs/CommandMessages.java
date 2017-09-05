@@ -31,8 +31,8 @@ public enum CommandMessages implements LangInterface {
             "&cInvalid subcommand"
     ),
     COMMAND_USAGE(
-            "&cUso: /%USAGE%",
-            "&cUsage: /%USAGE%"
+            "&cComando desconocido. El uso correcto es /%USAGE%",
+            "&cUnknown command. Correct usage is /%USAGE%"
     ),
     ONLY_PLAYERS(
             "&c¡No puedes ejecutar ese comando!",
