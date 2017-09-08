@@ -173,7 +173,29 @@ public class GUIUtils {
         });
         return r_gui;
     }
+    
+    /**
+     * Returns the not null items, mapped by position
+     * 
+     * @param items Inventory items
+     * 
+     * @return Map with the not null items
+     */
+    public static final Map<Integer, ItemStack> convertInventory(ItemStack[] items) {
+        Map<Integer, ItemStack> aux = new HashMap<>();
+        IntStream.range(0, items.length)
+                .filter(idx -> items[idx] != null)
+                .forEach(idx -> aux.put(idx, items[idx]));
+        return aux;
+    }
 
+    /**
+     * Returns the not null items which are also steve skull, mapped by position
+     * 
+     * @param items Inventory items
+     * 
+     * @return Map with the not null items
+     */
     public static final Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
         Map<Integer, ItemStack> aux = new HashMap<>();
         IntStream.range(0, items.length)
@@ -198,6 +220,13 @@ public class GUIUtils {
         return item;
     }
 
+    /**
+     * Format the messages to limit the text box size
+     * 
+     * @param lore Lore lines
+     * 
+     * @return Lore lines formatted
+     */
     public static final List<String> parseLoreLines(List<String> lore) {
         List<String> aux = new ArrayList<>();
         lore.forEach(line -> {

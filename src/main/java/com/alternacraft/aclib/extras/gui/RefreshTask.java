@@ -51,7 +51,7 @@ public class RefreshTask {
             Inventory inv = iv.getTopInventory();
             Map<Integer, ItemStack> is = GUIUtils
                     .findSteveSkulls(inv.getContents());
-            is.forEach((k, v) -> inv.setItem(k, v));
+            is.forEach(inv::setItem);
         }        
         return true;
     };
