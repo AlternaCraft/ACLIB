@@ -3,6 +3,7 @@ package com.alternacraft.aclib.extras.gui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -79,9 +80,21 @@ public class GUIItem {
      *
      * @param ow Player name
      */
+    @Deprecated
     public void setSkullOwner(String ow) {
         SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
         smeta.setOwner(ow);
+        this.item.setItemMeta(smeta);
+    }
+
+    /**
+     * Set skull owner
+     * 
+     * @param ow Player
+     */
+    public void setSkullOwner(OfflinePlayer ow) {
+        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
+        smeta.setOwningPlayer(ow);
         this.item.setItemMeta(smeta);
     }
 
