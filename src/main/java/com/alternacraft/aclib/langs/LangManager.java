@@ -250,7 +250,8 @@ public class LangManager {
      */
     public static String findValueInFile(String fname, Lang lang, String key) {
         String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
-                .filter(p -> p.matches(".*\\" + File.separator + fname))
+                .filter(p -> p.matches(".*\\" + File.separator 
+                        + Matcher.quoteReplacement(fname)))
                 .findFirst()
                 .orElse(null);
         if (aux != null) {
