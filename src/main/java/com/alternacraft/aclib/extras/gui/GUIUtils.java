@@ -27,6 +27,7 @@ import org.json.simple.parser.ParseException;
 public class GUIUtils {
 
     private static int MAX_LORE_LENGTH = 45;
+    private static int MAX_COLS = 9;
 
     // Inventory identificator
     public static final String CI_KEY = "ci_key";
@@ -44,9 +45,9 @@ public class GUIUtils {
     // Refresh options
     public static final String UPDATE_INTERVAL = "ui";
 
-    public static final int calculateSlot(int i, int j, int ROWS, int COLS) {
-        if (i > 0 && i <= ROWS && j > 0 && j <= COLS) {
-            return i * COLS - (COLS - j) - 1;
+    public static final int calculateSlot(int i, int j, int ROWS) {
+        if (i > 0 && i <= ROWS && j > 0 && j <= MAX_COLS) {
+            return i * MAX_COLS - (MAX_COLS - j) - 1;
         } else {
             return -1;
         }

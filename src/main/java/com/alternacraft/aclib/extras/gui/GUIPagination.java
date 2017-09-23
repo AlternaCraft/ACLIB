@@ -24,7 +24,7 @@ public class GUIPagination extends GUI {
             for (int i = 0; i < subkeys.length; i++) {
                 item.addMeta("key_" + i, subkeys[i]);
             }
-            this.options.put(GUIUtils.calculateSlot(6, 4, this.getRows(), this.getCols()), item);
+            this.addItem(GUIUtils.calculateSlot(6, 4, this.getRows()), item, false);
         }
         if (max_size / this.getMaxSlots() > (page + 1)) {
             GUIItem item = new GUIItem(new ItemStack(Material.ARROW),
@@ -35,7 +35,7 @@ public class GUIPagination extends GUI {
             for (int i = 0; i < subkeys.length; i++) {
                 item.addMeta("key_" + i, subkeys[i]);
             }
-            this.options.put(GUIUtils.calculateSlot(6, 6, this.getRows(), this.getCols()), item);
+            this.addItem(GUIUtils.calculateSlot(6, 6, this.getRows()), item, false);
         }
     }
     
@@ -44,7 +44,7 @@ public class GUIPagination extends GUI {
                 GUIMessages.EXIT.getText(lang));
         item.addInfo(GUIMessages.EXIT_ACTION.getText(lang));
         item.addMeta(GUIUtils.KEY_META, GUIUtils.CLOSE_ACTION_META);
-        this.options.put(GUIUtils.calculateSlot(6, 5, this.getRows(), this.getCols()), item);
+        this.addItem(GUIUtils.calculateSlot(6, 5, this.getRows()), item, false);
     }
     
     @Override

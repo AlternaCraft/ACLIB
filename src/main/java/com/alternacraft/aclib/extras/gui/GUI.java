@@ -62,7 +62,11 @@ public abstract class GUI {
     }
     
     public void addItem(int slot, GUIItem item) {
-        if (slot < 0 || slot >= this.getMaxSlots()) {
+        this.addItem(slot, item, true);
+    }
+    
+    public void addItem(int slot, GUIItem item, boolean max_slots) {
+        if (slot < 0 || (slot >= this.getMaxSlots() && max_slots)) {
             return;
         }
         this.options.put(slot, item);
