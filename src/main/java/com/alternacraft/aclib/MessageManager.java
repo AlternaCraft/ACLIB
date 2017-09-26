@@ -146,6 +146,19 @@ public class MessageManager {
             );
         }
     }
+    
+    /**
+     * Sends a clean message to a command sender
+     * 
+     * @param cs The command sender
+     * @param message The message
+     */
+    public static void sendMessage(CommandSender cs, String message) {
+        String[] messages = message.split(BREAK_LINE);
+        for (String _message : messages) {
+            cs.sendMessage(StringsUtils.translateColors(_message));
+        }
+    }
 
     /**
      * Prepares a message, adding the plugin prefix and the space after it, all
