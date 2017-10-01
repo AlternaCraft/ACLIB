@@ -200,7 +200,7 @@ public class StringsUtils {
 
         List<String> components = new ArrayList<>();
 
-        Pattern r = Pattern.compile("%([\\w\\d:\\|\\/&§]+)%");
+        Pattern r = Pattern.compile("%((?:\\w+:\\w+:[^%]+\\|?){1,2}\\|[^%]+)%");
         Matcher m = r.matcher(str);
         while (m.find()) {          
             components.add(m.group(1));
@@ -212,7 +212,8 @@ public class StringsUtils {
             for (int i = 0; i < elements.length; i++) {
                 String e = elements[i];
                 if (i == elements.length - 1) {
-                    Arrays.stream(TextComponent.fromLegacyText(e)).forEach(v::addExtra);
+                    Arrays.stream(TextComponent.fromLegacyText(e))
+                            .forEach(v::addExtra);
                     break;
                 }
                 String[] data = e.split(":");
@@ -222,9 +223,11 @@ public class StringsUtils {
                         case "click":
                             ClickEvent ce;
                             if (data[1].equals("cmd")) {
-                                ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, stripped_message);
+                                ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, 
+                                        stripped_message);
                             } else {
-                                ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, stripped_message);
+                                ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+                                        stripped_message);
                             }
                             v.setClickEvent(ce);
                             break;
