@@ -21,6 +21,7 @@ import com.alternacraft.aclib.langs.LangManager;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.List;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -145,6 +146,10 @@ public class MessageManager {
                     prepareString(_message)
             );
         }
+    }
+    
+    public static void sendTextComponent(Player pl, TextComponent text) {
+        pl.spigot().sendMessage(text);
     }
     
     /**

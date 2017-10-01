@@ -47,11 +47,11 @@ public abstract class PreparedCommand extends Command implements Listener {
     }
 
     public PreparedCommand(String cmd, String... aliases) {
-        this(cmd, null, null, null, (short) -1, false, aliases);
+        this(cmd, cmd, "/" + cmd, "", (short) -1, false, aliases);
     }
 
     public PreparedCommand(String cmd, String perm, String... aliases) {
-        this(cmd, null, null, perm, (short) -1, false, aliases);
+        this(cmd, cmd, "/" + cmd, perm, (short) -1, false, aliases);
     }
     
     public PreparedCommand(PluginCommand pc, short args, boolean only_player) {

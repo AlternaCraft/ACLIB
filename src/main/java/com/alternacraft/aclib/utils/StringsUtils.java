@@ -18,6 +18,14 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
@@ -117,7 +125,8 @@ public class StringsUtils {
 
     /**
      * Sets the same length into multiple Strings by using a Char.
-     * <p>So far, this is a bit useless because letters in Minecraft does not
+     * <p>
+     * So far, this is a bit useless because letters in Minecraft does not
      * occupy the same space</p>
      *
      * @param size Maximum size
@@ -154,12 +163,12 @@ public class StringsUtils {
 
         return strs;
     }
-    
+
     /**
      * Return the Color by name.
-     * 
+     *
      * @param color Color name
-     * 
+     *
      * @return Bukkit Color
      */
     public static Color getColorByName(String color) {
@@ -174,5 +183,92 @@ public class StringsUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns an interactive text.
+     *
+     * Template: %click:(cmd|info):value | [hover:(text|item):value] |
+     * displayed_text%
+     *
+     * @param str String
+     *
+     * @return Awesome text
+     */
+    public static TextComponent parseString(String str) {
+        TextComponent result = new TextComponent();
+        String aux = str;
+
+        List<String> components = new ArrayList<>();
+
+//        while (aux.contains("%")) {
+//            int from = aux.indexOf("%");
+//            aux = aux.replaceFirst("%", "-");
+//            int to = aux.indexOf("%");
+//            components.add(aux.substring(from + 1, to));
+//            aux = aux.substring(to + 1);
+//        }
+        Pattern r = Pattern.compile("%([\\w\\d:|&]+)%");
+        Matcher m = r.matcher(str);
+        while (m.find()) {
+            components.add(m.group());
+        }
+
+        TextComponent[] values = components.stream().map(c -> {
+            TextComponent v = new TextComponent();
+            String[] elements = c.split("\\|");
+            for (int i = 0; i < elements.length; i++) {
+                String e = elements[i];
+                if (i == elements.length - 1) {
+                    Arrays.stream(TextComponent.fromLegacyText(e)).forEach(v::addExtra);
+                    break;
+                }
+                String[] data = e.split(":");
+                if (data.length == 3) {
+                    String stripped_message = StringsUtils.stripColors(data[2]);
+                    switch (data[0]) {
+                        case "click":
+                            ClickEvent ce;
+                            if (data[1].equals("cmd")) {
+                                ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, stripped_message);
+                            } else {
+                                ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, stripped_message);
+                            }
+                            v.setClickEvent(ce);
+                            break;
+                        case "hover":
+                            HoverEvent he;
+                            if (data[1].equals("text")) {
+                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                        TextComponent.fromLegacyText(data[2]));
+                            } else {
+                                he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, null);
+                                //ce = new ClickEvent(HoverEvent.Action.SHOW_ITEM,);
+                            }
+                            v.setHoverEvent(he);
+                    }
+                }
+            }
+            return v;
+        }).toArray(TextComponent[]::new);
+
+        if (components.isEmpty()) {
+            result = new TextComponent(TextComponent.fromLegacyText(str));
+        } else {
+            String[] texts = str.split(
+                    String.join("|", components
+                            .stream()
+                            .map(cp -> "%" + Pattern.quote(cp) + "%")
+                            .toArray(String[]::new)));
+            for (int i = 0; i < texts.length; i++) {
+                Arrays.stream(TextComponent.fromLegacyText(texts[i]))
+                        .forEach(result::addExtra);
+                if (values.length > i) {
+                    result.addExtra(values[i]);
+                }
+            }
+        }
+
+        return result;
     }
 }
