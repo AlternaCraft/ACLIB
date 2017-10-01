@@ -197,21 +197,13 @@ public class StringsUtils {
      */
     public static TextComponent parseString(String str) {
         TextComponent result = new TextComponent();
-        String aux = str;
 
         List<String> components = new ArrayList<>();
 
-//        while (aux.contains("%")) {
-//            int from = aux.indexOf("%");
-//            aux = aux.replaceFirst("%", "-");
-//            int to = aux.indexOf("%");
-//            components.add(aux.substring(from + 1, to));
-//            aux = aux.substring(to + 1);
-//        }
-        Pattern r = Pattern.compile("%([\\w\\d:|&]+)%");
+        Pattern r = Pattern.compile("%([\\w\\d:\\|\\/&§]+)%");
         Matcher m = r.matcher(str);
-        while (m.find()) {
-            components.add(m.group());
+        while (m.find()) {          
+            components.add(m.group(1));
         }
 
         TextComponent[] values = components.stream().map(c -> {

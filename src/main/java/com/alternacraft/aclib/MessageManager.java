@@ -32,8 +32,8 @@ import org.bukkit.entity.Player;
  * @author AlternaCraft
  */
 public class MessageManager {
-
-    private static final String BREAK_LINE = "\\r\\n|\\n|\\r";
+    
+    private static final String BREAK_LINE = "\\r\\n|\\n|\\r|\\/r|\\/n";
     
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
