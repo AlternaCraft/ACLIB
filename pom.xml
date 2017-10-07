@@ -5,7 +5,7 @@
     <!-- The Basics -->
     <groupId>com.alternacraft</groupId>
     <artifactId>aclib</artifactId>
-    <version>1.6.2-SNAPSHOT</version>
+    <version>1.7</version>
     <packaging>jar</packaging>
     
     <repositories>

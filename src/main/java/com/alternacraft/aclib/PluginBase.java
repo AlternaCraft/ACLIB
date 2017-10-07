@@ -18,7 +18,7 @@ package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.config.ConfigDataInterface;
 import com.alternacraft.aclib.config.ConfigurationFile;
-import com.alternacraft.aclib.extras.Recorder;
+import com.alternacraft.aclib.utils.Recorder;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.StringsUtils;
