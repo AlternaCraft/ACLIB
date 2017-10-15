@@ -29,22 +29,28 @@ public class GUIItem {
     private JSONObject meta;
 
     public GUIItem(ItemStack item) {
-        this(item, null, false, null);
+        this(item, null, false, null, new ArrayList<>(), new JSONObject());
     }
 
     public GUIItem(ItemStack item, String title) {
-        this(item, title, false, null);
+        this(item, title, false, null, new ArrayList<>(), new JSONObject());
     }
 
-    public GUIItem(ItemStack item, String title, boolean glow, String player_head) {
-        this.item = GUIUtils.removeAttributes(item);
+    public GUIItem(GUIItem item) {
+        this(item.getItem(), item.getTitle(), item.isGlow(), item.getPlayerHead(),
+                item.getInfo(), item.getMeta());
+    }
+
+    public GUIItem(ItemStack item, String title, boolean glow, String player_head,
+            List<String> info, JSONObject meta) {
+        this.item = GUIUtils.removeAttributes(new ItemStack(item));
 
         this.title = title;
         this.glow = glow;
         this.player_head = player_head;
 
-        this.info = new ArrayList<>();
-        this.meta = new JSONObject();
+        this.info = new ArrayList<>(info);
+        this.meta = new JSONObject(meta);
     }
 
     public void addInfo(String msg) {
@@ -89,7 +95,7 @@ public class GUIItem {
 
     /**
      * Set skull owner
-     * 
+     *
      * @param ow Player
      */
     public void setSkullOwner(OfflinePlayer ow) {
@@ -160,6 +166,10 @@ public class GUIItem {
 
     public List<String> getInfo() {
         return info;
+    }
+
+    public Object getMetaBy(String key) {
+        return meta.get(key);
     }
 
     public JSONObject getMeta() {

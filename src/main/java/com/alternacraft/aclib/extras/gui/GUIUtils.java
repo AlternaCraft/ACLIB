@@ -130,52 +130,6 @@ public class GUIUtils {
     }
 
     /**
-     * Creates a new instance of GUI
-     *
-     * @param gui GUI to clone
-     *
-     * @return GUI cloned
-     */
-    public static final GUI cloneGUI(GUI gui) {
-        GUI r_gui = new GUI(gui.getTitle()) {
-            @Override
-            public int getRows() {
-                return gui.getRows();
-            }
-
-            @Override
-            public int getCols() {
-                return gui.getCols();
-            }
-
-            @Override
-            public int getMaxSlots() {
-                return gui.getMaxSlots();
-            }
-        };
-
-        r_gui.setUpdate_interval(gui.getUpdate_interval());
-        gui.getMeta().forEach((k, v)
-                -> r_gui.addMeta(k.toString(), v));
-
-        gui.getOptions().entrySet().forEach(option -> {
-            GUIItem item = new GUIItem(option.getValue().getItem());
-
-            item.setTitle(option.getValue().getTitle());
-            item.setGlow(option.getValue().isGlow());
-            item.setPlayerHead(option.getValue().getPlayerHead());
-
-            option.getValue().getMeta().forEach((k, v)
-                    -> item.addMeta(k.toString(), v));
-
-            item.setInfo(new ArrayList<>(option.getValue().getInfo()));
-
-            r_gui.addItem(option.getKey(), item);
-        });
-        return r_gui;
-    }
-    
-    /**
      * Returns the not null items, mapped by position
      * 
      * @param items Inventory items

@@ -18,6 +18,7 @@ package com.alternacraft.aclib.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -60,5 +61,23 @@ public class DateUtils {
      */
     public static DateFormat getDefaultDateFormat() {
         return new SimpleDateFormat(DEFAULT_FORMAT);
+    }
+    
+    /**
+     * Compare two dates
+     * 
+     * @param d1 Date 1
+     * @param d2 Date 2
+     * 
+     * @return Difference in millis
+     */
+    public static int compareDates(Date d1, Date d2) {
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        c1.setTime(d1);
+        c2.setTime(d2);
+        
+        return c1.compareTo(c2);      
     }
 }

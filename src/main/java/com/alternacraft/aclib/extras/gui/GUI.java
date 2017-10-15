@@ -23,14 +23,23 @@ public abstract class GUI {
     protected final Map<Integer, GUIItem> options;
 
     public GUI() {
-        this(DEF_NAME);
+        this(DEF_NAME, 0, new JSONObject(), new HashMap());
     }
     
     public GUI(String title) {
+        this(title, 0, new JSONObject(), new HashMap());
+    }
+    
+    public GUI(GUI gui) {
+        this(gui.getTitle(), gui.getUpdate_interval(), gui.getMeta(), gui.getOptions());
+    }
+    
+    public GUI(String title, int ui, JSONObject meta, Map<Integer, GUIItem> options) {
         this.title = title;
-        this.update_interval = 0;
-        this.meta = new JSONObject();
+        this.update_interval = ui;
+        this.meta = new JSONObject(meta);        
         this.options = new HashMap<>();
+        this.options.putAll(options);
     }
     
     public String getTitle() {
