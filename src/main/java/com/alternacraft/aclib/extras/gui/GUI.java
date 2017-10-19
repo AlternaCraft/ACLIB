@@ -1,8 +1,11 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.PluginBase;
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import org.bukkit.inventory.Inventory;
 import org.json.simple.JSONObject;
 
@@ -13,35 +16,38 @@ import org.json.simple.JSONObject;
 public abstract class GUI {
 
     protected static final String DEF_NAME = "Chest";
-    
+
     protected static final int MAX_COLS = 9;
-    
+
     protected String title;
     protected int update_interval;
-    
+
     protected final JSONObject meta;
     protected final Map<Integer, GUIItem> options;
 
     public GUI() {
         this(DEF_NAME, 0, new JSONObject(), new HashMap());
     }
-    
+
     public GUI(String title) {
         this(title, 0, new JSONObject(), new HashMap());
     }
-    
+
     public GUI(GUI gui) {
         this(gui.getTitle(), gui.getUpdate_interval(), gui.getMeta(), gui.getOptions());
     }
-    
+
     public GUI(String title, int ui, JSONObject meta, Map<Integer, GUIItem> options) {
         this.title = title;
         this.update_interval = ui;
-        this.meta = new JSONObject(meta);        
-        this.options = new HashMap<>();
-        this.options.putAll(options);
+        this.meta = new JSONObject(meta);
+        this.options = options.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new GUIItem(e.getValue())
+                ));
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -65,15 +71,15 @@ public abstract class GUI {
     public void addMeta(String k, Object v) {
         this.meta.put(k, v);
     }
-    
+
     public Map<Integer, GUIItem> getOptions() {
         return options;
     }
-    
+
     public void addItem(int slot, GUIItem item) {
         this.addItem(slot, item, true);
     }
-    
+
     public void addItem(int slot, GUIItem item, boolean max_slots) {
         if (slot < 0 || (slot >= this.getMaxSlots() && max_slots)) {
             return;
@@ -97,7 +103,7 @@ public abstract class GUI {
                 i.getValue().getCompleteItem()));
         return inventory;
     }
-    
+
     protected String addMetaToTitle() {
         StringBuilder sb = new StringBuilder(this.title);
         JSONObject aux_meta = this.getMeta();
@@ -110,7 +116,7 @@ public abstract class GUI {
     public void fillWith(GUIItem item) {
         for (int i = 0; i < this.getMaxSlots(); i++) {
             if (!this.options.containsKey(i)) {
-                this.options.put(i, item);
+                this.options.put(i, new GUIItem(item));
             }
         }
     }
@@ -128,5 +134,6 @@ public abstract class GUI {
     }
 
     public abstract int getRows();
+
     public abstract int getMaxSlots();
 }

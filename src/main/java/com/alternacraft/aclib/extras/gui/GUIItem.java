@@ -43,7 +43,7 @@ public class GUIItem {
 
     public GUIItem(ItemStack item, String title, boolean glow, String player_head,
             List<String> info, JSONObject meta) {
-        this.item = GUIUtils.removeAttributes(new ItemStack(item));
+        this.item = new ItemStack(item);
 
         this.title = title;
         this.glow = glow;
@@ -129,7 +129,7 @@ public class GUIItem {
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
         aux.setItemMeta(metaaux);
-        return aux;
+        return GUIUtils.removeAttributes(aux);
     }
 
     public ItemStack getItem() {

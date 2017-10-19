@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.langs;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
 import java.io.File;
@@ -35,7 +36,7 @@ import java.util.regex.Pattern;
  */
 public class LangManager {
 
-    public static final String LANG_DIRECTORY = new StringBuilder()
+    public static final String LANG_DIRECTORY = new StringBuilder(PluginBase.DIRECTORY)            
             .append("langs")
             .append(File.separator)
             .toString();
@@ -96,7 +97,7 @@ public class LangManager {
                 String key = entry.getKey();
                 List<Class> value = entry.getValue();
 
-                PluginFile langFile = new PluginFile(key + "_"
+                PluginFile langFile = new PluginFile("." + File.separator, key + "_"
                         + langType.name() + ".yml", false);
 
                 if (!langFile.exists()) {

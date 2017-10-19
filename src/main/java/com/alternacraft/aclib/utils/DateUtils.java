@@ -71,13 +71,24 @@ public class DateUtils {
      * 
      * @return Difference in millis
      */
-    public static int compareDates(Date d1, Date d2) {
+    public static long compareDates(Date d1, Date d2) {
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
 
         c1.setTime(d1);
         c2.setTime(d2);
         
-        return c1.compareTo(c2);      
+        return c1.getTimeInMillis() - c2.getTimeInMillis();
+    }
+    
+    public static boolean sameDate(Date di, Date d2) {
+        Calendar today = Calendar.getInstance();
+        Calendar last = Calendar.getInstance();
+
+        today.setTime(new Date());
+        last.setTime(d2);
+        
+        return today.get(Calendar.YEAR) == last.get(Calendar.YEAR)
+                && today.get(Calendar.DAY_OF_YEAR) == last.get(Calendar.DAY_OF_YEAR);
     }
 }
