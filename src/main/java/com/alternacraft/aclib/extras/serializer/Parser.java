@@ -1,12 +1,11 @@
 package com.alternacraft.aclib.extras.serializer;
 
-import java.util.ArrayList;
+import com.alternacraft.aclib.utils.RegExp;
+import java.util.AbstractMap;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -21,19 +20,16 @@ public class Parser {
         return str.replaceAll(" ", "");
     }
 
-    public static List<HashMap<Map<String, Object>, Map<String, Object>>> stringToList(String str) {
-        List<HashMap<Map<String, Object>, Map<String, Object>>> result = new ArrayList<>();
-
-        Pattern pattern = Pattern.compile(REGEX);
-        Matcher matcher = pattern.matcher(str);
-
-        while (matcher.find()) {
-            HashMap<Map<String, Object>, Map<String, Object>> items = new LinkedHashMap<>();
-            items.put(parseString(matcher.group(1)), parseString(matcher.group(2)));
-            result.add(items);
-        }
-
-        return result;
+    public static List<Map.Entry<Map<String, Object>, Map<String, Object>>> stringToList(String str) {
+        return RegExp.getGroupsWithElements(REGEX, str, 1, 2)
+                .stream()
+                .map(e -> {
+                    return new AbstractMap.SimpleEntry<>(
+                        parseString(e[0]), 
+                        parseString(e[1])
+                    );
+                })
+                .collect(Collectors.toList());
     }
 
     private static Map<String, Object> parseString(String str) {

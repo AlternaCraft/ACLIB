@@ -20,6 +20,7 @@ import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
+import com.alternacraft.aclib.utils.RegExp;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Language manager
@@ -40,6 +40,7 @@ public class LangManager {
             .append("langs")
             .append(File.separator)
             .toString();
+    public static final String ACTUAL_DIR = "." + File.separator;
 
     private static final Map<String, List<Class>> MESSAGES = new HashMap<>();
     private static final Map<String, PluginFile> LOADED_FILES = new HashMap<>();
@@ -97,7 +98,7 @@ public class LangManager {
                 String key = entry.getKey();
                 List<Class> value = entry.getValue();
 
-                PluginFile langFile = new PluginFile("." + File.separator, key + "_"
+                PluginFile langFile = new PluginFile(ACTUAL_DIR, key + "_"
                         + langType.name() + ".yml", false);
 
                 if (!langFile.exists()) {
@@ -284,12 +285,6 @@ public class LangManager {
      * @return Variables
      */
     public static List<String> getVariables(String text) {
-        List<String> variables = new ArrayList<>();
-        Pattern vars = Pattern.compile("(%[\\w_]+%)");
-        Matcher matcher = vars.matcher(text);
-        while (matcher.find()) {
-            variables.add(matcher.group());
-        }
-        return variables;
+        return RegExp.getGroups("(%[\\w_]+%)", text);
     }
 }

@@ -76,9 +76,11 @@ public class ExternalPluginRegisterer {
 
         // Tareas posteriores
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            plugins.keySet().forEach(key -> loadPlugin(key));
             if (this.shouldDisplay) {
                 MessageManager.log(ChatColor.GRAY + "# STARTING INTEGRATION MODULE #");
+            }
+            plugins.keySet().forEach(key -> loadPlugin(key));
+            if (this.shouldDisplay) {                
                 this.enabled.entrySet()
                         .stream()
                         .filter(e -> e.getValue())

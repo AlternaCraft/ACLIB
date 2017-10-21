@@ -18,11 +18,10 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -198,13 +197,9 @@ public class StringsUtils {
     public static TextComponent parseString(String str) {
         TextComponent result = new TextComponent();
 
-        List<String> components = new ArrayList<>();
-
-        Pattern r = Pattern.compile("%((?:\\w+:\\w+:[^%]+\\|?){1,2}\\|[^%]+)%");
-        Matcher m = r.matcher(str);
-        while (m.find()) {          
-            components.add(m.group(1));
-        }
+        List<String> components = RegExp.getGroupsWithElements(
+                "%((?:\\w+:\\w+:[^%]+\\|?){1,2}\\|[^%]+)%", str, 1
+        ).stream().map(arr -> arr[0]).collect(Collectors.toList());
 
         TextComponent[] values = components.stream().map(c -> {
             TextComponent v = new TextComponent();

@@ -1,10 +1,8 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.PluginBase;
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.bukkit.inventory.Inventory;
 import org.json.simple.JSONObject;
