@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 public class RegExp {
 
     /**
-     * variable ESCAPE_STRING to escape a character adding \ at the beginning
+     * variable ESCAPE_STRING to escape a character adding '\' at the beginning
      */
     public static final String ESCAPE_STRING = "(?<!\\\\)";
     
