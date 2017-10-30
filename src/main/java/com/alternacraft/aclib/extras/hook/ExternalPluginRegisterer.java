@@ -91,7 +91,7 @@ public class ExternalPluginRegisterer {
         }, time);
     }
 
-    public boolean isPluginEnabled(String pl) {
+    public boolean isPluginHooked(String pl) {
         return this.enabled.get(pl);
     }
 }

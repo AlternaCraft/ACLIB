@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -72,28 +73,36 @@ public class TimeManager implements Listener {
         this.players.forEach(TimedPlayer::stopSession);
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void startPlayerSession(Player pl) {
         TimedPlayer tPlayer;
-        if (!this.hasPlayer(event.getPlayer())) {
-            tPlayer = new TimedPlayer(event.getPlayer().getUniqueId());
+        if (!this.hasPlayer(pl)) {
+            tPlayer = new TimedPlayer(pl.getUniqueId());
             tPlayer.registerMMListener();
             this.addPlayer(tPlayer);
         } else {
-            tPlayer = this.getPlayer(event.getPlayer());
+            tPlayer = this.getPlayer(pl);
         }
         tPlayer.startSession();
         // First movement
         tPlayer.MM().addLastMovement();
     }
 
-    @EventHandler
-    public void onPlayerLeave(PlayerMoveEvent event) {
-        if (this.hasPlayer(event.getPlayer())) {
-            TimedPlayer pl = this.getPlayer(event.getPlayer());
-            pl.stopSession();
+    public void stopPlayerSession(Player pl) {
+        if (this.hasPlayer(pl)) {
+            TimedPlayer tp = this.getPlayer(pl);
+            tp.stopSession();
             // Avoid add afk time when player is disconnected
-            pl.MM().removeLastMovement();
+            tp.MM().removeLastMovement();
         }
+    }
+
+    @EventHandler
+    private void onPlayerJoin(PlayerJoinEvent event) {
+        this.startPlayerSession(event.getPlayer());
+    }
+
+    @EventHandler
+    private void onPlayerLeave(PlayerMoveEvent event) {
+        this.stopPlayerSession(event.getPlayer());
     }
 }

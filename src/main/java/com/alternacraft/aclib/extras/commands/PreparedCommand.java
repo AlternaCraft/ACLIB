@@ -36,7 +36,7 @@ import org.bukkit.event.Listener;
  */
 public abstract class PreparedCommand extends Command implements Listener {
 
-    private final short arguments;
+    private final int arguments;
     private final boolean only_player;
 
     public PreparedCommand(String cmd, String desc, String usage, String perm, short args,

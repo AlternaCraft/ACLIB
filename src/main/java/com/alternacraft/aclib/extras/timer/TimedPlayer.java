@@ -71,6 +71,11 @@ public class TimedPlayer {
         return true;
     }
 
+    /**
+     * Returns total time in seconds
+     * 
+     * @return Time in seconds
+     */
     public long getTotalOnline() {
         long timeOnline = 0;
 

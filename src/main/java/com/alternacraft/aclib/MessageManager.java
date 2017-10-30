@@ -33,7 +33,7 @@ import org.bukkit.entity.Player;
  */
 public class MessageManager {
     
-    private static final String BREAK_LINE = "\r\n|\n|\r|(?<!\\\\)\\/r|(?<!\\\\)\\/n";
+    private static final String BREAK_LINE = "\r\n|\n|\r|(?<!\\\\)\\/n";
     
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
