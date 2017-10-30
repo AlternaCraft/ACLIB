@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class TimeManager implements Listener {
 
@@ -102,7 +102,7 @@ public class TimeManager implements Listener {
     }
 
     @EventHandler
-    private void onPlayerLeave(PlayerMoveEvent event) {
+    private void onPlayerLeave(PlayerQuitEvent event) {
         this.stopPlayerSession(event.getPlayer());
     }
 }
