@@ -113,6 +113,6 @@ public class ExternalPluginRegisterer {
     }
 
     public boolean isPluginHooked(String pl) {
-        return this.enabled.get(pl);
+        return this.enabled.containsKey(pl) && this.enabled.get(pl);
     }
 }
