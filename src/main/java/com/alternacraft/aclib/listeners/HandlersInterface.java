@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.alternacraft.aclib.extras.hook;
+package com.alternacraft.aclib.listeners;
 
-public interface HookerInterface {
+import org.bukkit.event.Listener;
+
+/**
+ * Handlers behavior
+ * 
+ * @author AlternaCraft
+ */
+public interface HandlersInterface {
 
     /**
-     * Hooks the plugin
+     * Gets a listener
      * 
-     * @return boolean
+     * @return Listener
      */
-    public boolean hook();
-    
-    /**
-     * Returns plugin's name 
-     * 
-     * @return Plugin's name
-     */
-    public String name();    
+    public Listener getListener();
 }

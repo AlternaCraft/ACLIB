@@ -16,9 +16,8 @@
  */
 package com.alternacraft.aclib.langs;
 
-import com.alternacraft.aclib.PluginBase;
-import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.HashMap;
+import java.util.Map;
 
 public enum CommandMessages implements LangInterface {
     // <editor-fold defaultstate="collapsed" desc="MESSAGES">
@@ -40,7 +39,7 @@ public enum CommandMessages implements LangInterface {
     );
     // </editor-fold>
 
-    public final HashMap<Lang, String> locales = new HashMap();
+    public final Map<Lang, String> locales = new HashMap();
 
     /**
      * Define the default languages to load
@@ -54,17 +53,12 @@ public enum CommandMessages implements LangInterface {
     }
 
     @Override
-    public String getText(Lang lang) {
-        return StringsUtils.translateColors(getDefaultText(lang));
+    public Map<Lang, String> getLocales() {
+        return this.locales;
     }
-
+    
     @Override
-    public String getDefaultText(Lang lang) {
-        Lang main = PluginBase.INSTANCE.getMainLanguage();
-        String v = LangManager.getValueFromFile(lang, this);
-        v = (v == null) ? this.locales.get(lang) : v;
-        v = (v == null) ? LangManager.getValueFromFile(main, this) : v;
-        v = (v == null) ? this.locales.get(main) : v;
-        return v;
+    public Enum getEnum() {
+        return this;
     }
 }

@@ -16,28 +16,55 @@
  */
 package com.alternacraft.aclib.langs;
 
+import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.utils.StringsUtils;
+import java.util.Map;
+
 /**
  * Languages behavior
  * 
  * @author AlternaCraft
  */
 public interface LangInterface {
-
+    
     /**
-     * Gets a message with translated colors.
+     * Returns a message with translated colors.
      *
      * @param lang Languages
      * 
      * @return String
      */
-    public String getText(Lang lang);
+    public default String getText(Lang lang) {
+        return StringsUtils.translateColors(getDefaultText(lang));
+    }
 
     /**
-     * Gets a message without translated colors.
+     * Returns a message without translated colors.
      *
      * @param lang Languages
      * 
      * @return String
      */
-    public String getDefaultText(Lang lang);
+    public default String getDefaultText(Lang lang) {
+        Lang main = PluginBase.INSTANCE.getMainLanguage();
+        String v = LangManager.getValueFromFile(lang, this.getEnum());
+        v = (v == null) ? this.getLocales().get(lang) : v;
+        v = (v == null) ? LangManager.getValueFromFile(main, this.getEnum()) : v;
+        v = (v == null) ? this.getLocales().get(main) : v;
+        return v;
+    }
+    
+    /**
+     * Returns locales.
+     * 
+     * @return Map with locales
+     */
+    public Map<Lang, String> getLocales();
+    
+    /**
+     * Returns Enum class.
+     * 
+     * @return Enum
+     */
+    public Enum getEnum();
 }

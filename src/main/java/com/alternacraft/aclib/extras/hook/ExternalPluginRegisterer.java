@@ -25,22 +25,35 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ExternalPluginRegisterer {
 
+    public static final String DEFAULT_TEMPLATE = new StringBuilder()
+            .append(ChatColor.YELLOW)
+            .append("%p%")
+            .append(ChatColor.AQUA)
+            .append(" integrated correctly")
+            .toString();
+
     private final boolean shouldDisplay;
+    private final boolean delimiters;
 
     private final Map<String, HookerInterface> plugins = new HashMap();
     private final Map<String, Boolean> enabled = new HashMap();
 
     public ExternalPluginRegisterer() {
-        this(true);
+        this(true, true);
     }
 
     public ExternalPluginRegisterer(boolean shouldDisplay) {
-        this.shouldDisplay = shouldDisplay;
+        this(shouldDisplay, true);
     }
 
-    public void registerPlugin(String str, HookerInterface hooker) {
-        plugins.put(str, hooker);
-        enabled.put(str, Boolean.FALSE);
+    public ExternalPluginRegisterer(boolean shouldDisplay, boolean delimiters) {
+        this.shouldDisplay = shouldDisplay;
+        this.delimiters = delimiters;
+    }
+
+    public void registerPlugin(HookerInterface hooker) {
+        plugins.put(hooker.name(), hooker);
+        enabled.put(hooker.name(), Boolean.FALSE);
     }
 
     public void loadPlugin(String str) {
@@ -50,45 +63,53 @@ public class ExternalPluginRegisterer {
         }
     }
 
+    public boolean isRegistered(String str) {
+        return this.plugins.containsKey(str);
+    }
+
     public HookerInterface getHooker(String pluginName) {
         return plugins.get(pluginName);
     }
 
     public void loadPlugins() {
-        loadPlugins(5L, new StringBuilder()
-                .append(ChatColor.YELLOW)
-                .append("%p%")
-                .append(ChatColor.AQUA)
-                .append(" integrated correctly")
-                .toString()
-        );
+        loadPlugins(5L, DEFAULT_TEMPLATE);
     }
 
     /**
      * Loads added plugins.
      *
-     * @param time Time to execute the task.
+     * @param tps TPS to execute the task; If 0 then it will be executed
+     * instantly.
      * @param format String with the text to display. %p% will be replaced with
      * the plugin name.
      */
-    public void loadPlugins(long time, String format) {
-        final JavaPlugin plugin = PluginBase.INSTANCE.plugin();
+    public void loadPlugins(long tps, String format) {
+        if (tps == 0) {
+            common(format);
+        } else {
+            final JavaPlugin plugin = PluginBase.INSTANCE.plugin();
+            // Tareas posteriores
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                common(format);
+            }, tps);
+        }
+    }
 
-        // Tareas posteriores
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            if (this.shouldDisplay) {
-                MessageManager.log(ChatColor.GRAY + "# STARTING INTEGRATION MODULE #");
-            }
-            plugins.keySet().forEach(key -> loadPlugin(key));
-            if (this.shouldDisplay) {                
-                this.enabled.entrySet()
-                        .stream()
-                        .filter(e -> e.getValue())
-                        .map(e -> format.replace("%p%", e.getKey()))
-                        .forEach(MessageManager::log);
+    private void common(String format) {
+        if (this.shouldDisplay && this.delimiters) {
+            MessageManager.log(ChatColor.GRAY + "# STARTING INTEGRATION MODULE #");
+        }
+        plugins.keySet().forEach(key -> loadPlugin(key));
+        if (this.shouldDisplay) {
+            this.enabled.entrySet()
+                    .stream()
+                    .filter(e -> e.getValue())
+                    .map(e -> format.replace("%p%", e.getKey()))
+                    .forEach(MessageManager::log);
+            if (this.delimiters) {
                 MessageManager.log(ChatColor.GRAY + "# ENDING INTEGRATION MODULE #");
             }
-        }, time);
+        }
     }
 
     public boolean isPluginHooked(String pl) {

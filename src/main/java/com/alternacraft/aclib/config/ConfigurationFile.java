@@ -174,21 +174,17 @@ public class ConfigurationFile {
     
     private String parseCustomNode(String key, YamlConfiguration oldFile) {
         String result = key + ":" + System.lineSeparator();
-
         Set<String> values = oldFile.getConfigurationSection(key).getKeys(true);
-        for (String value : values) {
+        result = values.stream().map((value) -> {
             String spaces = fillSpaces(value.split("\\.").length);
             String kkey = value.split("\\.")[value.split("\\.").length - 1];
-
             Object content = oldFile.get(key + "." + value);
             String val = "";
-
             if (!(content instanceof MemorySection)) {
                 val = getFilteredString(String.valueOf(content));
             }
-
-            result += spaces + kkey + ": " + val + System.lineSeparator();
-        }
+            return spaces + kkey + ": " + val + System.lineSeparator();
+        }).reduce(result, String::concat);
         return result;
     }    
 
@@ -241,14 +237,18 @@ public class ConfigurationFile {
         // Object type
         if (v instanceof List) {
             List<Object> list = (List<Object>) v; // Saving list
-            for (Object l : list) {
-                String val = getFilteredString(l.toString());
-                res += System.lineSeparator() + spaces + "- " + val;
-            }
+            res = list.stream()
+                    .map(e -> getFilteredString(e.toString()))
+                    .map(val -> System.lineSeparator() + spaces + "- " + val)
+                    .reduce(res, String::concat);
         } else if (v instanceof MemorySection) {
             parent = cKey; // Saving parent
         } else {
-            res += " " + getFilteredString(v.toString()); // saving value
+            // Saving value
+            res = new StringBuilder(res)
+                    .append(" ")
+                    .append(getFilteredString(v.toString()))
+                    .toString();
         }
 
         return res += System.lineSeparator(); // Multiple lines

@@ -16,10 +16,9 @@
  */
 package com.alternacraft.aclib.extras.timer;
 
-import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.listeners.HandlersRegisterer;
 import java.util.HashSet;
 import java.util.Set;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,9 +39,7 @@ public class TimeManager implements Listener {
      */
     public void registerHandler() {
         // Register listener
-        Bukkit.getServer().getPluginManager().registerEvents(
-                this, PluginBase.INSTANCE.plugin()
-        );
+        HandlersRegisterer.load(this);
     }
 
     public boolean addPlayer(TimedPlayer tPlayer) {

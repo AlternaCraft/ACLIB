@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.extras.timer;
 
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.listeners.HandlersRegisterer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -40,6 +41,7 @@ public class MovementManager implements Listener {
     
     public void registerListener() {
         // Register listener
+        HandlersRegisterer.load(this);
         Bukkit.getServer().getPluginManager().registerEvents(
                 this, PluginBase.INSTANCE.plugin()
         );
