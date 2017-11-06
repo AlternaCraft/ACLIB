@@ -230,13 +230,15 @@ public class LangManager {
      *
      * @param lang Language
      * @param key Key
+     * @param match Array of matches
      *
      * @return Message or null
      */
-    public static String findValueInAllFiles(Lang lang, String key) {
+    public static String findValueInAllFiles(Lang lang, String key, String... match) {
         return Arrays.stream(MapUtils.getKeys(MESSAGES))
                 .map(m -> findMessageByKey((String) m, lang.name(), key))
                 .filter(m -> m != null)
+                .filter(p -> match.length == 0 || Arrays.stream(match).anyMatch(m -> p.contains(m)))
                 .findFirst()
                 .orElse(null);
     }
@@ -247,13 +249,15 @@ public class LangManager {
      * @param fname File name without extension
      * @param lang Language
      * @param key Language key
+     * @param match Array of matches
      *
      * @return Translated value or null
      */
-    public static String findValueInFile(String fname, Lang lang, String key) {
+    public static String findValueInFile(String fname, Lang lang, String key, String... match) {
         String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
                 .filter(p -> p.matches(".*\\" + File.separator 
                         + Matcher.quoteReplacement(fname)))
+                .filter(p -> match.length == 0 || Arrays.stream(match).anyMatch(m -> p.contains(m)))
                 .findFirst()
                 .orElse(null);
         if (aux != null) {
@@ -272,8 +276,7 @@ public class LangManager {
      *
      * @see LangInterface
      */
-    public static <T extends Enum> String getValueFromFile(
-            Lang lang, T e) {
+    public static <T extends Enum> String getValueFromFile(Lang lang, T e) {
         String path = MapUtils.getKeyFromList(MESSAGES, e.getDeclaringClass());
         return findMessageByKey(path, lang.name(), e.name());
     }
