@@ -213,6 +213,7 @@ public class LangManager {
      */
     public static void clearMessages() {
         LangManager.MESSAGES.clear();
+        LangManager.LOADED_FILES.clear();
     }
 
     private static String findMessageByKey(String path, String lang, String key) {
@@ -247,13 +248,13 @@ public class LangManager {
      * Find a language value in a file. (if exists)
      *
      * @param fname File name without extension
-     * @param lang Language
+     * @param lang Language name
      * @param key Language key
      * @param match Array of matches
      *
      * @return Translated value or null
      */
-    public static String findValueInFile(String fname, Lang lang, String key, String... match) {
+    public static String findValueInFile(String fname, String lang, String key, String... match) {
         String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
                 .filter(p -> p.matches(".*\\" + File.separator 
                         + Matcher.quoteReplacement(fname)))
@@ -261,7 +262,7 @@ public class LangManager {
                 .findFirst()
                 .orElse(null);
         if (aux != null) {
-            aux = findMessageByKey(aux, lang.name(), key);
+            aux = findMessageByKey(aux, lang, key);
         }
         return aux;
     }
