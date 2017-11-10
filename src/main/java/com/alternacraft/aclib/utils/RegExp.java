@@ -71,7 +71,7 @@ public class RegExp {
         Pattern vars = Pattern.compile(pattern);
         Matcher matcher = vars.matcher(input);
         while (matcher.find()) {
-            data.add(matcher.group());
+            data.add(matcher.group(1));
         }
         
         return data;
