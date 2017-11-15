@@ -108,7 +108,7 @@ public class Serializer {
                 Map<String, Object> keys = new LinkedHashMap();
                 Arrays.asList(nodes[0].split(",")).forEach(kv -> {
                     String[] splitter = kv.split("=");
-                    keys.put(splitter[0], splitter[1]);
+                    keys.put(splitter[0], parseValue(splitter[1]));
                 });
                 Map<String, Object> values = null;
                 if (nodes[1] != null) {
