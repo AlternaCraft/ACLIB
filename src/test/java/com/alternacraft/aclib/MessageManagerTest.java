@@ -153,8 +153,7 @@ public class MessageManagerTest {
         String message = "test6";
         MessageManager.sendCommandSender(cs, message);
         String expResult = new TextComponent(TextComponent.fromLegacyText(
-                MessageManager.prepareString(message))
-        ).toLegacyText();
+                MessageManager.prepareString(message))).toLegacyText();
         assertEquals(expResult, lastmessage);
     }
 
@@ -165,7 +164,8 @@ public class MessageManagerTest {
     public void testSendMessage() {
         String message = "&6test6";
         MessageManager.sendMessage(cs, message);
-        String expResult = StringsUtils.translateColors(message);
+        String expResult = new TextComponent(TextComponent.fromLegacyText(
+                StringsUtils.translateColors(message))).toLegacyText();
         assertEquals(expResult, lastmessage);
     }
 

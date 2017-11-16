@@ -125,7 +125,7 @@ public class MessageManager {
     public static void sendCommandSender(CommandSender cs, String message) {
         String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
-            sendInteractiveText(prepareString(_message), cs);
+            sendInteractiveText(cs, prepareString(_message));
         }
     }
     
@@ -138,7 +138,7 @@ public class MessageManager {
     public static void sendMessage(CommandSender cs, String message) {
         String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
-            cs.sendMessage(StringsUtils.translateColors(_message));
+            sendInteractiveText(cs, StringsUtils.translateColors(_message));
         }
     }
 
@@ -160,7 +160,7 @@ public class MessageManager {
      * @param msg Message
      * @param cs Command Sender
      */
-    public static void sendInteractiveText(String msg, CommandSender cs) {
+    public static void sendInteractiveText(CommandSender cs, String msg) {
         cs.spigot().sendMessage(StringsUtils.interactiveText(msg));
     }
 }
