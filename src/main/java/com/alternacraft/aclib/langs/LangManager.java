@@ -254,7 +254,7 @@ public class LangManager {
      *
      * @return Translated value or null
      */
-    public static String findValueInFile(String fname, String lang, String key, String... match) {
+    public static String findValueInFile(String fname, Lang lang, String key, String... match) {
         String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
                 .filter(p -> p.matches(".*\\" + File.separator 
                         + Matcher.quoteReplacement(fname)))
@@ -262,7 +262,7 @@ public class LangManager {
                 .findFirst()
                 .orElse(null);
         if (aux != null) {
-            aux = findMessageByKey(aux, lang, key);
+            aux = findMessageByKey(aux, lang.name(), key);
         }
         return aux;
     }

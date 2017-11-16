@@ -16,9 +16,12 @@
  */
 package com.alternacraft.aclib;
 
+import com.alternacraft.aclib.utils.StringsUtils;
 import java.lang.reflect.Field;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender.Spigot;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.junit.After;
@@ -28,7 +31,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.Matchers.anyString;
+import org.mockito.Matchers;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import org.mockito.invocation.InvocationOnMock;
@@ -56,17 +59,21 @@ public class MessageManagerTest {
 
     @BeforeClass
     public static void setUpClass() {
-        new MessageManager();
-        
         for (Field f : MessageManager.class.getDeclaredFields()) {
             f.setAccessible(true);
             try {
-                if (f.getName().equals("ERROR")) {
-                    error = (String) f.get(new String());
-                } else if (f.getName().equals("INFO")) {
-                    info = (String) f.get(new String());
-                } else if (f.getName().equals("DEBUG")) {
-                    debug = (String) f.get(new String());
+                switch (f.getName()) {
+                    case "ERROR":
+                        error = (String) f.get(new String());
+                        break;
+                    case "INFO":
+                        info = (String) f.get(new String());
+                        break;
+                    case "DEBUG":
+                        debug = (String) f.get(new String());
+                        break;
+                    default:
+                        break;
                 }
             } catch (IllegalArgumentException | IllegalAccessException ex) {
                 fail();
@@ -84,20 +91,21 @@ public class MessageManagerTest {
         PowerMockito.mockStatic(PluginBase.class);
 
         cs = mock(ConsoleCommandSender.class);
+        Spigot spigot = mock(Spigot.class);
         when(Bukkit.getConsoleSender()).thenReturn(cs);
+        when(cs.spigot()).thenReturn(spigot);
 
         doAnswer((Answer<Void>) (InvocationOnMock invocation) -> {
             Object[] args = invocation.getArguments();
-            lastmessage = (String) args[0];
+            lastmessage = ((String) args[0]);
             return null;
-        }).when(cs).sendMessage(anyString());
+        }).when(cs).sendMessage(Matchers.anyString());
 
-        player = mock(Player.class);
         doAnswer((Answer<Void>) (InvocationOnMock invocation) -> {
             Object[] args = invocation.getArguments();
-            lastmessage = (String) args[0];
+            lastmessage = ((TextComponent) args[0]).toLegacyText();
             return null;
-        }).when(player).sendMessage(anyString());
+        }).when(spigot).sendMessage(Matchers.isA(TextComponent.class));
     }
 
     @After
@@ -144,7 +152,20 @@ public class MessageManagerTest {
     public void testSendCommandSender() {
         String message = "test6";
         MessageManager.sendCommandSender(cs, message);
-        String expResult = MessageManager.prepareString(message);
+        String expResult = new TextComponent(TextComponent.fromLegacyText(
+                MessageManager.prepareString(message))
+        ).toLegacyText();
+        assertEquals(expResult, lastmessage);
+    }
+
+    /**
+     * Test of sendMessage method, of class MessageManager.
+     */
+    @Test
+    public void testSendMessage() {
+        String message = "&6test6";
+        MessageManager.sendMessage(cs, message);
+        String expResult = StringsUtils.translateColors(message);
         assertEquals(expResult, lastmessage);
     }
 

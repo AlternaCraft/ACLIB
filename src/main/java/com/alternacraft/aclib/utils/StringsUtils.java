@@ -194,7 +194,7 @@ public class StringsUtils {
      *
      * @return Awesome text
      */
-    public static TextComponent parseString(String str) {
+    public static TextComponent interactiveText(String str) {
         TextComponent result = new TextComponent();
 
         List<String> components = RegExp.getGroupsWithElements(

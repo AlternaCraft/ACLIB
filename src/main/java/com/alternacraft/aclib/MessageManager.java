@@ -21,10 +21,8 @@ import com.alternacraft.aclib.langs.LangManager;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.StringsUtils;
 import java.util.List;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Class for sending messages.
@@ -48,9 +46,7 @@ public class MessageManager {
     public static void log(String message, String prefix) {
         String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
-            Bukkit.getConsoleSender().sendMessage(
-                    prepareString(prefix + _message)
-            );
+            Bukkit.getConsoleSender().sendMessage(prepareString(prefix + _message));
         }
     }
 
@@ -116,40 +112,21 @@ public class MessageManager {
             for (int i = 0; i < replace.length; i++) {
                 msg = msg.replace(variables.get(i), replace[i]);
             }
-            sendPlayer(p, msg);
+            sendCommandSender(p, msg);
         });
     }
 
     /**
      * Sends a message to a player.
      *
-     * @param player The player
-     * @param message The message
-     */
-    public static void sendPlayer(Player player, String message) {
-        String[] messages = message.split(BREAK_LINE);
-        for (String _message : messages) {
-            player.sendMessage(prepareString(_message));
-        }
-    }
-
-    /**
-     * Sends a message to a command sender.
-     *
-     * @param cs The command sender
-     * @param message The message
+     * @param cs Receiver
+     * @param message Message
      */
     public static void sendCommandSender(CommandSender cs, String message) {
         String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
-            cs.sendMessage(
-                    prepareString(_message)
-            );
+            sendInteractiveText(prepareString(_message), cs);
         }
-    }
-    
-    public static void sendTextComponent(Player pl, TextComponent text) {
-        pl.spigot().sendMessage(text);
     }
     
     /**
@@ -173,7 +150,17 @@ public class MessageManager {
      * @return The prepared message
      */
     public static String prepareString(String message) {
-        return StringsUtils.translateColors(
-                PluginBase.INSTANCE.pluginPrefix() + " &r" + message);
+        return StringsUtils.translateColors(PluginBase.INSTANCE.pluginPrefix() + " &r" + message);
+    }
+    
+    /**
+     * Sends an interactive text if it is defined as it.
+     * Check it out to {@link com.alternacraft.aclib.utils.StringsUtils#interactiveText(java.lang.String) interactiveText}
+     * 
+     * @param msg Message
+     * @param cs Command Sender
+     */
+    public static void sendInteractiveText(String msg, CommandSender cs) {
+        cs.spigot().sendMessage(StringsUtils.interactiveText(msg));
     }
 }

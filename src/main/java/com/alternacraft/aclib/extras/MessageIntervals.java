@@ -61,7 +61,7 @@ public class MessageIntervals {
             }
         }        
         
-        MessageManager.sendPlayer(pl, message);        
+        MessageManager.sendCommandSender(pl, message);        
         LAST.get(playerUUID).put(message, new Date().getTime());
     }
     
