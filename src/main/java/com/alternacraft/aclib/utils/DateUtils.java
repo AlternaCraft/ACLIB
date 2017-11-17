@@ -36,8 +36,8 @@ public class DateUtils {
      * 
      * @return String
      */
-    public static String getCurrentTimeStamp() {
-        return getCurrentTimeStamp(DEFAULT_FORMAT);
+    public static String getCurrentTime() {
+        return getCurrentTime(DEFAULT_FORMAT);
     }
     
     /**
@@ -48,10 +48,8 @@ public class DateUtils {
      * @see SimpleDateFormat
      * @return String
      */
-    public static String getCurrentTimeStamp(String format) {
-        SimpleDateFormat sdfDate = new SimpleDateFormat(format);
-        Date now = new Date();
-        return sdfDate.format(now);
+    public static String getCurrentTime(String format) {
+        return new SimpleDateFormat(format).format(new Date());
     }
     
     /**
@@ -61,24 +59,6 @@ public class DateUtils {
      */
     public static DateFormat getDefaultDateFormat() {
         return new SimpleDateFormat(DEFAULT_FORMAT);
-    }
-    
-    /**
-     * Compare two dates
-     * 
-     * @param d1 Date 1
-     * @param d2 Date 2
-     * 
-     * @return Difference in millis
-     */
-    public static long compareDates(Date d1, Date d2) {
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-
-        c1.setTime(d1);
-        c2.setTime(d2);
-        
-        return c1.getTimeInMillis() - c2.getTimeInMillis();
     }
     
     public static boolean sameDate(Date di, Date d2) {

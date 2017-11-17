@@ -114,7 +114,7 @@ public class PluginLog extends File {
         }
 
         // Writing new values
-        resul += "### " + DateUtils.getCurrentTimeStamp() + " ###\n";
+        resul += "### " + DateUtils.getCurrentTime() + " ###\n";
         for (String message : messages) {
             resul += message + "\n";
         }                
