@@ -244,6 +244,10 @@ public class LangManager {
                 .orElse(null);
     }
 
+    public static String findValueInFile(String fname, String lang, String key, String... match) {
+        return findValueInFile(fname, Lang.valueOf(lang), key, match);
+    }
+    
     /**
      * Find a language value in a file. (if exists)
      *
