@@ -60,18 +60,22 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         Map<String, UUID> uuidMap = new HashMap<>();
         int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
         for (int i = 0; i < requests; i++) {
+            int from = i * 100;
+            int to = Math.min((i + 1) * 100, names.size());
             try {
                 HttpURLConnection connection = createConnection();
-                String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+                String body = JSONArray.toJSONString(names.subList(from, to));
                 writeBody(connection, body);
-                JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
+                JSONArray array = (JSONArray) jsonParser.parse(
+                        new InputStreamReader(connection.getInputStream())
+                );                
                 array.forEach(profile -> {
                     JSONObject jsonProfile = (JSONObject) profile;
                     String id = (String) jsonProfile.get("id");
                     String name = (String) jsonProfile.get("name");
-                    UUID uuid = UUIDFetcher.getUUID(id);
+                    UUID uuid = this.getUUID(id);
                     uuidMap.put(name, uuid);
-                    CACHE.put(name, uuid);
+                    CACHE.put(name.toLowerCase(), uuid);
                 });
                 if (rateLimiting && i != requests - 1) {
                     Thread.sleep(100L);
@@ -83,14 +87,14 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return uuidMap;
     }
 
-    private static void writeBody(HttpURLConnection connection, String body) throws Exception {
+    private void writeBody(HttpURLConnection connection, String body) throws Exception {
         try (OutputStream stream = connection.getOutputStream()) {
             stream.write(body.getBytes());
             stream.flush();
         }
     }
 
-    private static HttpURLConnection createConnection() throws Exception {
+    private HttpURLConnection createConnection() throws Exception {
         URL url = new URL(PROFILE_URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -101,28 +105,52 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return connection;
     }
 
-    private static UUID getUUID(String id) {
+    private UUID getUUID(String id) {
         return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) 
                 + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) 
                 + "-" + id.substring(20, 32));
     }
-
-    private static UUID getUUIDOf(String name) {
-        // Optimizacion
-        if (CACHE.containsKey(name)) {
-            return CACHE.get(name);
-        }
-
-        Map<String, UUID> uuids = new UUIDFetcher(Arrays.asList(name)).call();
-
-        if (uuids.containsKey(name)) {
-            return uuids.get(name);
-        } else {
-            return null;
-        }
-    }
     //</editor-fold>
 
+    public static Map<String, UUID> getUUIDOf(String... names) {
+        Map<String, UUID> uuids = new HashMap<>();
+        boolean online = Bukkit.getServer().getOnlineMode();
+
+        // Copy
+        List<String> aux = new ArrayList(Arrays.asList(names));
+        
+        // Optimization
+        if (online) {
+            for (String n : names) {
+                if (CACHE.containsKey(n.toLowerCase())) {
+                    uuids.put(n, CACHE.get(n.toLowerCase()));
+                    aux.remove(n);
+                }            
+            }
+        }
+        
+        if (!aux.isEmpty()) {
+            // Check case sensitive
+            OfflinePlayer[] offplayers = Bukkit.getServer().getOfflinePlayers();
+            for (OfflinePlayer offplayer : offplayers) {
+                String name = offplayer.getName();
+                if (aux.contains(name)) {
+                    uuids.put(name, offplayer.getUniqueId());
+                    aux.remove(name);
+                }
+            }        
+            if (online) {
+                uuids.putAll(new UUIDFetcher(aux).call());
+            } else {
+                aux.forEach((n) -> {
+                    uuids.put(n, Bukkit.getServer().getOfflinePlayer(n).getUniqueId());
+                });
+            }
+        }
+  
+        return uuids;
+    }        
+    
     /**
      * Método para obtener un UUID según el tipo de servidor
      * 
@@ -143,24 +171,11 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
      * @return UUID
      */
     public static UUID getUUIDPlayer(String name) {
-        UUID uuid;
-
-        // Comprobacion case sensitive, si ha entrado alguna vez
-        OfflinePlayer[] offplayers = Bukkit.getServer().getOfflinePlayers();
-        for (OfflinePlayer offplayer : offplayers) {
-            if (offplayer.getName().equals(name)) {
-                return offplayer.getUniqueId();                
-            }
-        }
-        
-        if (Bukkit.getServer().getOnlineMode()) {
-            // Puede no haber entrado
-            uuid = UUIDFetcher.getUUIDOf(name);
+        Map<String, UUID> uuids = getUUIDOf(name);
+        if (!uuids.isEmpty()) {
+            return uuids.values().iterator().next();
         } else {
-            // Metodo guarro
-            uuid = Bukkit.getServer().getOfflinePlayer(name).getUniqueId();
+            return null;
         }
-
-        return uuid;
     }
 }

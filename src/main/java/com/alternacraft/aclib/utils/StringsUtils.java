@@ -189,6 +189,8 @@ public class StringsUtils {
      *
      * Template: %click:(cmd|info):value | [hover:(text|item):value] |
      * displayed_text%
+     * 
+     * Use "//" to write multiple lore lines
      *
      * @param str String
      *
@@ -229,8 +231,8 @@ public class StringsUtils {
                         case "hover":
                             HoverEvent he;
                             if (data[1].equals("text")) {
-                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                        TextComponent.fromLegacyText(data[2]));
+                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
+                                        TextComponent.fromLegacyText(data[2].replace("//", "\n")));
                             } else {
                                 he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, null);
                                 //ce = new ClickEvent(HoverEvent.Action.SHOW_ITEM,);
