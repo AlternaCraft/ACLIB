@@ -12,7 +12,6 @@ import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.INTEGER;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.LONG;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.REAL;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.TEXT;
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
@@ -33,7 +32,7 @@ public abstract class SQLConnection {
     //<editor-fold defaultstate="collapsed" desc="VARS + CONSTRUCTOR">    
     public static enum DRIVERS {
         MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://"),
-        SQLITE("org.sqlite.SQLiteDataSource", "jdbc:sqlite:");
+        SQLITE("org.sqlite.JDBC", "jdbc:sqlite:");
         
         private final String driver;
         private final String prefix;
@@ -89,21 +88,20 @@ public abstract class SQLConnection {
 
     //<editor-fold defaultstate="collapsed" desc="CONNECTION">
     public void connectDB() throws PluginException {
-        HikariConfig config = new HikariConfig();
-        
-        config.setDriverClassName(this.driver.getDriver());
-        config.setJdbcUrl(this.driver.getCompleteURL(this.url));
-        
+        HikariDataSource ds = new HikariDataSource();
+
+        ds.setDriverClassName(this.driver.getDriver());
+        ds.setJdbcUrl(this.driver.getCompleteURL(this.url));
+
         switch (this.driver) {
             case MYSQL:
-                config.setUsername(this.user);
-                config.setPassword(this.password);
+                ds.setUsername(this.user);
+                ds.setPassword(this.password);
                 break;
             case SQLITE:
-                config.setConnectionInitSql("PRAGMA foreign_keys = ON");
+                ds.setConnectionInitSql("PRAGMA foreign_keys = ON");
                 break;
         }
-        HikariDataSource ds = new HikariDataSource(config);
         try {
             connection = ds.getConnection();
             status = STATUS_AVAILABLE.CONNECTED;
