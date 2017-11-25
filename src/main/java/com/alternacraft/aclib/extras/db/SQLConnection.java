@@ -12,6 +12,8 @@ import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.INTEGER;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.LONG;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.REAL;
 import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.TEXT;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,24 +30,89 @@ import java.util.Map;
  */
 public abstract class SQLConnection {
 
-    /**
-     * constante DRIVER_MYSQL para definir el driver de MySQL
-     */
-    protected static final String DRIVER_MYSQL = "com.mysql.jdbc.Driver";
+    //<editor-fold defaultstate="collapsed" desc="VARS + CONSTRUCTOR">    
+    public static enum DRIVERS {
+        MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://"),
+        SQLITE("org.sqlite.SQLiteDataSource", "jdbc:sqlite:");
+        
+        private final String driver;
+        private final String prefix;
 
-    /**
-     * constante DRIVER_SQLITE para definir el driver de SQLite
-     */
-    protected static final String DRIVER_SQLITE = "org.sqlite.JDBC";
+        DRIVERS(String driver, String prefix) {
+            this.driver = driver;
+            this.prefix = prefix;
+        }
+
+        public String getDriver() {
+            return driver;
+        }
+        
+        public String getCompleteURL(String to) {
+            return this.prefix + to;
+        }
+    }
 
     public static enum STATUS_AVAILABLE {
         CONNECTED,
         NOT_CONNECTED;
     }
+
+    private final static String DEFAULT_USER = "root";
+    private final static String DEFAULT_PASS = "";
     
     public STATUS_AVAILABLE status = STATUS_AVAILABLE.NOT_CONNECTED;
     
     protected java.sql.Connection connection;
+
+    protected DRIVERS driver;
+    protected String url, user, password;
+
+    public SQLConnection(DRIVERS driver, String url) {
+        this(driver, url, DEFAULT_USER, DEFAULT_PASS);
+    }
+
+    public SQLConnection(DRIVERS driver, String url, String user, String password) {
+        this.driver = driver;
+        this.url = url;
+        this.user = user;
+        this.password = password;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="CONNECTION">
+    public void connectDB() throws PluginException {
+        HikariConfig config = new HikariConfig();
+        
+        config.setDriverClassName(this.driver.getDriver());
+        config.setJdbcUrl(this.driver.getCompleteURL(this.url));
+        
+        switch (this.driver) {
+            case MYSQL:
+                config.setUsername(this.user);
+                config.setPassword(this.password);
+                break;
+            case SQLITE:
+                config.setConnectionInitSql("PRAGMA foreign_keys = ON");
+                break;
+        }
+        HikariDataSource ds = new HikariDataSource(config);
+        try {
+            connection = ds.getConnection();
+            status = STATUS_AVAILABLE.CONNECTED;
+        } catch (SQLException ex) {
+            status = STATUS_AVAILABLE.NOT_CONNECTED;
+            throw new PluginException("SQL Exception: " + ex.getErrorCode());
+        }
+        this.load();
+    }
     
     public boolean isConnected() throws PluginException {
         boolean valida = false;
@@ -77,8 +144,10 @@ public abstract class SQLConnection {
         } catch (SQLException | AbstractMethodError ex) {
         }
     }
-    
-    public List<Map<String, Object>> executeQuery(CustomStatement query, 
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="QUERIES">    
+    public List<Map<String, Object>> executeQuery(CustomStatement query,
             Object... values) throws SQLException {
         List<Map<String, Object>> data = new ArrayList();
 
@@ -118,7 +187,7 @@ public abstract class SQLConnection {
         return data;
     }
 
-    public int executeUpdate(CustomStatement query, Object... values) 
+    public int executeUpdate(CustomStatement query, Object... values)
             throws SQLException {
         int result;
         String id = query.getMethod().name() + " ON " + query.getTables()[0].getName().toUpperCase();
@@ -130,7 +199,7 @@ public abstract class SQLConnection {
         return result;
     }
 
-    public int executeUpdateAndGet(CustomStatement query, Object... values) 
+    public int executeUpdateAndGet(CustomStatement query, Object... values)
             throws SQLException {
         int key = -1;
         String id = query.getMethod().name() + " ON " + query.getTables()[0].getName().toUpperCase();
@@ -150,13 +219,13 @@ public abstract class SQLConnection {
         return key;
     }
 
-    public PreparedStatement basics(CustomStatement query, Object... values) 
+    public PreparedStatement basics(CustomStatement query, Object... values)
             throws SQLException {
         boolean extended = query.getFields().length > 0 && query.getGConditions().hasConditions()
                 && (query.isThisMethod(METHOD.INSERT)
-                    || query.isThisMethod(METHOD.UPDATE));
+                || query.isThisMethod(METHOD.UPDATE));
         String qr = query.getByMethod();
-        MessageManager.logDebug(qr + " - extended: " + extended + " | " 
+        MessageManager.logDebug(qr + " - extended: " + extended + " | "
                 + Arrays.asList(values).toString());
         PreparedStatement ps = this.connection.prepareStatement(qr);
         if (query.isThisMethod(METHOD.INSERT)
@@ -214,7 +283,7 @@ public abstract class SQLConnection {
         }
         return ps;
     }
+    //</editor-fold>   
 
-    public abstract void connectDB(String... args) throws PluginException;
     public abstract void load() throws PluginException;
 }

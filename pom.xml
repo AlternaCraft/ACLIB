@@ -23,6 +23,10 @@
             <id>bstats-repo-s</id>
             <url>http://repo.bstats.org/content/repositories/snapshots/</url>
         </repository>     
+        <repository>
+          <id>central</id>
+          <url>https://repo1.maven.org/maven2</url>
+        </repository>
     </repositories>
     
     <dependencies>
@@ -40,7 +44,19 @@
             <version>1.2</version>
             <scope>compile</scope>
         </dependency>
-        
+        <!-- HikariCP -->
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.7.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency> 
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.8.0-beta0</version>
+            <scope>compile</scope>
+        </dependency>
         <!-- TESTING DEPENDENCIES -->
         <dependency>
             <groupId>junit</groupId>
@@ -114,7 +130,6 @@
                 </executions>
             </plugin>
                         
-            <!-- BStats -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -125,14 +140,6 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats.bukkit</pattern>
-                                    <shadedPattern>com.alternacraft.aclib.extras</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

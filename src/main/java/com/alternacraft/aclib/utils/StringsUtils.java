@@ -19,7 +19,10 @@ package com.alternacraft.aclib.utils;
 import com.alternacraft.aclib.MessageManager;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -164,7 +167,7 @@ public class StringsUtils {
     }
 
     /**
-     * Return the Color by name.
+     * Returns the Color by name.
      *
      * @param color Color name
      *
@@ -183,7 +186,37 @@ public class StringsUtils {
         }
         return null;
     }
+    
+    private static final Map<String, Long> PAIRS = new HashMap();
+    private static final Pattern FORMAT;
+    static {
+        PAIRS.put("d", 1000L * 3600L * 24L);
+        PAIRS.put("h", 1000L * 3600L);
+        PAIRS.put("m", 1000L * 60L);
+        PAIRS.put("s", 1000L);
+        FORMAT = Pattern.compile("(\\d+)([dhms])", Pattern.CASE_INSENSITIVE);
+    }    
 
+    /**
+     * Returns time String in millis.
+     * Format example: [-]5d 3m 4s
+     * 
+     * @param time String
+     * 
+     * @return time in millis
+     */
+    public static long parseStrTimeToMillis(String time) {
+        long millis = 0;
+        boolean minus = false;
+        if (!time.trim().isEmpty()) {
+            minus = time.charAt(0) == '-';
+            Matcher m = FORMAT.matcher(time);
+            while (m.find())
+                millis += Integer.valueOf(m.group(1)) * PAIRS.get(m.group(2));
+        }
+        return (minus) ? -millis : millis;
+    }
+    
     /**
      * Returns an interactive text.
      *

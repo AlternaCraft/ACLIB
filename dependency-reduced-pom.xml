@@ -80,14 +80,6 @@
             <goals>
               <goal>shade</goal>
             </goals>
-            <configuration>
-              <relocations>
-                <relocation>
-                  <pattern>org.bstats.bukkit</pattern>
-                  <shadedPattern>com.alternacraft.aclib.extras</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -124,6 +116,10 @@
     <repository>
       <id>bstats-repo-s</id>
       <url>http://repo.bstats.org/content/repositories/snapshots/</url>
+    </repository>
+    <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
     </repository>
   </repositories>
   <dependencies>
