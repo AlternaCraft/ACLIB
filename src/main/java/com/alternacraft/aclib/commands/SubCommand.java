@@ -68,7 +68,7 @@ public class SubCommand {
      * @return SubCommand description
      */
     public <T extends Enum & LangInterface> String getDescription(Lang lang) {
-        return ((T) description).getDefaultText(lang);
+        return ((T) description).getText(lang);
     }
 
     /**

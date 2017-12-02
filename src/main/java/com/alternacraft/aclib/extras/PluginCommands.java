@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.extras;
 
+import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.CommandListener;
 import com.alternacraft.aclib.commands.SubCommand;
@@ -81,8 +82,11 @@ public class PluginCommands implements SubCommandExecutor {
             }
             return true;
         }).forEachOrdered(map -> {
-            cs.sendMessage("  /" + ChatColor.BLUE + map.getKey().getUsage() + ChatColor.RESET
-                    + " - " + ChatColor.GRAY + map.getKey().getDescription(lang));
+            String it = "%click:info:/" + map.getKey().getUsage() + "|" 
+                    + ChatColor.BLUE + map.getKey().getUsage() + "%";
+            MessageManager.sendInteractiveText(cs, "  /" + it 
+                    + ChatColor.RESET + " - " + ChatColor.GRAY 
+                    + map.getKey().getDescription(lang));
         });
 
         cs.sendMessage(this.footer);
