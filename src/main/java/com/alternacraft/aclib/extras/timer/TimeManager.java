@@ -94,12 +94,12 @@ public class TimeManager implements Listener {
     }
 
     @EventHandler
-    private void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         this.startPlayerSession(event.getPlayer());
     }
 
     @EventHandler
-    private void onPlayerLeave(PlayerQuitEvent event) {
+    public void onPlayerLeave(PlayerQuitEvent event) {
         this.stopPlayerSession(event.getPlayer());
     }
 }

@@ -36,12 +36,8 @@ public class OverridedCommands implements Listener {
     
     private static final Map<String, PreparedCommand> OVERRIDED_COMMANDS = new HashMap();
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.isCancelled()) {
-            return;
-        }
-        
         String msg = event.getMessage().toLowerCase();
         Player pl = event.getPlayer();
         

@@ -97,7 +97,7 @@ public class MovementManager implements Listener {
         this.lastMovement = 0;
     }
     
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerMoves(PlayerMoveEvent event) {
         Location from = event.getFrom();
         Location to = event.getTo();        

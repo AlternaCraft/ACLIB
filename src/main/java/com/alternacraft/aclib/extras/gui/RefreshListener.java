@@ -29,7 +29,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
  */
 public class RefreshListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onOpen(InventoryOpenEvent event) {
         String title = event.getInventory().getTitle();
         Player pl = (Player) event.getPlayer();
@@ -43,7 +43,7 @@ public class RefreshListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClose(InventoryCloseEvent event) {
         String title = event.getInventory().getTitle();
         Player pl = (Player) event.getPlayer();
