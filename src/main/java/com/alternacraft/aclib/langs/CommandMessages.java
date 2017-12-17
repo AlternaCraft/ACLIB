@@ -36,6 +36,14 @@ public enum CommandMessages implements LangInterface {
     ONLY_PLAYERS(
             "&c¡No puedes ejecutar ese comando!",
             "&cYou can't execute that command!"
+    ),
+    COMMAND_OPTION(
+            "<opción>",
+            "<option>"
+    ),
+    COMMAND_OPTION_LIST(
+            "&eLista de opciones:",
+            "&eOptions list:"
     );
     // </editor-fold>
 

@@ -97,7 +97,7 @@ public class CommandListener implements CommandExecutor {
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
                 MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE
-                        .getText(l).replace("%USAGE%", cmdArgument.getUsage()));
+                        .getText(l).replace("%USAGE%", cmdArgument.getUsage(this.command, l)));
             }
         } else {
             MessageManager.sendCommandSender(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));

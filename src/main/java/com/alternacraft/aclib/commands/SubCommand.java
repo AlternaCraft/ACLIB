@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.commands;
 
+import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.langs.LangInterface;
 
@@ -27,18 +28,26 @@ import com.alternacraft.aclib.langs.LangInterface;
 public class SubCommand {
 
     private final String command;
-    private final String usage;
     private final Enum description;
     private final Condition condition;
     private final String[] aliases;
+    private final SubCommand[] arguments;
 
-    public SubCommand(String cmd, String usage, Enum desc, Condition condition,
-            String[] aliases) {
+    public SubCommand(String cmd, Enum desc, Condition condition,
+            String[] aliases, SubCommand[] arguments) {
         this.command = cmd;
-        this.usage = usage;
         this.description = desc;
         this.condition = condition;
         this.aliases = aliases;
+        this.arguments = arguments;
+    }
+
+    public SubCommand(String command, Enum description) {
+        this(command, description, null, new String[0], new SubCommand[0]);
+    }
+
+    public SubCommand(String command) {
+        this(command, null);
     }
 
     /**
@@ -49,26 +58,52 @@ public class SubCommand {
     public String getCommand() {
         return command;
     }
-
+    
+    /**
+     * Returns full command.
+     * 
+     * @param cmd String command
+     * 
+     * @return Full command
+     */
+    public String getFullCommand(String cmd) {
+        return cmd + ((!this.command.isEmpty()) ? " " + this.command 
+                + ((this.arguments.length > 0) ? " " : "") : "");
+    }
+    
     /**
      * Returns usage.
-     *
-     * @return Usage
+     * 
+     * @param cmd Main command
+     * @param lang Language
+     * 
+     * @return String with the usage
      */
-    public String getUsage() {
-        return usage;
+    public String getUsage(String cmd, Lang lang) {
+        return this.getFullCommand(cmd) + ((this.arguments.length > 0) 
+                ? (this.arguments.length == 1) ? this.arguments[0].getCommand() : 
+                CommandMessages.COMMAND_OPTION.getText(lang) : "");
     }
-
+    
+    /**
+     * Has description?
+     * 
+     * @return True if description != null
+     */
+    public boolean hasDescription() {
+        return this.description != null;
+    }
+    
     /**
      * Returns command description by language.
      *
      * @param <T> Lang enum
      * @param lang Language
      *
-     * @return SubCommand description
+     * @return SubCommand description or empty string
      */
     public <T extends Enum & LangInterface> String getDescription(Lang lang) {
-        return ((T) description).getText(lang);
+        return !this.hasDescription() ? "" : ((T) description).getText(lang);
     }
 
     /**
@@ -79,7 +114,7 @@ public class SubCommand {
     public Condition getCondition() {
         return condition;
     }
-
+    
     /**
      * Returns the aliases
      *
@@ -88,4 +123,13 @@ public class SubCommand {
     public String[] getAliases() {
         return aliases;
     }
+
+    /**
+     * Returns all arguments as subcommands
+     * 
+     * @return Array of subcommands
+     */
+    public SubCommand[] getArguments() {
+        return arguments;
+    }    
 }

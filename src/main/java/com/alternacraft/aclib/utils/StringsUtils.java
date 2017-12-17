@@ -233,20 +233,22 @@ public class StringsUtils {
         TextComponent result = new TextComponent();
 
         List<String> components = RegExp.getGroupsWithElements(
-                "%((?:\\w+:\\w+:[^%]+\\|?){1,2}\\|[^%]+)%", str, 1
+                "%((?:\\w+:\\w+:[^%]+" + RegExp.ESCAPE_STRING + "\\|?){1,2}"
+                        + RegExp.ESCAPE_STRING + "\\|[^%]+)%", str, 1
         ).stream().map(arr -> arr[0]).collect(Collectors.toList());
 
         TextComponent[] values = components.stream().map(c -> {
             TextComponent v = new TextComponent();
-            String[] elements = c.split("\\|");
+            String[] elements = c.split(RegExp.ESCAPE_STRING + "\\|");
             for (int i = 0; i < elements.length; i++) {
-                String e = elements[i];
+                String e = elements[i].replace("\\|", "|");
                 if (i == elements.length - 1) {
+                    // Display text
                     Arrays.stream(TextComponent.fromLegacyText(e))
                             .forEach(v::addExtra);
                     break;
                 }
-                String[] data = e.split(":");
+                String[] data = e.split(RegExp.ESCAPE_STRING + ":");
                 if (data.length == 3) {
                     String stripped_message = StringsUtils.stripColors(data[2]);
                     switch (data[0]) {
@@ -265,7 +267,10 @@ public class StringsUtils {
                             HoverEvent he;
                             if (data[1].equals("text")) {
                                 he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
-                                        TextComponent.fromLegacyText(data[2].replace("//", "\n")));
+                                        TextComponent.fromLegacyText(data[2]
+                                                .replace("//", "\n")
+                                                .replace("\\:", ":")
+                                        ));
                             } else {
                                 he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, null);
                                 //ce = new ClickEvent(HoverEvent.Action.SHOW_ITEM,);

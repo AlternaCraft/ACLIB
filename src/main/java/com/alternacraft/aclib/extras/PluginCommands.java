@@ -21,8 +21,10 @@ import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.CommandListener;
 import com.alternacraft.aclib.commands.SubCommand;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
+import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
+import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -82,15 +84,35 @@ public class PluginCommands implements SubCommandExecutor {
             }
             return true;
         }).forEachOrdered(map -> {
-            String it = "%click:info:/" + map.getKey().getUsage() + "|" 
-                    + ChatColor.BLUE + map.getKey().getUsage() + "%";
-            MessageManager.sendInteractiveText(cs, "  /" + it 
-                    + ChatColor.RESET + " - " + ChatColor.GRAY 
+            boolean addHover = map.getKey().getArguments().length > 1 
+                    || map.getKey().getArguments().length == 1 
+                    && map.getKey().getArguments()[0].hasDescription();
+            String full_command = map.getKey().getFullCommand(this.cl.getCommand());
+            String usage = map.getKey().getUsage(this.cl.getCommand(), lang);
+            String it = "%click:info:/" + full_command + "|"
+                    + ((!addHover) ? "" : "hover:text:" 
+                    + this.generateHoverMenu(map.getKey().getArguments(), lang) + "|")
+                    + ChatColor.BLUE + usage + "%";
+            MessageManager.sendInteractiveText(cs, "  /" + it
+                    + ChatColor.RESET + " - " + ChatColor.GRAY
                     + map.getKey().getDescription(lang));
         });
 
         cs.sendMessage(this.footer);
 
         return true;
+    }
+
+    private String generateHoverMenu(SubCommand[] arguments, Lang lang) {
+        return CommandMessages.COMMAND_OPTION_LIST.getText(lang)
+                .replace(":", "\\:")
+                + "//"
+                + String.join("//", Arrays.stream(arguments)
+                        .map(v -> {
+                            return ChatColor.RESET + "- " + v.getCommand()
+                                    + "\\: " + ChatColor.GRAY + v.getDescription(lang);
+                        })
+                        .toArray(String[]::new)
+                );
     }
 }

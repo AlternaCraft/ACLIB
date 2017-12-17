@@ -80,6 +80,14 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <relocations>
+                <relocation>
+                  <pattern>org.bstats.bukkit</pattern>
+                  <shadedPattern>${project.groupId}.${project.artifactId}.extras.bstats</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
           </execution>
         </executions>
       </plugin>

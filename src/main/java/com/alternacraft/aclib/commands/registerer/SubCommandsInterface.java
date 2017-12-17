@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.commands.registerer;
 
 import com.alternacraft.aclib.commands.Condition;
+import com.alternacraft.aclib.commands.SubCommand;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 
 /**
@@ -32,13 +33,6 @@ public interface SubCommandsInterface {
      * @return String with the subcommand
      */
     public String getSubCommand();
-    
-    /**
-     * Returns usage.
-     * 
-     * @return String with the usage
-     */
-    public String getUsage();
 
     /**
      * Returns description.
@@ -69,4 +63,11 @@ public interface SubCommandsInterface {
      * @return Array with the alias
      */
     public String[] getAliases();
+    
+    /**
+     * Returns subcommand arguments.
+     * 
+     * @return Array with subcommands
+     */
+    public SubCommand[] getArguments();   
 }
