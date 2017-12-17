@@ -1,0 +1,15 @@
+com.alternacraft.aclib
+com.alternacraft.aclib.commands
+com.alternacraft.aclib.commands.registerer
+com.alternacraft.aclib.config
+com.alternacraft.aclib.exceptions
+com.alternacraft.aclib.extras
+com.alternacraft.aclib.extras.commands
+com.alternacraft.aclib.extras.crypt
+com.alternacraft.aclib.extras.db
+com.alternacraft.aclib.extras.gui
+com.alternacraft.aclib.extras.hook
+com.alternacraft.aclib.extras.timer
+com.alternacraft.aclib.langs
+com.alternacraft.aclib.listeners
+com.alternacraft.aclib.utils
