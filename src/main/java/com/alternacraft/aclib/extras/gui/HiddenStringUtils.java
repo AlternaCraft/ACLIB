@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2017 AlternaCraft
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.alternacraft.aclib.extras.gui;
 
 import java.nio.charset.Charset;
@@ -34,14 +50,14 @@ public class HiddenStringUtils {
 
     public static String replaceHiddenString(String input, String hiddenString) {
         if (input == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
 
         int start = input.indexOf(SEQUENCE_HEADER);
         int end = input.indexOf(SEQUENCE_FOOTER);
 
         if (start < 0 || end < 0) {
-            return null;
+            throw new IndexOutOfBoundsException("Invalid indexes for sequence");
         }
 
         return input.substring(0, start + SEQUENCE_HEADER.length()) + stringToColors(hiddenString) + input.substring(end, input.length());
@@ -49,14 +65,14 @@ public class HiddenStringUtils {
 
     public static String removeHiddenString(String input) {
         if (input == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
 
         int start = input.indexOf(SEQUENCE_HEADER);
         int end = input.indexOf(SEQUENCE_FOOTER) + SEQUENCE_FOOTER.length();
 
         if (start < 0 || end < 0) {
-            return null;
+            throw new IndexOutOfBoundsException("Invalid indexes for sequence");
         }
 
         return input.replace(input.substring(start, end), "");
@@ -67,21 +83,21 @@ public class HiddenStringUtils {
      */
     private static String quote(String input) {
         if (input == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
         return SEQUENCE_HEADER + input + SEQUENCE_FOOTER;
     }
 
     private static String extract(String input) {
         if (input == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
 
         int start = input.indexOf(SEQUENCE_HEADER);
         int end = input.indexOf(SEQUENCE_FOOTER);
 
         if (start < 0 || end < 0) {
-            return null;
+            throw new IndexOutOfBoundsException("Invalid indexes for sequence");
         }
 
         return input.substring(start + SEQUENCE_HEADER.length(), end);
@@ -89,7 +105,7 @@ public class HiddenStringUtils {
 
     private static String stringToColors(String normal) {
         if (normal == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
 
         byte[] bytes = normal.getBytes(Charset.forName("UTF-8"));
@@ -108,7 +124,7 @@ public class HiddenStringUtils {
 
     private static String colorsToString(String colors) {
         if (colors == null) {
-            return null;
+            throw new NullPointerException("Input can't be null");
         }
 
         colors = colors.toLowerCase().replace("" + ChatColor.COLOR_CHAR, "");

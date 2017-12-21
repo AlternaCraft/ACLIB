@@ -20,9 +20,12 @@ package com.alternacraft.aclib.exceptions;
  *
  * @author AlternaCraft
  */
-public interface ErrorFormat {
-    
-    public String getMessage();
-    public int[] getErrorCode();
-    public ErrorExecutor getErrorExecutor();
+public class PlayerNotFoundException extends Exception {
+
+    public PlayerNotFoundException() {
+    }
+
+    public PlayerNotFoundException(String message) {
+        super(message);
+    }
 }

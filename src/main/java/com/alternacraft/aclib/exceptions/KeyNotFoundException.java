@@ -17,40 +17,15 @@
 package com.alternacraft.aclib.exceptions;
 
 /**
- * Error.
- * 
+ *
  * @author AlternaCraft
  */
-public class Error {
+public class KeyNotFoundException extends Exception {
 
-    private final String message;
-    private final ErrorCode code;    
-    // For checking if this error matches.
-    private ErrorExecutor executor;
-    
-    public Error(String message, ErrorCode ec) {
-        this.message = message;
-        this.code = ec;
-    }
-    
-    public Error(String message, ErrorCode ec, ErrorExecutor executor) {
-        this(message, ec);
-        this.executor = executor;
-    }
-    
-    public String getError() {
-        return this.message + " (" + this.code.errorCode() + ")";
+    public KeyNotFoundException() {
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public ErrorCode getCode() {
-        return code;
-    }
-
-    public ErrorExecutor getExecutor() {
-        return executor;
+    public KeyNotFoundException(String message) {
+        super(message);
     }
 }

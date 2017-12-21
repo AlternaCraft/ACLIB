@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.extras;
 
+import com.alternacraft.aclib.exceptions.UnknownFacingDirectionException;
 import org.bukkit.block.BlockFace;
 import static org.bukkit.block.BlockFace.EAST;
 import static org.bukkit.block.BlockFace.NORTH;
@@ -68,8 +69,9 @@ public class LocationUtils {
      * @param yaw Yaw value
      * 
      * @return Block face
+     * @throws com.alternacraft.aclib.exceptions.UnknownFacingDirectionException
      */
-    public static BlockFace yawToFace(float yaw) {
+    public static BlockFace yawToFace(float yaw) throws UnknownFacingDirectionException {
         double rotation = (yaw - 90) % 360;
         if (rotation < 0) {
             rotation += 360.0;
@@ -89,6 +91,6 @@ public class LocationUtils {
             }
             angle += 45;
         }        
-        return null;        
+        throw new UnknownFacingDirectionException();
     }
 }

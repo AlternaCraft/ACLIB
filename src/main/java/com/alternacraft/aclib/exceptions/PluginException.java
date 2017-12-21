@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.exceptions;
 
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.utils.exceptions.ErrorManager;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

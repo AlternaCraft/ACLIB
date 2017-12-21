@@ -1,5 +1,22 @@
+/*
+ * Copyright (C) 2017 AlternaCraft
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.alternacraft.aclib.extras.db;
 
+import com.alternacraft.aclib.exceptions.UndefinedMethodException;
 import java.util.Arrays;
 import java.util.Collections;
 import org.apache.commons.lang.StringUtils;
@@ -10,14 +27,14 @@ import org.apache.commons.lang.StringUtils;
  */
 public class CustomStatement {
 
-    public static enum METHOD {
+    public static enum Method {
         SELECT,
         INSERT,
         UPDATE,
         DELETE
     }
 
-    public static enum TYPES {
+    public static enum Types {
         INTEGER,
         LONG,
         BOOLEAN,
@@ -26,17 +43,17 @@ public class CustomStatement {
         REAL
     }
 
-    public static enum ORDER {
+    public static enum Order {
         ASC,
         DESC
     }
     
-    public static enum LOGIC {
+    public static enum Logic {
         AND,
         OR
     }
 
-    public static enum COMPARATOR {
+    public static enum Comparator {
         EQ,
         GRT,
         GRTE,
@@ -44,18 +61,18 @@ public class CustomStatement {
         LOWE
     }
 
-    private final METHOD method;
+    private final Method method;
 
     private Table[] tables;
     private Field[] fields;
     private GroupedCondition conditions;
 
     private String orderby;
-    private ORDER order;
+    private Order order;
 
     private int limit;
 
-    public CustomStatement(METHOD method) {
+    public CustomStatement(Method method) {
         this.method = method;
         this.tables = new Table[0];
         this.fields = new Field[0];
@@ -74,7 +91,7 @@ public class CustomStatement {
         this.conditions = conditions;
     }
 
-    public void setOrder(String field, ORDER order) {
+    public void setOrder(String field, Order order) {
         this.orderby = field;
         this.order = order;
     }
@@ -128,7 +145,7 @@ public class CustomStatement {
         return result;
     }
 
-    public String getByMethod() {
+    public String getByMethod() throws UndefinedMethodException {
         switch (this.method) {
             case SELECT:
                 return this.getQuery();
@@ -139,12 +156,13 @@ public class CustomStatement {
             case INSERT:
                 return this.getInsert();
             default:
-                return null;
+                throw new UndefinedMethodException();
         }
     }
 
     public String getQuery() {
-        return "select " + StringUtils.join(this.fields, ",") + " from "
+        String fields = (this.fields.length == 0) ? "*" : StringUtils.join(this.fields, ",");
+        return "select " + fields + " from "
                 + this.createRelationsBetweenTables()
                 + ((this.conditions.hasConditions()) ? " where " + this.conditions.toString() : "")
                 + this.getSort() + this.getLimit();
@@ -181,39 +199,39 @@ public class CustomStatement {
         return conditions;
     }
 
-    public boolean isThisMethod(METHOD method) {
+    public boolean isThisMethod(Method method) {
         return this.method.equals(method);
     }
 
-    public METHOD getMethod() {
+    public Method getMethod() {
         return method;
     }
 
     public class GroupedCondition {
 
         private Condition[] conditions;
-        private LOGIC[] operators;
+        private Logic[] operators;
 
         public GroupedCondition(Condition c) {
             this.conditions = new Condition[]{c};
-            this.operators = new LOGIC[0];
+            this.operators = new Logic[0];
         }
 
-        public GroupedCondition(LOGIC operator, Condition... conditions) {
+        public GroupedCondition(Logic operator, Condition... conditions) {
             this.conditions = conditions;
-            this.operators = new LOGIC[]{operator};
+            this.operators = new Logic[]{operator};
         }
 
         public GroupedCondition() {
             this.conditions = new Condition[0];
-            this.operators = new LOGIC[0];
+            this.operators = new Logic[0];
         }
 
         public void addConditions(Condition... conditions) {
             this.conditions = conditions;
         }
 
-        public void addOperators(LOGIC... operators) {
+        public void addOperators(Logic... operators) {
             this.operators = operators;
         }        
         
@@ -246,10 +264,10 @@ public class CustomStatement {
 
         private String name;
         private String condition;
-        private COMPARATOR comparator;
-        private TYPES type;
+        private Comparator comparator;
+        private Types type;
 
-        public Condition(String name, String condition, COMPARATOR comparator, TYPES type) {
+        public Condition(String name, String condition, Comparator comparator, Types type) {
             this.name = name;
             this.condition = condition;
             this.comparator = comparator;
@@ -257,18 +275,18 @@ public class CustomStatement {
         }
 
         public Condition(String name, String condition) {
-            this(name, condition, COMPARATOR.EQ, null);
+            this(name, condition, Comparator.EQ, null);
         }
 
-        public Condition(String name, String condition, COMPARATOR comparator) {
+        public Condition(String name, String condition, Comparator comparator) {
             this(name, condition, comparator, null);
         }
 
-        public Condition(String name, TYPES type) {
-            this(name, "?", COMPARATOR.EQ, type);
+        public Condition(String name, Types type) {
+            this(name, "?", Comparator.EQ, type);
         }
 
-        public Condition(String name, TYPES type, COMPARATOR comparator) {
+        public Condition(String name, Types type, Comparator comparator) {
             this(name, "?", comparator, type);
         }
 
@@ -280,15 +298,15 @@ public class CustomStatement {
             return condition;
         }
 
-        public COMPARATOR getComparator() {
+        public Comparator getComparator() {
             return comparator;
         }
 
-        public TYPES getType() {
+        public Types getType() {
             return type;
         }
 
-        public void setComparator(COMPARATOR comparator) {
+        public void setComparator(Comparator comparator) {
             this.comparator = comparator;
         }
 
@@ -354,9 +372,9 @@ public class CustomStatement {
     public class Field {
 
         private final String name;
-        private final TYPES type;
+        private final Types type;
 
-        public Field(String name, TYPES type) {
+        public Field(String name, Types type) {
             this.name = name;
             this.type = type;
         }
@@ -366,7 +384,7 @@ public class CustomStatement {
             return keys[keys.length - 1];
         }
 
-        public TYPES getType() {
+        public Types getType() {
             return type;
         }
 

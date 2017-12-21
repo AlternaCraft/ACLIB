@@ -1,17 +1,34 @@
+/*
+ * Copyright (C) 2017 AlternaCraft
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.alternacraft.aclib.extras.db;
 
 import com.alternacraft.aclib.MessageManager;
 import static com.alternacraft.aclib.PluginBase.METER;
 import com.alternacraft.aclib.exceptions.PluginException;
+import com.alternacraft.aclib.exceptions.UndefinedMethodException;
 import com.alternacraft.aclib.extras.db.CustomStatement.Condition;
 import com.alternacraft.aclib.extras.db.CustomStatement.Field;
-import com.alternacraft.aclib.extras.db.CustomStatement.METHOD;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.BLOB;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.BOOLEAN;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.INTEGER;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.LONG;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.REAL;
-import static com.alternacraft.aclib.extras.db.CustomStatement.TYPES.TEXT;
+import com.alternacraft.aclib.extras.db.CustomStatement.Method;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.BLOB;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.BOOLEAN;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.INTEGER;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.LONG;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.REAL;
+import static com.alternacraft.aclib.extras.db.CustomStatement.Types.TEXT;
 import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
@@ -30,14 +47,14 @@ import java.util.Map;
 public abstract class SQLConnection {
 
     //<editor-fold defaultstate="collapsed" desc="VARS + CONSTRUCTOR">    
-    public static enum DRIVERS {
+    public static enum Drivers {
         MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://"),
         SQLITE("org.sqlite.JDBC", "jdbc:sqlite:");
         
         private final String driver;
         private final String prefix;
 
-        DRIVERS(String driver, String prefix) {
+        Drivers(String driver, String prefix) {
             this.driver = driver;
             this.prefix = prefix;
         }
@@ -51,7 +68,7 @@ public abstract class SQLConnection {
         }
     }
 
-    public static enum STATUS_AVAILABLE {
+    public static enum Status {
         CONNECTED,
         NOT_CONNECTED;
     }
@@ -59,18 +76,18 @@ public abstract class SQLConnection {
     private final static String DEFAULT_USER = "root";
     private final static String DEFAULT_PASS = "";
     
-    public STATUS_AVAILABLE status = STATUS_AVAILABLE.NOT_CONNECTED;
+    public Status status = Status.NOT_CONNECTED;
     
     protected java.sql.Connection connection;
 
-    protected DRIVERS driver;
+    protected Drivers driver;
     protected String url, user, password;
 
-    public SQLConnection(DRIVERS driver, String url) {
+    public SQLConnection(Drivers driver, String url) {
         this(driver, url, DEFAULT_USER, DEFAULT_PASS);
     }
 
-    public SQLConnection(DRIVERS driver, String url, String user, String password) {
+    public SQLConnection(Drivers driver, String url, String user, String password) {
         this.driver = driver;
         this.url = url;
         this.user = user;
@@ -104,9 +121,9 @@ public abstract class SQLConnection {
         }
         try {
             connection = ds.getConnection();
-            status = STATUS_AVAILABLE.CONNECTED;
+            status = Status.CONNECTED;
         } catch (SQLException ex) {
-            status = STATUS_AVAILABLE.NOT_CONNECTED;
+            status = Status.NOT_CONNECTED;
             throw new PluginException("SQL Exception: " + ex.getErrorCode());
         }
         this.load();
@@ -119,12 +136,12 @@ public abstract class SQLConnection {
             try {
                 valida = connection.isValid(3) && !connection.isClosed();
                 if (valida) {
-                    status = STATUS_AVAILABLE.CONNECTED;
+                    status = Status.CONNECTED;
                 } else {
-                    status = STATUS_AVAILABLE.NOT_CONNECTED;
+                    status = Status.NOT_CONNECTED;
                 }
             } catch (SQLException ex) {
-                status = STATUS_AVAILABLE.NOT_CONNECTED;
+                status = Status.NOT_CONNECTED;
             } catch (AbstractMethodError ex) {
                 valida = true; // Should continue?
             }
@@ -137,7 +154,7 @@ public abstract class SQLConnection {
         try {
             if (!connection.isClosed()) {
                 connection.close();
-                status = STATUS_AVAILABLE.NOT_CONNECTED;
+                status = Status.NOT_CONNECTED;
             }
         } catch (SQLException | AbstractMethodError ex) {
         }
@@ -220,66 +237,71 @@ public abstract class SQLConnection {
     public PreparedStatement basics(CustomStatement query, Object... values)
             throws SQLException {
         boolean extended = query.getFields().length > 0 && query.getGConditions().hasConditions()
-                && (query.isThisMethod(METHOD.INSERT)
-                || query.isThisMethod(METHOD.UPDATE));
-        String qr = query.getByMethod();
-        MessageManager.logDebug(qr + " - extended: " + extended + " | "
-                + Arrays.asList(values).toString());
-        PreparedStatement ps = this.connection.prepareStatement(qr);
-        if (query.isThisMethod(METHOD.INSERT)
-                || query.isThisMethod(METHOD.UPDATE)) {
-            for (int i = 0; i < query.getFields().length; i++) {
-                Field field = query.getFields()[i];
-                switch (field.getType()) {
+                && (query.isThisMethod(Method.INSERT)
+                || query.isThisMethod(Method.UPDATE));
+        try {
+            String qr = query.getByMethod();
+            MessageManager.logDebug(qr + " - extended: " + extended + " | "
+                    + Arrays.asList(values).toString());
+            PreparedStatement ps = this.connection.prepareStatement(qr);
+            if (query.isThisMethod(Method.INSERT)
+                    || query.isThisMethod(Method.UPDATE)) {
+                for (int i = 0; i < query.getFields().length; i++) {
+                    Field field = query.getFields()[i];
+                    switch (field.getType()) {
+                        case BLOB:
+                            ps.setBlob(i + 1, (Blob) values[i]);
+                            break;
+                        case BOOLEAN:
+                            ps.setInt(i + 1, ((boolean) values[i]) ? 1 : 0);
+                            break;
+                        case INTEGER:
+                            ps.setInt(i + 1, (int) values[i]);
+                            break;
+                        case LONG:
+                            ps.setLong(i + 1, (long) values[i]);
+                            break;
+                        case REAL:
+                            ps.setFloat(i + 1, (float) values[i]);
+                            break;
+                        case TEXT:
+                            ps.setString(i + 1, (String) values[i]);
+                            break;
+                    }
+                }
+            }
+            int from = (extended) ? query.getFields().length : 0;
+            for (int i = 0; i < query.getGConditions().getPreparedConditions().length; i++) {
+                Condition condition = query.getGConditions().getPreparedConditions()[i];
+                if (!condition.shouldSet()) {
+                    continue;
+                }
+                switch (condition.getType()) {
                     case BLOB:
-                        ps.setBlob(i + 1, (Blob) values[i]);
+                        ps.setBlob(from + i + 1, (Blob) values[from + i]);
                         break;
                     case BOOLEAN:
-                        ps.setInt(i + 1, ((boolean) values[i]) ? 1 : 0);
+                        ps.setInt(from + i + 1, ((boolean) values[from + i]) ? 1 : 0);
                         break;
                     case INTEGER:
-                        ps.setInt(i + 1, (int) values[i]);
+                        ps.setInt(from + i + 1, (int) values[from + i]);
                         break;
                     case LONG:
-                        ps.setLong(i + 1, (long) values[i]);
+                        ps.setLong(from + i + 1, (long) values[from + i]);
                         break;
                     case REAL:
-                        ps.setFloat(i + 1, (float) values[i]);
+                        ps.setFloat(from + i + 1, (float) values[from + i]);
                         break;
                     case TEXT:
-                        ps.setString(i + 1, (String) values[i]);
+                        ps.setString(from + i + 1, (String) values[from + i]);
                         break;
                 }
             }
+            return ps;
+        } catch (UndefinedMethodException ex) {
+            MessageManager.logError("Invalid method name: " + query.getMethod().name());
+            return null;
         }
-        int from = (extended) ? query.getFields().length : 0;
-        for (int i = 0; i < query.getGConditions().getPreparedConditions().length; i++) {
-            Condition condition = query.getGConditions().getPreparedConditions()[i];
-            if (!condition.shouldSet()) {
-                continue;
-            }
-            switch (condition.getType()) {
-                case BLOB:
-                    ps.setBlob(from + i + 1, (Blob) values[from + i]);
-                    break;
-                case BOOLEAN:
-                    ps.setInt(from + i + 1, ((boolean) values[from + i]) ? 1 : 0);
-                    break;
-                case INTEGER:
-                    ps.setInt(from + i + 1, (int) values[from + i]);
-                    break;
-                case LONG:
-                    ps.setLong(from + i + 1, (long) values[from + i]);
-                    break;
-                case REAL:
-                    ps.setFloat(from + i + 1, (float) values[from + i]);
-                    break;
-                case TEXT:
-                    ps.setString(from + i + 1, (String) values[from + i]);
-                    break;
-            }
-        }
-        return ps;
     }
     //</editor-fold>   
 

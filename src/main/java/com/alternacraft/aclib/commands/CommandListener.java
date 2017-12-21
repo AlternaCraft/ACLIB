@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.commands;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.exceptions.KeyNotFoundException;
 import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
@@ -77,8 +78,8 @@ public class CommandListener implements CommandExecutor {
 
         Lang l = Localizer.getLocale(cs);
 
-        SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
-        if (cmdArgument != null) {
+        try {
+            SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
             // Removing first argument
             if (args.length == 1) {
                 args = new String[0];
@@ -99,7 +100,7 @@ public class CommandListener implements CommandExecutor {
                 MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE
                         .getText(l).replace("%USAGE%", cmdArgument.getUsage(this.command, l)));
             }
-        } else {
+        } catch (KeyNotFoundException ex) {
             MessageManager.sendCommandSender(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));
         }
 

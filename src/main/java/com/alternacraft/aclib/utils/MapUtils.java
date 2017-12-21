@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.commands.SubCommand;
+import com.alternacraft.aclib.exceptions.KeyNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,8 +52,9 @@ public class MapUtils {
      * @param value value
      *
      * @return Key
+     * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
      */
-    public static <K, V> K getKeyFrom(Map<K, V> map, V value) {
+    public static <K, V> K getKeyFrom(Map<K, V> map, V value) throws KeyNotFoundException {
         if (map.containsValue(value)) {
             for (Map.Entry<K, V> entry : map.entrySet()) {
                 K k = entry.getKey();
@@ -63,7 +65,7 @@ public class MapUtils {
                 }
             }
         }
-        return null;
+        throw new KeyNotFoundException();
     }
 
     /**
@@ -75,8 +77,9 @@ public class MapUtils {
      * @param listValue Value
      *
      * @return Key
+     * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
      */
-    public static <K, V extends List> K getKeyFromList(Map<K, V> map, Object listValue) {
+    public static <K, V extends List> K getKeyFromList(Map<K, V> map, Object listValue) throws KeyNotFoundException {
         for (Map.Entry<K, V> entry : map.entrySet()) {
             K k = entry.getKey();
             V v = entry.getValue();
@@ -85,8 +88,7 @@ public class MapUtils {
                 return k;
             }
         }
-
-        return null;
+        throw new KeyNotFoundException();
     }
 
     /**
@@ -96,12 +98,13 @@ public class MapUtils {
      * @param <V> Map value
      * @param map Map
      * @param subcommand String with the argument
+     * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
      *
      * @see SubCommand
      * @return Key
      */
     public static <K extends SubCommand, V> K findArgument(Map<K, V> map,
-            String subcommand) {
+            String subcommand) throws KeyNotFoundException {
         Set<K> keys = map.keySet();
         for (K key : keys) {
             if (key.getCommand().equals(subcommand) || Arrays
@@ -110,6 +113,6 @@ public class MapUtils {
                 return key;
             }
         }
-        return null;
+        throw new KeyNotFoundException();
     }
 }

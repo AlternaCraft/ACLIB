@@ -18,6 +18,7 @@ package com.alternacraft.aclib.langs;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.exceptions.KeyNotFoundException;
 import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
 import com.alternacraft.aclib.utils.RegExp;
@@ -282,8 +283,12 @@ public class LangManager {
      * @see LangInterface
      */
     public static <T extends Enum> String getValueFromFile(Lang lang, T e) {
-        String path = MapUtils.getKeyFromList(MESSAGES, e.getDeclaringClass());
-        return findMessageByKey(path, lang.name(), e.name());
+        try {
+            String path = MapUtils.getKeyFromList(MESSAGES, e.getDeclaringClass());
+            return findMessageByKey(path, lang.name(), e.name());
+        } catch (KeyNotFoundException ex) {
+            return null;
+        }
     }
 
     /**

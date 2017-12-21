@@ -22,6 +22,7 @@
 package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
 import com.google.common.collect.ImmutableList;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -143,7 +144,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                 uuids.putAll(new UUIDFetcher(aux).call());
             } else {
                 aux.forEach((n) -> {
-                    uuids.put(n, Bukkit.getServer().getOfflinePlayer(n).getUniqueId());
+                    uuids.put(n, Bukkit.getServer().getOfflinePlayer(n).getUniqueId());                        
                 });
             }
         }
@@ -152,30 +153,30 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }        
     
     /**
-     * Método para obtener un UUID según el tipo de servidor
+     * Method to fetch UUID for online/offline servers.
      * 
-     * <ul>
-     *  <li>Si el server está en modo online utiliza lo obtenido por la API</li>
-     *  <li>Si el server está en modo offline utiliza el método getOfflinePlayer
+     * <ol>
+     *  <li>If server is online try to get previous fetched uuids</li>
+     *  <li>Then try to get the player uuid from offline players (Case sensitive)</li>
+     *  <li>If there are missing names then:
      *      <ul>
-     *          <li>
-     *              Si el jugador Juan está online y el jugador juan no, este método
-     *              no funciona correctamente al intentar asignarle el valor a juan.
-     *              (En caso de que ambos no hayan entrado antes al server)
-     *          </li>
+     *          <li>For online mode - Fetch names by the API.
+     *          <li>For offline mode -  Fetch names with offline players (By name)</li>
      *      </ul>
      *  </li>
-     * </ul>
+     * </ol>
      *
-     * @param name Nombre del jugador
+     * @param name Player name
+     * 
      * @return UUID
+     * @throws com.alternacraft.aclib.exceptions.PlayerNotFoundException
      */
-    public static UUID getUUIDPlayer(String name) {
+    public static UUID getUUIDPlayer(String name) throws PlayerNotFoundException {
         Map<String, UUID> uuids = getUUIDOf(name);
         if (!uuids.isEmpty()) {
             return uuids.values().iterator().next();
         } else {
-            return null;
+            throw new PlayerNotFoundException();
         }
     }
 }

@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.exceptions.InvalidColorNameException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -121,7 +122,7 @@ public class StringsUtils {
     /**
      * @since 0.0.9
      */
-    public static enum POSITION {
+    public static enum Position {
         LEFT, CENTER, RIGHT;
     }
 
@@ -140,7 +141,7 @@ public class StringsUtils {
      *
      * @since 0.0.9
      */
-    public static String[] copyLength(int size, char e, POSITION p, String... strs) {
+    public static String[] copyLength(int size, char e, Position p, String... strs) {
         boolean left;
 
         for (int i = 0; i < strs.length; i++) {
@@ -172,8 +173,9 @@ public class StringsUtils {
      * @param color Color name
      *
      * @return Bukkit Color
+     * @throws com.alternacraft.aclib.exceptions.InvalidColorNameException
      */
-    public static Color getColorByName(String color) {
+    public static Color getColorByName(String color) throws InvalidColorNameException {
         Field[] fields = Color.class.getDeclaredFields();
         for (Field field : fields) {
             if (field.getName().equalsIgnoreCase(color)) {
@@ -184,7 +186,7 @@ public class StringsUtils {
                 }
             }
         }
-        return null;
+        throw new InvalidColorNameException();
     }
     
     private static final Map<String, Long> PAIRS = new HashMap();

@@ -17,6 +17,7 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
+import com.alternacraft.aclib.exceptions.InvalidFileNameException;
 import com.google.common.io.Files;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -216,13 +217,14 @@ public class FileUtils {
      * @param file The file with the extension
      * 
      * @return The file extension
+     * @throws com.alternacraft.aclib.exceptions.InvalidFileNameException
      */
-    public static String getFileExtension(File file) {
+    public static String getFileExtension(File file) throws InvalidFileNameException {
         String fileName = file.getName();
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
             return fileName.substring(fileName.lastIndexOf(".") + 1);
         } else {
-            return null;
+            throw new InvalidFileNameException();
         }
     }
 }
