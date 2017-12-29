@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -131,7 +132,7 @@ public class GUIItem {
         this.item.setItemMeta(pmeta);
     }
 
-    public ItemStack getCompleteItem() {
+    public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags) {
         ItemStack aux = new ItemStack(this.item);
         ItemMeta metaaux = aux.getItemMeta();
         String aux_title = this.title;
@@ -145,7 +146,11 @@ public class GUIItem {
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
         aux.setItemMeta(metaaux);
-        return GUIUtils.removeAttributes(aux);
+        return (removeAttributes) ? GUIUtils.removeAttributes(aux, flags) : aux;
+    }
+    
+    public ItemStack getCompleteItem() {
+        return this.getCompleteItem(true, ItemFlag.values());
     }
 
     public ItemStack getItem() {

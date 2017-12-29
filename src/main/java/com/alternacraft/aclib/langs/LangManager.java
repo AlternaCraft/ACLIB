@@ -210,6 +210,15 @@ public class LangManager {
     }
 
     /**
+     * Returns main languages.
+     * 
+     * @return Array of languages
+     */
+    public static Lang[] getKeys() {
+        return keys;
+    }
+
+    /**
      * Cleans all registered messages.
      */
     public static void clearMessages() {

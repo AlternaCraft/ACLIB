@@ -151,7 +151,7 @@ public class MessageManagerTest {
     @Test
     public void testSendCommandSender() {
         String message = "test6";
-        MessageManager.sendCommandSender(cs, message);
+        MessageManager.sendPluginMessage(cs, message);
         String expResult = new TextComponent(TextComponent.fromLegacyText(
                 MessageManager.prepareString(message))).toLegacyText();
         assertEquals(expResult, lastmessage);

@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -46,8 +45,7 @@ public class GUIUtils {
     private static int MAX_COLS = 9;
 
     // Inventory identificator
-    public static final String CI_KEY = "ci_key";
-    public static final String CI_META = UUID.randomUUID().toString();
+    public static final String CI_KEY = "ci_key";    
 
     // Meta key
     public static final String KEY_META = "key";
@@ -91,7 +89,7 @@ public class GUIUtils {
             try {
                 JSONObject data = (JSONObject) new JSONParser().parse(str);
                 return (data.get(CI_KEY) != null)
-                        ? data.get(CI_KEY).equals(CI_META) : false;
+                        ? data.get(CI_KEY).equals(GUI.getID()) : false;
             } catch (ParseException ex) {
             }
         }
@@ -185,8 +183,20 @@ public class GUIUtils {
      * @return Parsed ItemStack
      */
     public static final ItemStack removeAttributes(ItemStack item) {
+        return removeAttributes(item, ItemFlag.values());
+    }
+
+    /**
+     * Removes specified item attributes.
+     *
+     * @param item ItemStack
+     * @param flag Flags
+     *
+     * @return Parsed ItemStack
+     */
+    public static final ItemStack removeAttributes(ItemStack item, ItemFlag... flag) {
         ItemMeta iM = item.getItemMeta();
-        Arrays.stream(ItemFlag.values()).forEach(iM::addItemFlags);
+        Arrays.stream(flag).forEach(iM::addItemFlags);
         item.setItemMeta(iM);
         return item;
     }
@@ -206,27 +216,29 @@ public class GUIUtils {
         return aux;
     }
 
-    private static List<String> recurrentParser(String msg) {
+    private static List<String> recurrentParser(String msg) {        
         List<String> aux = new ArrayList<>();
         if (StringsUtils.stripColors(msg).length() > MAX_LORE_LENGTH) {
             // Cut before
             String sub = msg.substring(0, MAX_LORE_LENGTH);
             int cut = sub.lastIndexOf(" ");
-            sub = sub.substring(0, cut);
-            aux.add(sub);
-            // Get previous color
-            String last_color = "";
-            Pattern pattern = Pattern.compile(".*(&\\w|§\\w)");
-            Matcher m = pattern.matcher(sub);
-            if (m.find()) {
-                last_color = m.group(1);
-                int start = m.start(1);
-                if (start > 1 && sub.substring(start - 2, start).matches("&\\w|§\\w")) {
-                    last_color = sub.substring(start - 2, start) + last_color;
+            if (cut != -1) {
+                sub = sub.substring(0, cut);
+                aux.add(sub);
+                // Get previous color
+                String last_color = "";
+                Pattern pattern = Pattern.compile(".*(&\\w|§\\w)");
+                Matcher m = pattern.matcher(sub);
+                if (m.find()) {
+                    last_color = m.group(1);
+                    int start = m.start(1);
+                    if (start > 1 && sub.substring(start - 2, start).matches("&\\w|§\\w")) {
+                        last_color = sub.substring(start - 2, start) + last_color;
+                    }
                 }
+                // Analyze new text line
+                aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));                
             }
-            // Analyze new text line
-            aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));
         } else {
             aux.add(msg);
         }

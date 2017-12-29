@@ -117,7 +117,7 @@ public class DatabaseCommand implements SubCommandExecutor {
         
         if (m.equals(Method.SELECT)) {
             try {
-                MessageManager.sendCommandSender(cs, 
+                MessageManager.sendPluginMessage(cs, 
                         "Result: " + connection.executeQuery(
                             statement, values
                         ).toString()
@@ -127,7 +127,7 @@ public class DatabaseCommand implements SubCommandExecutor {
             }
         } else {
             try {
-                MessageManager.sendCommandSender(cs, 
+                MessageManager.sendPluginMessage(cs, 
                         String.valueOf(connection.executeUpdate(
                             statement, values
                         ))

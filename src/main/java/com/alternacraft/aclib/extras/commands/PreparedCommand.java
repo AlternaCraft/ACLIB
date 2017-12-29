@@ -62,17 +62,17 @@ public abstract class PreparedCommand extends Command implements Listener {
     @Override
     public boolean execute(CommandSender sender, String cmd, String[] data) {
         if (this.only_player && !(sender instanceof Player)) {
-            MessageManager.sendCommandSender(sender, CommandMessages
+            MessageManager.sendPluginMessage(sender, CommandMessages
                     .ONLY_PLAYERS.getText(Localizer.getLocale(sender)));
             return true;
         }
         if (this.getPermission() != null && !sender.hasPermission(this.getPermission())) {
-            MessageManager.sendCommandSender(sender, CommandMessages
+            MessageManager.sendPluginMessage(sender, CommandMessages
                     .NO_PERMISSION.getText(Localizer.getLocale(sender)));
             return true;
         }
         if (this.arguments != -1 && data.length != this.arguments) {
-            MessageManager.sendCommandSender(sender, CommandMessages
+            MessageManager.sendPluginMessage(sender, CommandMessages
                     .INVALID_ARGUMENTS.getText(Localizer.getLocale(sender)));
             return false;
         }

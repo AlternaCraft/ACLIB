@@ -92,16 +92,16 @@ public class CommandListener implements CommandExecutor {
                 String permission = this.getPermission(cmdArgument.getCommand());
                 if (!pl.hasPermission(permission) && 
                         (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl, args))) {
-                    MessageManager.sendCommandSender(cs, CommandMessages.NO_PERMISSION.getText(l));
+                    MessageManager.sendPluginMessage(cs, CommandMessages.NO_PERMISSION.getText(l));
                     return true;
                 }
             }
             if (!arguments.get(cmdArgument).execute(cs, args)) {
-                MessageManager.sendCommandSender(cs, CommandMessages.COMMAND_USAGE
+                MessageManager.sendPluginMessage(cs, CommandMessages.COMMAND_USAGE
                         .getText(l).replace("%USAGE%", cmdArgument.getUsage(this.command, l)));
             }
         } catch (KeyNotFoundException ex) {
-            MessageManager.sendCommandSender(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));
+            MessageManager.sendPluginMessage(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));
         }
 
         return true;

@@ -236,13 +236,29 @@ public class ConfigurationFile {
         
         // Object type
         if (v instanceof List) {
-            List<Object> list = (List<Object>) v; // Saving list
-            res = list.stream()
-                    .map(e -> getFilteredString(e.toString()))
-                    .map(val -> System.lineSeparator() + spaces + "- " + val)
-                    .reduce(res, String::concat);
+            res += this.parseList((List<Object>) v, spaces);
         } else if (v instanceof MemorySection) {
-            parent = cKey; // Saving parent
+            // If it is custom then copy old values
+            if (newFile.getConfigurationSection(cKey).getKeys(false).isEmpty() 
+                    && oldFile.contains(cKey)
+                    && !oldFile.getConfigurationSection(cKey).getKeys(false).isEmpty()) {
+                for (String k : oldFile.getConfigurationSection(cKey).getKeys(true)) {
+                    String[] nnodes = k.split("\\.");
+                    String nspaces = spaces + fillSpaces(nnodes.length);
+                    String nkey = nnodes[nnodes.length - 1];
+                    Object nv = oldFile.get(cKey + "." + k);
+                    res += System.lineSeparator() + nspaces + nkey + ":";
+                    if (!(nv instanceof MemorySection)) {
+                        if (nv instanceof List) {
+                            res += this.parseList((List<Object>) nv, nspaces);
+                        } else {                            
+                            res += " " + getFilteredString(nv.toString());                            
+                        }
+                    }
+                }
+            } else {
+                parent = cKey; // Saving parent
+            }
         } else {
             // Saving value
             res = new StringBuilder(res)
@@ -254,6 +270,13 @@ public class ConfigurationFile {
         return res += System.lineSeparator(); // Multiple lines
     }
 
+    private String parseList(List<Object> list, String spaces) {
+        return list.stream()
+                .map(e -> getFilteredString(e.toString()))
+                .map(e -> System.lineSeparator() + spaces + "- " + e)
+                .reduce("", String::concat);
+    }
+    
     private String getKey(String str) {
         return str.split(":")[0].replaceAll("\\s+", "");
     }

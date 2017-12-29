@@ -19,6 +19,7 @@ package com.alternacraft.aclib.extras.gui;
 import com.alternacraft.aclib.PluginBase;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.bukkit.inventory.Inventory;
 import org.json.simple.JSONObject;
@@ -29,10 +30,11 @@ import org.json.simple.JSONObject;
  */
 public abstract class GUI {
 
+    private static String ID = UUID.randomUUID().toString();
+    
     protected static final String DEF_NAME = "Chest";
-
     protected static final int MAX_COLS = 9;
-
+    
     protected String title;
     protected int update_interval;
 
@@ -121,7 +123,7 @@ public abstract class GUI {
     protected String addMetaToTitle() {
         StringBuilder sb = new StringBuilder(this.title);
         JSONObject aux_meta = this.getMeta();
-        aux_meta.put(GUIUtils.CI_KEY, GUIUtils.CI_META);
+        aux_meta.put(GUIUtils.CI_KEY, ID);
         aux_meta.put(GUIUtils.UPDATE_INTERVAL, this.update_interval);
         sb.append(HiddenStringUtils.encodeString(aux_meta.toString()));
         return sb.toString();
@@ -150,4 +152,12 @@ public abstract class GUI {
     public abstract int getRows();
 
     public abstract int getMaxSlots();
+
+    public static void setID(String id) {
+        ID = id;
+    }
+
+    public static String getID() {
+        return ID;
+    }    
 }

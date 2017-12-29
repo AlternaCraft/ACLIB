@@ -112,17 +112,17 @@ public class MessageManager {
             for (int i = 0; i < replace.length; i++) {
                 msg = msg.replace(variables.get(i), replace[i]);
             }
-            sendCommandSender(p, msg);
+            sendPluginMessage(p, msg);
         });
     }
 
     /**
-     * Sends a message to a player.
+     * Sends a prefixed message to a player.
      *
      * @param cs Receiver
      * @param message Message
      */
-    public static void sendCommandSender(CommandSender cs, String message) {
+    public static void sendPluginMessage(CommandSender cs, String message) {
         String[] messages = message.split(BREAK_LINE);
         for (String _message : messages) {
             sendInteractiveText(cs, prepareString(_message));
