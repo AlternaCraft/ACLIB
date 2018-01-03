@@ -29,6 +29,8 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  *
@@ -36,6 +38,8 @@ import org.json.simple.JSONObject;
  */
 public class GUIItem {
 
+    private static String ID = "ct_value";
+    
     private ItemStack item;
 
     private String title;
@@ -139,6 +143,7 @@ public class GUIItem {
         if (this.title == null) {
             aux_title = " ";
         }
+        this.meta.put(GUIUtils.CIT_KEY, ID);
         metaaux.setDisplayName(aux_title + ((this.meta.size() > 0)
                 ? HiddenStringUtils.encodeString(this.meta.toString()) : ""));
         if (this.glow) {
@@ -195,5 +200,22 @@ public class GUIItem {
 
     public JSONObject getMeta() {
         return meta;
+    }
+    
+    public static String getID() {
+        return ID;
+    }
+
+    public static boolean isGUIItem(ItemStack is) {
+        if (is == null || is.getItemMeta() == null) return false;
+        String str = GUIUtils.getHiddenString(is.getItemMeta().getDisplayName());
+        if (str != null) {
+            try {
+                JSONObject data = (JSONObject) new JSONParser().parse(str);
+                return (data.get(GUIUtils.CIT_KEY) != null)
+                        ? data.get(GUIUtils.CIT_KEY).equals(ID) : false;
+            } catch (ParseException ex) {}
+        }
+        return false;
     }
 }

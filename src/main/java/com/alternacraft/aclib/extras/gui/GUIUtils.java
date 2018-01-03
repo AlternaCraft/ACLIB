@@ -45,8 +45,10 @@ public class GUIUtils {
     private static int MAX_COLS = 9;
 
     // Inventory identificator
-    public static final String CI_KEY = "ci_key";    
-
+    public static final String CI_KEY = "ci_key";
+    // Item identificator
+    public static final String CIT_KEY = "ct_key";
+    
     // Meta key
     public static final String KEY_META = "key";
 
