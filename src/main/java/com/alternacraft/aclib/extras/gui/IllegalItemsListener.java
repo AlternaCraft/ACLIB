@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 AlternaCraft
+ * Copyright (C) 2018 AlternaCraft
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +20,12 @@ import com.alternacraft.aclib.MessageManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -54,12 +56,28 @@ public class IllegalItemsListener implements Listener {
             }
         }
     }
+    
+    @EventHandler(ignoreCancelled = true)
+    public void onPickUp(InventoryPickupItemEvent event) {
+        Item item = event.getItem();
+        ItemStack is = item.getItemStack();
+        if (is != null && is.getItemMeta() != null 
+                    && VALIDATIONS.stream().anyMatch(v -> v.apply(is))) {
+            MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName() 
+                    + " from the ground");
+            event.setCancelled(true);
+            item.remove();
+        }
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onHold(PlayerItemHeldEvent event) {
         Player pl = event.getPlayer();
-        int slot = event.getNewSlot();
-        
+        this.verify(event.getPreviousSlot(), pl);
+        this.verify(event.getNewSlot(), pl);
+    }
+    
+    private void verify(int slot, Player pl) {
         if (slot >= 0 && slot < pl.getInventory().getSize()) {
             ItemStack is = pl.getInventory().getItem(slot);
             if (is != null && is.getItemMeta() != null 
