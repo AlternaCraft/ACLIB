@@ -24,8 +24,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -58,7 +58,7 @@ public class IllegalItemsListener implements Listener {
     }
     
     @EventHandler(ignoreCancelled = true)
-    public void onPickUp(InventoryPickupItemEvent event) {
+    public void onPickUp(EntityPickupItemEvent event) {
         Item item = event.getItem();
         ItemStack is = item.getItemStack();
         if (is != null && is.getItemMeta() != null 
