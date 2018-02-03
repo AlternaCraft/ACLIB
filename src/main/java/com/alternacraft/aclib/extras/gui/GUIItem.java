@@ -212,8 +212,7 @@ public class GUIItem {
         if (str != null) {
             try {
                 JSONObject data = (JSONObject) new JSONParser().parse(str);
-                return (data.get(GUIUtils.CIT_KEY) != null)
-                        ? data.get(GUIUtils.CIT_KEY).equals(ID) : false;
+                return data.get(GUIUtils.CIT_KEY) != null;
             } catch (ParseException ex) {}
         }
         return false;

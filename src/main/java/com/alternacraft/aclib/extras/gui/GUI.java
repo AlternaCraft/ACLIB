@@ -19,7 +19,6 @@ package com.alternacraft.aclib.extras.gui;
 import com.alternacraft.aclib.PluginBase;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import org.bukkit.inventory.Inventory;
 import org.json.simple.JSONObject;
@@ -30,7 +29,7 @@ import org.json.simple.JSONObject;
  */
 public abstract class GUI {
 
-    private static String ID = UUID.randomUUID().toString();
+    private static String ID = PluginBase.INSTANCE.plugin().getName();
     
     protected static final String DEF_NAME = "Chest";
     protected static final int MAX_COLS = 9;

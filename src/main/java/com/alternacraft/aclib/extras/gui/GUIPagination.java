@@ -70,6 +70,6 @@ public class GUIPagination extends GUI {
     
     @Override
     public int getMaxSlots() {
-        return this.getRows() - 2 * this.getCols();
+        return (this.getRows() - 2) * this.getCols();
     }    
 }

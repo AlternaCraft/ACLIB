@@ -90,8 +90,28 @@ public class GUIUtils {
         if (str != null) {
             try {
                 JSONObject data = (JSONObject) new JSONParser().parse(str);
-                return (data.get(CI_KEY) != null)
-                        ? data.get(CI_KEY).equals(GUI.getID()) : false;
+                return data.get(CI_KEY) != null;
+            } catch (ParseException ex) {
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns if an inventory belongs to a plugin by ID
+     * 
+     * @param title Inventory title
+     * @param id Plugin ID
+     * 
+     * @return True if it belongs to the plugin; False if not
+     */
+    public static final boolean belongTo(String title, String id) {
+        String str = getHiddenString(title);
+        if (str != null) {
+            try {
+                JSONObject data = (JSONObject) new JSONParser().parse(str);
+                return (data.get(CI_KEY) != null) 
+                        ? data.get(CI_KEY).equals(id) : false;
             } catch (ParseException ex) {
             }
         }
@@ -135,11 +155,13 @@ public class GUIUtils {
 
     /**
      * Closes all the custom active inventories.
+     * 
+     * @param id Plugin id
      */
-    public static final void closeInventories() {
+    public static final void closeInventories(String id) {
         Bukkit.getOnlinePlayers().forEach(p -> {
             InventoryView inv = p.getOpenInventory();
-            if (inv != null && isCustom(inv.getTopInventory().getName())) {
+            if (inv != null && belongTo(inv.getTopInventory().getName(), id)) {
                 inv.close();
             }
         });
