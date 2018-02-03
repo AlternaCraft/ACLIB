@@ -21,7 +21,7 @@ import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.langs.LangInterface;
 
 /**
- * Class for defining a command argument as a subcommand.
+ * Class for defining a command argument.
  *
  * @author AlternaCraft
  */
@@ -86,12 +86,21 @@ public class SubCommand {
     }
     
     /**
-     * Has description?
+     * Does it have description?
      * 
-     * @return True if description != null
+     * @return True if description is not equals to null
      */
     public boolean hasDescription() {
         return this.description != null;
+    }
+    
+    /**
+     * Is subcommand made up of arguments?
+     * 
+     * @return True if command is made up of arguments
+     */
+    public boolean areArguments() {
+        return this.command.startsWith("<");
     }
     
     /**

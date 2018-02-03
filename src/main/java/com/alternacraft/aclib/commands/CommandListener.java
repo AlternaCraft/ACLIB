@@ -22,12 +22,16 @@ import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,7 +40,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author AlternaCraft
  */
-public class CommandListener implements CommandExecutor {
+public class CommandListener implements CommandExecutor, TabCompleter {
 
     private final Map<SubCommand, SubCommandExecutor> arguments = new LinkedHashMap<>();
 
@@ -57,7 +61,9 @@ public class CommandListener implements CommandExecutor {
         this.perm_prefix = prefix;
         this.plugin = plugin;
 
-        this.plugin.getCommand(command).setExecutor(this);
+        PluginCommand cmd = this.plugin.getCommand(command);
+        cmd.setExecutor(this);
+        cmd.setTabCompleter(this);
     }
 
     /**
@@ -107,6 +113,27 @@ public class CommandListener implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender cs, Command cmd, String string, String[] params) {
+        return getOptions(cs, arguments.keySet().toArray(new SubCommand[arguments.size()]), 0, params);
+    }
+    
+    private List<String> getOptions(CommandSender cs, SubCommand[] cmds, int idx, String[] params) {
+        List<String> options = new ArrayList<>();
+        for (SubCommand cmd : cmds) {
+            String value = cmd.getCommand();
+            if (value.startsWith(params[idx])) {
+                if (idx == params.length - 1 && !cmd.areArguments() 
+                        && cs.hasPermission(this.getPermission(value))) {
+                    options.add(value.split(" ")[0]); // Exclude arguments <*>
+                } else {
+                    return getOptions(cs, cmd.getArguments(), idx + 1, params);
+                }
+            }
+        }
+        return options;
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="GETTERS">
     public String getCommand() {
         return command;

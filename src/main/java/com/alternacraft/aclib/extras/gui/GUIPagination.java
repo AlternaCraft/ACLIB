@@ -40,7 +40,7 @@ public class GUIPagination extends GUI {
             for (int i = 0; i < subkeys.length; i++) {
                 item.addMeta("key_" + i, subkeys[i]);
             }
-            this.addItem(GUIUtils.calculateSlot(6, 4, this.getRows()), item, false);
+            this.addItem(GUIUtils.calculateSlot(this.getRows(), 4, this.getRows()), item, false);
         }
         if (max_size / this.getMaxSlots() > (page + 1)) {
             GUIItem item = new GUIItem(new ItemStack(Material.ARROW),
@@ -51,7 +51,7 @@ public class GUIPagination extends GUI {
             for (int i = 0; i < subkeys.length; i++) {
                 item.addMeta("key_" + i, subkeys[i]);
             }
-            this.addItem(GUIUtils.calculateSlot(6, 6, this.getRows()), item, false);
+            this.addItem(GUIUtils.calculateSlot(this.getRows(), 6, this.getRows()), item, false);
         }
     }
     
@@ -60,7 +60,7 @@ public class GUIPagination extends GUI {
                 GUIMessages.EXIT.getText(lang));
         item.addInfo(GUIMessages.EXIT_ACTION.getText(lang));
         item.addMeta(GUIUtils.KEY_META, GUIUtils.CLOSE_ACTION_META);
-        this.addItem(GUIUtils.calculateSlot(6, 5, this.getRows()), item, false);
+        this.addItem(GUIUtils.calculateSlot(this.getRows(), 5, this.getRows()), item, false);
     }
     
     @Override
@@ -70,6 +70,6 @@ public class GUIPagination extends GUI {
     
     @Override
     public int getMaxSlots() {
-        return 4 * this.getCols();
+        return this.getRows() - 2 * this.getCols();
     }    
 }

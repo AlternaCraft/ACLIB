@@ -15,3 +15,5 @@
 /.classpath
 /.project
 /.settings
+/nbactions-copy-plugin.xml
+/nbactions.xml
