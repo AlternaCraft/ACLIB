@@ -126,7 +126,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 if (idx == params.length - 1 && !cmd.areArguments() 
                         && cs.hasPermission(this.getPermission(value))) {
                     options.add(value.split(" ")[0]); // Exclude arguments <*>
-                } else {
+                } else if (idx + 1 < params.length) {
                     return getOptions(cs, cmd.getArguments(), idx + 1, params);
                 }
             }
