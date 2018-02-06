@@ -16,8 +16,10 @@
  */
 package com.alternacraft.aclib.commands.registerer;
 
+import com.alternacraft.aclib.commands.SubCommandArgument;
 import com.alternacraft.aclib.commands.Condition;
 import com.alternacraft.aclib.commands.SubCommand;
+import com.alternacraft.aclib.commands.SubCommandTabExecutor;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 
 /**
@@ -46,7 +48,9 @@ public interface SubCommandsInterface {
      * 
      * @return Condition
      */
-    public Condition getCustomCondition();
+    public default Condition getCustomCondition() {
+        return null;
+    }
     
     /**
      * Returns executor instance.
@@ -62,12 +66,34 @@ public interface SubCommandsInterface {
      * 
      * @return Array with the alias
      */
-    public String[] getAliases();
+    public default String[] getAliases() {
+        return new String[0];
+    }
     
     /**
-     * Returns subcommand arguments.
+     * Returns subcommands.
      * 
      * @return Array with subcommands
      */
-    public SubCommand[] getArguments();   
+    public default SubCommand[] getSubcommands() {
+        return new SubCommand[0];
+    }
+    
+    /**
+     * Returns arguments.
+     * 
+     * @return Array with arguments
+     */
+    public default SubCommandArgument[] getArguments() {
+        return new SubCommandArgument[0];
+    }
+    
+    /**
+     * Returns subcommand tab executor.
+     * 
+     * @return SubCommandTabExecutor
+     */
+    public default SubCommandTabExecutor getTabExecutor() {
+        return null;
+    }
 }

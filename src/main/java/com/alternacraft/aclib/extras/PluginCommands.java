@@ -20,7 +20,6 @@ import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.commands.CommandListener;
 import com.alternacraft.aclib.commands.SubCommand;
-import com.alternacraft.aclib.commands.SubCommandExecutor;
 import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
@@ -28,6 +27,7 @@ import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import com.alternacraft.aclib.commands.SubCommandExecutor;
 
 /**
  * Commands list.
@@ -84,14 +84,12 @@ public class PluginCommands implements SubCommandExecutor {
             }
             return true;
         }).forEachOrdered(map -> {
-            boolean addHover = map.getKey().getArguments().length > 1 
-                    || map.getKey().getArguments().length == 1 
-                    && map.getKey().getArguments()[0].hasDescription();
-            String full_command = map.getKey().getFullCommand(this.cl.getCommand());
+            boolean addHover = map.getKey().hasSubCommands();
+            String command = map.getKey().getPartialCommand(this.cl.getCommand());
             String usage = map.getKey().getUsage(this.cl.getCommand(), lang);
-            String it = "%click:info:/" + full_command + "|"
+            String it = "%click:info:/" + command + "|"
                     + ((!addHover) ? "" : "hover:text:" 
-                    + this.generateHoverMenu(map.getKey().getArguments(), lang) + "|")
+                    + this.generateHoverMenu(map.getKey().getSubcommands(), lang) + "|")
                     + ChatColor.BLUE + usage + "%";
             MessageManager.sendInteractiveText(cs, "  /" + it
                     + ChatColor.RESET + " - " + ChatColor.GRAY
@@ -103,13 +101,13 @@ public class PluginCommands implements SubCommandExecutor {
         return true;
     }
 
-    private String generateHoverMenu(SubCommand[] arguments, Lang lang) {
+    private String generateHoverMenu(SubCommand[] subcommands, Lang lang) {
         return CommandMessages.COMMAND_OPTION_LIST.getText(lang)
                 .replace(":", "\\:")
                 + "//"
-                + String.join("//", Arrays.stream(arguments)
+                + String.join("//", Arrays.stream(subcommands)
                         .map(v -> {
-                            return ChatColor.RESET + "- " + v.getCommand()
+                            return ChatColor.RESET + "- " + v.getFullCommand("")
                                     + "\\: " + ChatColor.GRAY + v.getDescription(lang);
                         })
                         .toArray(String[]::new)

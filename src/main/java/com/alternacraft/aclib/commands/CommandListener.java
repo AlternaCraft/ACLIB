@@ -24,9 +24,13 @@ import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -44,6 +48,21 @@ public class CommandListener implements CommandExecutor, TabCompleter {
 
     private final Map<SubCommand, SubCommandExecutor> arguments = new LinkedHashMap<>();
 
+    //<editor-fold defaultstate="collapsed" desc="TAB UTILS">
+    private final SubCommandTabExecutor DEFAULT_TAB = (String input, SubCommandArgument arg) -> {
+        switch (arg.getValue()) {
+            case "ign":
+            case "player_name":
+            case "player":
+                return Bukkit.getOnlinePlayers().stream()
+                        .filter(p -> p.getName().startsWith(input))
+                        .map(p -> p.getName())
+                        .collect(Collectors.toList());
+        }
+        return new ArrayList();
+    };    
+    //</editor-fold>
+    
     private final String command;
     private final String perm_prefix;
     private final JavaPlugin plugin;
@@ -69,11 +88,11 @@ public class CommandListener implements CommandExecutor, TabCompleter {
     /**
      * Adds a subcommand.
      *
-     * @param argument SubCommand
+     * @param subcommand SubCommand
      * @param executor Executor
      */
-    public void addSubCommand(SubCommand argument, SubCommandExecutor executor) {
-        arguments.put(argument, executor);
+    public void addSubCommand(SubCommand subcommand, SubCommandExecutor executor) {
+        arguments.put(subcommand, executor);
     }
 
     @Override
@@ -85,7 +104,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
         Lang l = Localizer.getLocale(cs);
 
         try {
-            SubCommand cmdArgument = MapUtils.findArgument(arguments, args[0]);
+            SubCommand subcommand = MapUtils.findArgument(arguments, args[0]);
             // Removing first argument
             if (args.length == 1) {
                 args = new String[0];
@@ -93,18 +112,18 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 args = Arrays.copyOfRange(args, 1, args.length);
             }
             // Checking sender permissions            
-            if (cs instanceof Player && !cmdArgument.getCommand().isEmpty()) {
+            if (cs instanceof Player && !subcommand.getCommand().isEmpty()) {
                 Player pl = (Player) cs;
-                String permission = this.getPermission(cmdArgument.getCommand());
+                String permission = this.getPermission(subcommand.getCommand());
                 if (!pl.hasPermission(permission) && 
-                        (cmdArgument.getCondition() == null || !cmdArgument.getCondition().testCondition(pl, args))) {
+                        (subcommand.getCondition() == null || !subcommand.getCondition().testCondition(pl, args))) {
                     MessageManager.sendPluginMessage(cs, CommandMessages.NO_PERMISSION.getText(l));
                     return true;
                 }
             }
-            if (!arguments.get(cmdArgument).execute(cs, args)) {
+            if (!arguments.get(subcommand).execute(cs, args)) {
                 MessageManager.sendPluginMessage(cs, CommandMessages.COMMAND_USAGE
-                        .getText(l).replace("%USAGE%", cmdArgument.getUsage(this.command, l)));
+                        .getText(l).replace("%USAGE%", subcommand.getUsage(this.command, l)));
             }
         } catch (KeyNotFoundException ex) {
             MessageManager.sendPluginMessage(cs, CommandMessages.INVALID_ARGUMENTS.getText(l));
@@ -115,22 +134,44 @@ public class CommandListener implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String string, String[] params) {
-        return getOptions(cs, arguments.keySet().toArray(new SubCommand[arguments.size()]), 0, params);
+        List<String> options = new ArrayList<>();
+        for (Iterator<SubCommand> iterator = this.arguments.keySet().iterator(); iterator.hasNext();) {
+            SubCommand next = iterator.next();
+            if (next.getCommand().startsWith(params[0]) 
+                    || Arrays.stream(next.getAliases())
+                            .anyMatch(als -> als.startsWith(params[0]))) {
+                options.addAll(this.getOptions(cs, next, next, 1, params));
+            }
+        }
+        return options;
     }
     
-    private List<String> getOptions(CommandSender cs, SubCommand[] cmds, int idx, String[] params) {
+    private List<String> getOptions(CommandSender cs, SubCommand base, 
+            SubCommand next, int idx, String[] params) {        
         List<String> options = new ArrayList<>();
-        for (SubCommand cmd : cmds) {
-            String value = cmd.getCommand();
-            if (value.startsWith(params[idx])) {
-                if (idx == params.length - 1 && !cmd.areArguments() 
-                        && cs.hasPermission(this.getPermission(value))) {
-                    options.add(value.split(" ")[0]); // Exclude arguments <*>
-                } else if (idx + 1 < params.length) {
-                    return getOptions(cs, cmd.getArguments(), idx + 1, params);
+        
+        if (next.hasSubCommands() && params.length > idx) {
+            for (SubCommand subcommand : next.getSubcommands()) {
+                if (subcommand.getCommand().startsWith(params[idx])
+                        || Arrays.stream(subcommand.getAliases())
+                                .anyMatch(als -> als.startsWith(params[idx]))) {
+                    options.addAll(this.getOptions(cs, base, subcommand, idx + 1, params));
+                }
+            }
+        } else {
+            int left;
+            if (idx >= params.length) {
+                options.add(next.getCommand());
+            } else if (next.hasArguments() && (left = params.length - idx) > 0) {
+                SubCommandArgument arg = next.getArguments()[left - 1];
+                String input = params[params.length - 1];
+                options.addAll(this.DEFAULT_TAB.parseArgument(input, arg));
+                if (base.hasTabExecutor()) {
+                    options.addAll(base.getTabExecutor().parseArgument(input, arg));
                 }
             }
         }
+        
         return options;
     }
     

@@ -45,7 +45,8 @@ public class SubCommandsRegisterer {
         for (T arg : e.getEnumConstants()) {
             this.cmd.addSubCommand(new SubCommand(arg.getSubCommand(),
                     arg.getDescription(), arg.getCustomCondition(), 
-                    arg.getAliases(), arg.getArguments()), arg.getInstance());
+                    arg.getAliases(), arg.getSubcommands(), arg.getTabExecutor(),
+                    arg.getArguments()), arg.getInstance());
         }
     }
 
