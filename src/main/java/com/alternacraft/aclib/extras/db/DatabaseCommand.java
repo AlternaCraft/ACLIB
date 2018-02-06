@@ -18,6 +18,8 @@ package com.alternacraft.aclib.extras.db;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.commands.SubCommandArgument;
+import com.alternacraft.aclib.commands.SubCommandExecutor;
+import com.alternacraft.aclib.commands.SubCommandTabExecutor;
 import com.alternacraft.aclib.extras.db.CustomStatement.Comparator;
 import com.alternacraft.aclib.extras.db.CustomStatement.Field;
 import com.alternacraft.aclib.extras.db.CustomStatement.GroupedCondition;
@@ -29,12 +31,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.CommandSender;
-import com.alternacraft.aclib.commands.SubCommandExecutor;
-import com.alternacraft.aclib.commands.SubCommandTabExecutor;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.command.CommandSender;
 
 /**
  *

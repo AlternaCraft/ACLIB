@@ -16,11 +16,11 @@
  */
 package com.alternacraft.aclib.commands.registerer;
 
-import com.alternacraft.aclib.commands.SubCommandArgument;
 import com.alternacraft.aclib.commands.Condition;
 import com.alternacraft.aclib.commands.SubCommand;
-import com.alternacraft.aclib.commands.SubCommandTabExecutor;
+import com.alternacraft.aclib.commands.SubCommandArgument;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
+import com.alternacraft.aclib.commands.SubCommandTabExecutor;
 
 /**
  * Subcommand structure.
