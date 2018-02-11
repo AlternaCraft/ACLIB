@@ -20,6 +20,7 @@ import com.alternacraft.aclib.PluginBase;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.json.simple.JSONObject;
 
@@ -27,12 +28,13 @@ import org.json.simple.JSONObject;
  *
  * @author AlternaCraft
  */
-public abstract class GUI {
+public class GUI {
 
     private static String ID = PluginBase.INSTANCE.plugin().getName();
     
     protected static final String DEF_NAME = "Chest";
     protected static final int MAX_COLS = 9;
+    protected static final int DEF_ROWS = 6;
     
     protected String title;
     protected int update_interval;
@@ -112,8 +114,7 @@ public abstract class GUI {
 
     public Inventory getInventory() {
         String meta_title = this.addMetaToTitle();
-        Inventory inventory = PluginBase.INSTANCE.plugin().getServer()
-                .createInventory(null, this.getSlots(), meta_title);
+        Inventory inventory = Bukkit.createInventory(null, this.getSlots(), meta_title);
         options.entrySet().forEach(i -> inventory.setItem(i.getKey(),
                 i.getValue().getCompleteItem()));
         return inventory;
@@ -140,17 +141,21 @@ public abstract class GUI {
         this.options.clear();
     }
 
-    public int getSlots() {
+    public final int getSlots() {
         return this.getRows() * this.getCols();
     }
 
-    public int getCols() {
+    public final int getCols() {
         return MAX_COLS;
     }
 
-    public abstract int getRows();
+    public int getRows() {
+        return DEF_ROWS;
+    }
 
-    public abstract int getMaxSlots();
+    public int getMaxSlots() {
+        return this.getSlots();
+    }
 
     public static void setID(String id) {
         ID = id;

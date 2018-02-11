@@ -64,6 +64,13 @@ public class PluginBase {
     public static final int MAX_FOOD = 20;
     
     /**
+     * UUID Format.
+     * 
+     * @since 2.1.0
+     */
+    public static final String UUID_FORMAT = "[\\da-f]{8}\\-[\\da-f]{4}\\-[\\da-f]{4}\\-[\\da-f]{4}\\-[\\da-f]{12}";
+    
+    /**
      * Gets singleton.
      * 
      * @since 0.0.6

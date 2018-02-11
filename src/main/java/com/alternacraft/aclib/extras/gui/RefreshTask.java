@@ -20,15 +20,9 @@ import com.alternacraft.aclib.PluginBase;
 import static com.alternacraft.aclib.PluginBase.TPS;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -40,21 +34,6 @@ public class RefreshTask {
     private static final Map<String, Integer> TASKS = new HashMap();
 
     private final int NON_LIMIT = -1;
-    private final Function<String, Boolean> DEFAULT_TASK = pl_uuid -> {
-        OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(pl_uuid));
-        if (!p.isOnline()) {
-            return false;
-        }        
-        Player pl = (Player) p;
-        InventoryView iv = pl.getOpenInventory();
-        if (iv != null) {
-            Inventory inv = iv.getTopInventory();
-            Map<Integer, ItemStack> is = GUIUtils
-                    .findSteveSkulls(inv.getContents());
-            is.forEach(inv::setItem);
-        }        
-        return true;
-    };
 
     private final String uuid;
     private final int delay;
@@ -63,15 +42,7 @@ public class RefreshTask {
         this.uuid = uuid;
         this.delay = delay;
     }
-
-    public void registerUpdate() {
-        this.registerFunction(DEFAULT_TASK);
-    }
-
-    public void registerLimit(int limit) {
-        this.registerUpdate(limit, DEFAULT_TASK);
-    }
-
+    
     /**
      * Registers a function to execute a custom update.
      *

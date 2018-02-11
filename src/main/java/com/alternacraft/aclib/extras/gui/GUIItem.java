@@ -16,9 +16,17 @@
  */
 package com.alternacraft.aclib.extras.gui;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
+import com.alternacraft.headconverter.HeadConverter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -37,7 +45,7 @@ import org.json.simple.parser.ParseException;
  * @author AlternaCraft
  */
 public class GUIItem {
-
+    
     private static String ID = "ct_value";
     
     private ItemStack item;
@@ -59,15 +67,15 @@ public class GUIItem {
 
     public GUIItem(GUIItem item) {
         this(item.getItem(), item.getTitle(), item.isGlow(), item.getPlayerHead(),
-                item.getInfo(), item.getMeta());
+                item.getInfo(), item.getMeta());        
     }
-
+    
     public GUIItem(ItemStack item, String title, boolean glow, String player_head,
             List<String> info, JSONObject meta) {
         this.item = new ItemStack(item);
 
         this.title = title;
-        this.glow = glow;
+        this.glow = glow;            
         this.player_head = player_head;
 
         this.info = new ArrayList<>(info);
@@ -87,6 +95,10 @@ public class GUIItem {
         this.info.clear();
         this.info.addAll(info);
     }
+    
+    public List<String> getInfo() {
+        return info;
+    }
 
     public void addMeta(String id, Object meta) {
         this.meta.put(id, meta);
@@ -101,30 +113,15 @@ public class GUIItem {
         this.meta.clear();
         this.meta.putAll(meta);
     }
-
-    /**
-     * Set skull owner.
-     *
-     * @param ow Player name
-     */
-    @Deprecated
-    public void setSkullOwner(String ow) {
-        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
-        smeta.setOwner(ow);
-        this.item.setItemMeta(smeta);
+    
+    public Object getMetaBy(String key) {
+        return meta.get(key);
     }
 
-    /**
-     * Set skull owner
-     *
-     * @param ow Player
-     */
-    public void setSkullOwner(OfflinePlayer ow) {
-        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
-        smeta.setOwningPlayer(ow);
-        this.item.setItemMeta(smeta);
-    }
-
+    public JSONObject getMeta() {
+        return meta;
+    }    
+    
     /**
      * Set a potion effect.
      *
@@ -135,7 +132,7 @@ public class GUIItem {
         pmeta.setBasePotionData(new PotionData(effect));
         this.item.setItemMeta(pmeta);
     }
-
+    
     public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags) {
         ItemStack aux = new ItemStack(this.item);
         ItemMeta metaaux = aux.getItemMeta();
@@ -151,6 +148,17 @@ public class GUIItem {
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
         aux.setItemMeta(metaaux);
+        if (this.isPlayerHead()) {
+            if (HeadConverter.containsUUID(this.player_head)) {
+                setSkin(aux, HeadConverter.getB64(this.player_head));
+            } else {                
+                try {
+                    this.setSkullOwner(UUID.fromString(this.player_head));
+                } catch (PlayerNotFoundException | IllegalArgumentException ex) {
+                    this.setSkullOwner(this.player_head);
+                }
+            }
+        }
         return (removeAttributes) ? GUIUtils.removeAttributes(aux, flags) : aux;
     }
     
@@ -186,20 +194,18 @@ public class GUIItem {
         return player_head;
     }
 
-    public void setPlayerHead(String player_head) {
-        this.player_head = player_head;
+    public void setPlayerHead(UUID uuid) {
+        HeadConverter.addHead(uuid);
+        this.setPlayerHead(uuid.toString());
     }
 
-    public List<String> getInfo() {
-        return info;
+    public void setPlayerHead(String value) {
+        this.player_head = value;
     }
-
-    public Object getMetaBy(String key) {
-        return meta.get(key);
-    }
-
-    public JSONObject getMeta() {
-        return meta;
+    
+    public boolean isPlayerHead() {
+        return this.item.getType().equals(Material.SKULL_ITEM)
+                && this.player_head != null;
     }
     
     public static String getID() {
@@ -216,5 +222,56 @@ public class GUIItem {
             } catch (ParseException ex) {}
         }
         return false;
+    }
+    
+    /**
+     * Set skull owner.
+     *
+     * @param uuid Player uuid
+     * 
+     * @throws com.alternacraft.aclib.exceptions.PlayerNotFoundException If player
+     *         doesn't exist
+     */
+    private void setSkullOwner(UUID uuid) throws PlayerNotFoundException {
+        if (!(this.item.getItemMeta() instanceof SkullMeta)) return;
+        OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
+        if (op == null || op.getName() == null) {
+            throw new PlayerNotFoundException("Invalid player " + op);
+        }
+        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
+        smeta.setOwningPlayer(op);
+        this.item.setItemMeta(smeta);
+    }
+    
+    /**
+     * Set skull owner
+     * 
+     * @param ow Player name
+     * 
+     * @deprecated Use offline player instead of name.
+     */
+    @Deprecated
+    private void setSkullOwner(String ow) {
+        if (!(this.item.getItemMeta() instanceof SkullMeta)) return;
+        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
+        smeta.setOwner(ow);
+        this.item.setItemMeta(smeta); 
+    }
+    
+    private static void setSkin(ItemStack head, String b64) {
+        SkullMeta localSkullMeta = (SkullMeta) head.getItemMeta();
+        GameProfile localGameProfile = new GameProfile(UUID.randomUUID(), null);
+        localGameProfile.getProperties().put("textures", new Property("textures", b64));
+        Field localField;
+        try {
+            localField = localSkullMeta.getClass().getDeclaredField("profile");
+            localField.setAccessible(true);
+            localField.set(localSkullMeta, localGameProfile);
+            localField.setAccessible(false);
+        } catch (IllegalAccessException | IllegalArgumentException 
+                | NoSuchFieldException | SecurityException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+        head.setItemMeta(localSkullMeta);
     }
 }
