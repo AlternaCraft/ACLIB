@@ -16,8 +16,8 @@
  */
 package com.alternacraft.aclib.extras.gui;
 
+import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
-import static com.alternacraft.aclib.PluginBase.TPS;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -62,17 +62,16 @@ public class RefreshTask {
     public void registerUpdate(int limit, Function<String, Boolean> f) {
         if (f == null) return;
         AtomicInteger counter = new AtomicInteger(0);
+        MessageManager.logDebug("Task " + uuid + " registered!");
         TASKS.put(uuid, new BukkitRunnable() {
             @Override
             public void run() {
-                if (counter.getAndIncrement() == limit) {
-                    cancel();
-                }
-                if (!f.apply(uuid)) {
+                if (counter.getAndIncrement() == limit || !f.apply(uuid)) {
+                    MessageManager.logDebug("Task " + uuid + " stopped!");
                     cancel();
                 }
             }
-        }.runTaskTimer(PluginBase.INSTANCE.plugin(), 0, delay * TPS).getTaskId());
+        }.runTaskTimer(PluginBase.INSTANCE.plugin(), 0, delay).getTaskId());
     }
 
     public static void cancel(String uuid) {

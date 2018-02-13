@@ -17,11 +17,15 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.PluginBase;
+import com.alternacraft.aclib.exceptions.SkinNotLoadedException;
+import com.alternacraft.headconverter.HeadConverter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 
 /**
@@ -115,8 +119,25 @@ public class GUI {
     public Inventory getInventory() {
         String meta_title = this.addMetaToTitle();
         Inventory inventory = Bukkit.createInventory(null, this.getSlots(), meta_title);
-        options.entrySet().forEach(i -> inventory.setItem(i.getKey(),
-                i.getValue().getCompleteItem()));
+        int v = (int) (4L * HeadConverter.getRateLimit() + 1L);
+        options.entrySet().forEach(i -> {
+            ItemStack complete = null;
+            final String uuid = i.getValue().getPlayerHead();
+            try {
+                complete = i.getValue().getCompleteItem();
+            } catch (SkinNotLoadedException ex) {
+                complete = ex.getItemStack();
+                new RefreshTask(UUID.randomUUID().toString(), 5).registerUpdate(v, (d) -> {
+                    boolean contains = HeadConverter.containsUUID(uuid);
+                    if (contains) {
+                        GUIItem.setSkin(inventory.getItem(i.getKey()), HeadConverter.getB64(uuid));
+                    }
+                    return !contains;
+                });
+            } finally {
+                inventory.setItem(i.getKey(), complete);
+            }
+        });
         return inventory;
     }
 

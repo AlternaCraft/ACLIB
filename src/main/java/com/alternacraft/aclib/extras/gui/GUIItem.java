@@ -19,6 +19,7 @@ package com.alternacraft.aclib.extras.gui;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
+import com.alternacraft.aclib.exceptions.SkinNotLoadedException;
 import com.alternacraft.headconverter.HeadConverter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -120,21 +121,11 @@ public class GUIItem {
 
     public JSONObject getMeta() {
         return meta;
-    }    
+    }   
     
-    /**
-     * Set a potion effect.
-     *
-     * @param effect Potion type
-     */
-    public void setPotionEffect(PotionType effect) {
-        PotionMeta pmeta = (PotionMeta) this.item.getItemMeta();
-        pmeta.setBasePotionData(new PotionData(effect));
-        this.item.setItemMeta(pmeta);
-    }
-    
-    public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags) {
-        ItemStack aux = new ItemStack(this.item);
+    public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags) 
+            throws SkinNotLoadedException {
+        final ItemStack aux = new ItemStack(this.item);
         ItemMeta metaaux = aux.getItemMeta();
         String aux_title = this.title;
         if (this.title == null) {
@@ -147,27 +138,24 @@ public class GUIItem {
             metaaux.addEnchant(Enchantment.DURABILITY, 1, true);
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
-        aux.setItemMeta(metaaux);
+        aux.setItemMeta(metaaux);        
+        if (removeAttributes) GUIUtils.removeAttributes(aux, flags);        
         if (this.isPlayerHead()) {
             if (HeadConverter.containsUUID(this.player_head)) {
                 setSkin(aux, HeadConverter.getB64(this.player_head));
-            } else {                
-                try {
-                    this.setSkullOwner(UUID.fromString(this.player_head));
-                } catch (PlayerNotFoundException | IllegalArgumentException ex) {
-                    this.setSkullOwner(this.player_head);
-                }
+            } else {            
+                throw new SkinNotLoadedException(aux);
             }
-        }
-        return (removeAttributes) ? GUIUtils.removeAttributes(aux, flags) : aux;
+        }        
+        return aux;
     }
     
-    public ItemStack getCompleteItem() {
+    public ItemStack getCompleteItem() throws SkinNotLoadedException {
         return this.getCompleteItem(true, ItemFlag.values());
     }
 
     public ItemStack getItem() {
-        return this.item;
+        return new ItemStack(this.item);
     }
 
     public void setItem(ItemStack item) {
@@ -212,6 +200,18 @@ public class GUIItem {
         return ID;
     }
 
+    /**
+     * Set a potion effect.
+     *
+     * @param is ItemStack
+     * @param effect Potion type
+     */
+    public static void setPotionEffect(ItemStack is, PotionType effect) {
+        PotionMeta pmeta = (PotionMeta) is.getItemMeta();
+        pmeta.setBasePotionData(new PotionData(effect));
+        is.setItemMeta(pmeta);
+    }    
+    
     public static boolean isGUIItem(ItemStack is) {
         if (is == null || is.getItemMeta() == null) return false;
         String str = GUIUtils.getHiddenString(is.getItemMeta().getDisplayName());
@@ -227,38 +227,40 @@ public class GUIItem {
     /**
      * Set skull owner.
      *
+     * @param aux
      * @param uuid Player uuid
      * 
      * @throws com.alternacraft.aclib.exceptions.PlayerNotFoundException If player
      *         doesn't exist
      */
-    private void setSkullOwner(UUID uuid) throws PlayerNotFoundException {
-        if (!(this.item.getItemMeta() instanceof SkullMeta)) return;
+    public void setSkullOwner(ItemStack aux, UUID uuid) throws PlayerNotFoundException {
+        if (!(aux.getItemMeta() instanceof SkullMeta)) return;
         OfflinePlayer op = Bukkit.getOfflinePlayer(uuid);
         if (op == null || op.getName() == null) {
             throw new PlayerNotFoundException("Invalid player " + op);
         }
-        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
+        SkullMeta smeta = (SkullMeta) aux.getItemMeta();
         smeta.setOwningPlayer(op);
-        this.item.setItemMeta(smeta);
+        aux.setItemMeta(smeta);
     }
     
     /**
      * Set skull owner
      * 
+     * @param aux
      * @param ow Player name
      * 
      * @deprecated Use offline player instead of name.
      */
     @Deprecated
-    private void setSkullOwner(String ow) {
-        if (!(this.item.getItemMeta() instanceof SkullMeta)) return;
-        SkullMeta smeta = (SkullMeta) this.item.getItemMeta();
+    public void setSkullOwner(ItemStack aux, String ow) {
+        if (!(aux.getItemMeta() instanceof SkullMeta)) return;
+        SkullMeta smeta = (SkullMeta) aux.getItemMeta();
         smeta.setOwner(ow);
-        this.item.setItemMeta(smeta); 
+        aux.setItemMeta(smeta); 
     }
     
-    private static void setSkin(ItemStack head, String b64) {
+    public static void setSkin(ItemStack head, String b64) {
         SkullMeta localSkullMeta = (SkullMeta) head.getItemMeta();
         GameProfile localGameProfile = new GameProfile(UUID.randomUUID(), null);
         localGameProfile.getProperties().put("textures", new Property("textures", b64));
