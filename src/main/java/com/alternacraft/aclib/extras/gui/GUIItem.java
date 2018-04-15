@@ -16,6 +16,7 @@
  */
 package com.alternacraft.aclib.extras.gui;
 
+import com.alternacraft.aclib.PluginBase;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
@@ -139,14 +140,24 @@ public class GUIItem {
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
         aux.setItemMeta(metaaux);        
-        if (removeAttributes) GUIUtils.removeAttributes(aux, flags);        
+        if (removeAttributes) GUIUtils.removeAttributes(aux, flags);  
         if (this.isPlayerHead()) {
-            if (HeadConverter.containsUUID(this.player_head)) {
-                setSkin(aux, HeadConverter.getB64(this.player_head));
-            } else {            
-                throw new SkinNotLoadedException(aux);
-            }
-        }        
+            if (Bukkit.getPluginManager().isPluginEnabled("HeadConverter")) {
+                if (HeadConverter.containsUUID(this.player_head)) {
+                    setSkin(aux, HeadConverter.getB64(this.player_head));
+                } else {            
+                    throw new SkinNotLoadedException(aux);
+                }
+            } else {
+                if (this.player_head.matches(PluginBase.UUID_FORMAT)) {
+                    try {                    
+                        setSkullOwner(aux, UUID.fromString(this.player_head));
+                    } catch (PlayerNotFoundException ex) {}
+                } else {
+                    setSkullOwner(aux, this.player_head);
+                }
+            }      
+        }
         return aux;
     }
     
@@ -183,7 +194,8 @@ public class GUIItem {
     }
 
     public void setPlayerHead(UUID uuid) {
-        HeadConverter.addHead(uuid);
+        if (Bukkit.getPluginManager().isPluginEnabled("HeadConverter"))
+            HeadConverter.addHead(uuid);
         this.setPlayerHead(uuid.toString());
     }
 

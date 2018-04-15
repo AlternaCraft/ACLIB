@@ -26,11 +26,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 /**
  * This class contains some utils for Strings.
@@ -268,11 +272,17 @@ public class StringsUtils {
                         case "hover":
                             HoverEvent he;
                             if (data[1].equals("text")) {
-                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, 
-                                        TextComponent.fromLegacyText(data[2]
-                                                .replace("//", "\n")
-                                                .replace("\\:", ":")
-                                        ));
+                                BaseComponent[] aux = null;
+                                try {
+                                    new JSONParser().parse(data[2]);
+                                    aux = ComponentSerializer.parse(data[2]);
+                                } catch (ParseException ex) {
+                                    aux = TextComponent.fromLegacyText(data[2]
+                                            .replace("//", "\n")
+                                            .replace("\\:", ":")
+                                    );
+                                }
+                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, aux);                                        
                             } else {
                                 he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, null);
                                 //ce = new ClickEvent(HoverEvent.Action.SHOW_ITEM,);
