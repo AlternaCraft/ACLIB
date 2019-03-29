@@ -17,14 +17,6 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.utils.StringsUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.IntStream;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.InventoryView;
@@ -35,8 +27,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.IntStream;
+
 /**
- *
  * @author AlternaCraft
  */
 public class GUIUtils {
@@ -48,7 +44,7 @@ public class GUIUtils {
     public static final String CI_KEY = "ci_key";
     // Item identificator
     public static final String CIT_KEY = "ct_key";
-    
+
     // Meta key
     public static final String KEY_META = "key";
 
@@ -82,7 +78,6 @@ public class GUIUtils {
      * Returns if an inventory is custom.
      *
      * @param title Inventory title
-     *
      * @return True if it is an inventory custom; False if not
      */
     public static final boolean isCustom(String title) {
@@ -99,10 +94,9 @@ public class GUIUtils {
 
     /**
      * Returns if an inventory belongs to a plugin by ID
-     * 
+     *
      * @param title Inventory title
-     * @param id Plugin ID
-     * 
+     * @param id    Plugin ID
      * @return True if it belongs to the plugin; False if not
      */
     public static final boolean belongTo(String title, String id) {
@@ -110,8 +104,7 @@ public class GUIUtils {
         if (str != null) {
             try {
                 JSONObject data = (JSONObject) new JSONParser().parse(str);
-                return (data.get(CI_KEY) != null) 
-                        ? data.get(CI_KEY).equals(id) : false;
+                return (data.get(CI_KEY) != null) && data.get(CI_KEY).equals(id);
             } catch (ParseException ex) {
             }
         }
@@ -122,7 +115,6 @@ public class GUIUtils {
      * Get update interval value.
      *
      * @param title Inventory title
-     *
      * @return Update interval value
      */
     public static final int getUpdateInterval(String title) {
@@ -145,7 +137,6 @@ public class GUIUtils {
      * Returns the hidden string.
      *
      * @param str Complete string
-     *
      * @return Hidden string or null.
      */
     public static final String getHiddenString(String str) {
@@ -155,7 +146,7 @@ public class GUIUtils {
 
     /**
      * Closes all the custom active inventories.
-     * 
+     *
      * @param id Plugin id
      */
     public static final void closeInventories(String id) {
@@ -169,9 +160,8 @@ public class GUIUtils {
 
     /**
      * Returns the not null items, mapped by position
-     * 
+     *
      * @param items Inventory items
-     * 
      * @return Map with the not null items
      */
     public static final Map<Integer, ItemStack> convertInventory(ItemStack[] items) {
@@ -184,17 +174,15 @@ public class GUIUtils {
 
     /**
      * Returns the not null items which are also steve skull, mapped by position
-     * 
+     *
      * @param items Inventory items
-     * 
      * @return Map with the not null items
      */
     public static final Map<Integer, ItemStack> findSteveSkulls(ItemStack[] items) {
         Map<Integer, ItemStack> aux = new HashMap<>();
         IntStream.range(0, items.length)
                 .filter(idx -> items[idx] != null
-                && items[idx].getType().equals(Material.SKULL_ITEM)
-                && items[idx].getDurability() == 3)
+                        && items[idx].getType().equals(Material.PLAYER_HEAD))
                 .forEach(idx -> aux.put(idx, new ItemStack(items[idx])));
         return aux;
     }
@@ -203,7 +191,6 @@ public class GUIUtils {
      * Removes the item attributes.
      *
      * @param item ItemStack
-     *
      * @return Parsed ItemStack
      */
     public static final ItemStack removeAttributes(ItemStack item) {
@@ -215,7 +202,6 @@ public class GUIUtils {
      *
      * @param item ItemStack
      * @param flag Flags
-     *
      * @return Parsed ItemStack
      */
     public static final ItemStack removeAttributes(ItemStack item, ItemFlag... flag) {
@@ -227,9 +213,8 @@ public class GUIUtils {
 
     /**
      * Format the messages to limit the text box size
-     * 
+     *
      * @param lore Lore lines
-     * 
      * @return Lore lines formatted
      */
     public static final List<String> parseLoreLines(List<String> lore) {
@@ -240,7 +225,7 @@ public class GUIUtils {
         return aux;
     }
 
-    private static List<String> recurrentParser(String msg) {        
+    private static List<String> recurrentParser(String msg) {
         List<String> aux = new ArrayList<>();
         if (StringsUtils.stripColors(msg).length() > MAX_LORE_LENGTH) {
             // Cut before
@@ -261,7 +246,7 @@ public class GUIUtils {
                     }
                 }
                 // Analyze new text line
-                aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));                
+                aux.addAll(recurrentParser(last_color + msg.substring(cut + 1)));
             }
         } else {
             aux.add(msg);

@@ -21,14 +21,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author AlternaCraft
  */
 public class SubCommandArgument {
-    
+
     private String value;
     private Enum description;
-    private boolean optional;    
+    private boolean optional;
     private String[] aliases;
 
     public SubCommandArgument(String value, Enum description, boolean optional, String... aliases) {
@@ -54,7 +53,7 @@ public class SubCommandArgument {
             this.value = m.group(2);
         }
     }
-    
+
     public String getValue() {
         return value;
     }
@@ -70,7 +69,7 @@ public class SubCommandArgument {
     public void setDescription(Enum description) {
         this.description = description;
     }
-    
+
     public boolean hasDescription() {
         return this.description != null;
     }
@@ -89,8 +88,8 @@ public class SubCommandArgument {
 
     public void setAliases(String[] aliases) {
         this.aliases = aliases;
-    }   
-    
+    }
+
     public boolean is(String value) {
         return this.value.equals(value) || Arrays.asList(aliases).contains(value);
     }
@@ -99,5 +98,5 @@ public class SubCommandArgument {
     public String toString() {
         String result = "<" + this.value + ">";
         return (this.optional) ? "[" + result + "]" : result;
-    }    
+    }
 }

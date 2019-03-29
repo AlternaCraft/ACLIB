@@ -20,15 +20,15 @@ public interface HookerInterface {
 
     /**
      * Hooks the plugin
-     * 
+     *
      * @return boolean
      */
-    public boolean hook();
-    
+    boolean hook();
+
     /**
-     * Returns plugin's name 
-     * 
+     * Returns plugin's name
+     *
      * @return Plugin's name
      */
-    public String name();    
+    String name();
 }

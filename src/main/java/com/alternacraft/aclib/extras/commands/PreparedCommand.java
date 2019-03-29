@@ -19,19 +19,15 @@ package com.alternacraft.aclib.extras.commands;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.utils.Localizer;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandMap;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 /**
- *
  * @author AlternaCraft
  */
 public abstract class PreparedCommand extends Command implements Listener {
@@ -40,7 +36,7 @@ public abstract class PreparedCommand extends Command implements Listener {
     private final boolean only_player;
 
     public PreparedCommand(String cmd, String desc, String usage, String perm, short args,
-            boolean only_player, String... aliases) {
+                           boolean only_player, String... aliases) {
         super(cmd, desc, usage, Arrays.asList(aliases));
         this.arguments = args;
         this.only_player = only_player;
@@ -53,9 +49,9 @@ public abstract class PreparedCommand extends Command implements Listener {
     public PreparedCommand(String cmd, String perm, String... aliases) {
         this(cmd, cmd, "/" + cmd, perm, (short) -1, false, aliases);
     }
-    
+
     public PreparedCommand(PluginCommand pc, short args, boolean only_player) {
-        this(pc.getName(), pc.getDescription(), pc.getUsage(), pc.getPermission(), 
+        this(pc.getName(), pc.getDescription(), pc.getUsage(), pc.getPermission(),
                 args, only_player, pc.getAliases().toArray(new String[pc.getAliases().size()]));
     }
 
@@ -78,7 +74,7 @@ public abstract class PreparedCommand extends Command implements Listener {
         }
         return this.run(sender, cmd, data);
     }
-    
+
     public abstract boolean run(CommandSender sender, String cmd, String[] args);
 
     public CommandExecutor getCommandExecutor() {
@@ -86,7 +82,7 @@ public abstract class PreparedCommand extends Command implements Listener {
             return this.execute(sender, label, args);
         });
     }
-    
+
     public static void registerDynamicCommand(PreparedCommand dc, boolean or) {
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");

@@ -20,15 +20,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * Main configuration.
- * 
+ *
  * @author AlternaCraft
  */
 public interface ConfigDataInterface {
 
     /**
      * Loads configuration.
-     * 
+     *
      * @param fc File configuration
      */
-    public void loadParams(FileConfiguration fc);    
+    void loadParams(FileConfiguration fc);
 }

@@ -24,10 +24,11 @@ import com.alternacraft.aclib.commands.SubCommandExecutor;
 import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
-import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 /**
  * Commands list.
@@ -78,9 +79,7 @@ public class PluginCommands implements SubCommandExecutor {
             // Don't show if he does not have permission
             if (cs instanceof Player && !key.getCommand().isEmpty()) {
                 String permission = this.cl.prefix() + "." + key.getCommand();
-                if (!((Player) cs).hasPermission(permission)) {
-                    return false;
-                }
+                return cs.hasPermission(permission);
             }
             return true;
         }).forEachOrdered(map -> {
@@ -88,7 +87,7 @@ public class PluginCommands implements SubCommandExecutor {
             String command = map.getKey().getPartialCommand(this.cl.getCommand());
             String usage = map.getKey().getUsage(this.cl.getCommand(), lang);
             String it = "%click:info:/" + command + "|"
-                    + ((!addHover) ? "" : "hover:text:" 
+                    + ((!addHover) ? "" : "hover:text:"
                     + this.generateHoverMenu(map.getKey().getSubcommands(), lang) + "|")
                     + ChatColor.BLUE + usage + "%";
             MessageManager.sendInteractiveText(cs, "  /" + it
@@ -106,11 +105,11 @@ public class PluginCommands implements SubCommandExecutor {
                 .replace(":", "\\:")
                 + "//"
                 + String.join("//", Arrays.stream(subcommands)
-                        .map(v -> {
-                            return ChatColor.RESET + "- " + v.getFullCommand("")
-                                    + "\\: " + ChatColor.GRAY + v.getDescription(lang);
-                        })
-                        .toArray(String[]::new)
-                );
+                .map(v -> {
+                    return ChatColor.RESET + "- " + v.getFullCommand("")
+                            + "\\: " + ChatColor.GRAY + v.getDescription(lang);
+                })
+                .toArray(String[]::new)
+        );
     }
 }

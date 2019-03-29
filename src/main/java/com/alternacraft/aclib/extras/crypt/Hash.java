@@ -16,6 +16,8 @@
  */
 package com.alternacraft.aclib.extras.crypt;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -24,11 +26,8 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 /**
- *
  * @author AlternaCraft
  */
 public final class Hash {
@@ -37,7 +36,7 @@ public final class Hash {
      * String with the default token.
      */
     private static String TOKEN;
-    
+
     /**
      * Each token produced by this class uses this identifier as a prefix.
      */
@@ -66,7 +65,7 @@ public final class Hash {
      * Create a password manager with a specified cost
      *
      * @param cost the exponential computational cost of hashing a password, 0
-     * to 30
+     *             to 30
      */
     public Hash(int cost) {
         iterations(cost);
@@ -86,7 +85,6 @@ public final class Hash {
      * Hash a password for storage.
      *
      * @param password Password
-     * 
      * @return a secure authentication token to be stored for later
      * authentication
      */
@@ -104,13 +102,12 @@ public final class Hash {
     public boolean authenticate(char[] password) {
         return this.authenticate(password, TOKEN);
     }
-    
+
     /**
      * Authenticate with a password and a stored password token.
      *
      * @param password Password
-     * @param token Salt
-     * 
+     * @param token    Salt
      * @return true if the password and token match
      */
     public boolean authenticate(char[] password, String token) {
@@ -140,7 +137,7 @@ public final class Hash {
             throw new IllegalStateException("Invalid SecretKeyFactory", ex);
         }
     }
-    
+
     public static void setToken(String token) {
         TOKEN = token;
     }

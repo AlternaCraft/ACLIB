@@ -16,41 +16,41 @@
  */
 package com.alternacraft.aclib.extras.commands;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- *
  * @author AlternaCraft
  */
 public class OverridedCommands implements Listener {
-   
-    private static final String ARGUMENTS = "(\\s(.+))*";    
+
+    private static final String ARGUMENTS = "(\\s(.+))*";
     private static final String COMMAND_SLASH = "\\/";
-    
+
     private static final Map<String, PreparedCommand> OVERRIDED_COMMANDS = new HashMap();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
         String msg = event.getMessage().toLowerCase();
         Player pl = event.getPlayer();
-        
+
         for (Map.Entry<String, PreparedCommand> entry : OVERRIDED_COMMANDS.entrySet()) {
             if (msg.matches(entry.getKey())) {
-                event.setCancelled(true);                
+                event.setCancelled(true);
                 entry.getValue().execute(pl, entry.getValue().getName(), new String[0]);
                 return;
             }
         }
     }
-    
+
     public static void register(PreparedCommand dc, boolean with_args) {
-        String reduced_aliases = (dc.getAliases().size() > 0) ? 
+        String reduced_aliases = (dc.getAliases().size() > 0) ?
                 new StringBuilder("|").append(String.join("|", dc.getAliases())).toString() : "";
         OVERRIDED_COMMANDS.put(
                 new StringBuilder(COMMAND_SLASH)

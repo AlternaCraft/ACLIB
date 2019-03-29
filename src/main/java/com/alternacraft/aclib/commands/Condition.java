@@ -19,18 +19,16 @@ package com.alternacraft.aclib.commands;
 import org.bukkit.entity.Player;
 
 /**
- *
  * @author cube
  */
 public interface Condition {
-    
+
     /**
      * Method to execute a custom condition.
-     * 
-     * @param pl Player player
+     *
+     * @param pl        Player player
      * @param arguments Command arguments
-     * 
      * @return True if it satisfies the condition; False if not
      */
-    public boolean testCondition(Player pl, String[] arguments);
+    boolean testCondition(Player pl, String[] arguments);
 }

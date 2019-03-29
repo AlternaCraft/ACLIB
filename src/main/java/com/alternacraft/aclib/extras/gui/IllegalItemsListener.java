@@ -17,9 +17,6 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.MessageManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,20 +27,23 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+
 /**
- *
  * @author AlternaCraft
  */
 public class IllegalItemsListener implements Listener {
 
     private static final List<Function<ItemStack, Boolean>> VALIDATIONS = new ArrayList();
-    
+
     static {
-        VALIDATIONS.add((Function<ItemStack, Boolean>) (ItemStack t) -> {
+        VALIDATIONS.add((ItemStack t) -> {
             return GUIItem.isGUIItem(t);
         });
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent event) {
         Player pl = event.getPlayer();
@@ -56,14 +56,14 @@ public class IllegalItemsListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void onPickUp(EntityPickupItemEvent event) {
         Item item = event.getItem();
         ItemStack is = item.getItemStack();
-        if (is != null && is.getItemMeta() != null 
-                    && VALIDATIONS.stream().anyMatch(v -> v.apply(is))) {
-            MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName() 
+        if (is != null && is.getItemMeta() != null
+                && VALIDATIONS.stream().anyMatch(v -> v.apply(is))) {
+            MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName()
                     + " from the ground");
             event.setCancelled(true);
             item.remove();
@@ -76,11 +76,11 @@ public class IllegalItemsListener implements Listener {
         this.verify(event.getPreviousSlot(), pl);
         this.verify(event.getNewSlot(), pl);
     }
-    
+
     private void verify(int slot, Player pl) {
         if (slot >= 0 && slot < pl.getInventory().getSize()) {
             ItemStack is = pl.getInventory().getItem(slot);
-            if (is != null && is.getItemMeta() != null 
+            if (is != null && is.getItemMeta() != null
                     && VALIDATIONS.stream().anyMatch(v -> v.apply(is))) {
                 MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName()
                         + " from " + pl.getName() + "'s inventory");
@@ -88,7 +88,7 @@ public class IllegalItemsListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void onInteract(InventoryClickEvent event) {
         ItemStack is = event.getCurrentItem();
@@ -96,15 +96,15 @@ public class IllegalItemsListener implements Listener {
                 || event.getClickedInventory() == null) {
             return;
         }
-        if (VALIDATIONS.stream().anyMatch(v -> v.apply(is)) 
+        if (VALIDATIONS.stream().anyMatch(v -> v.apply(is))
                 && !GUIUtils.isCustom(event.getClickedInventory().getName())) {
-            MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName() 
+            MessageManager.logDebug("Removed " + is.getItemMeta().getDisplayName()
                     + " from " + event.getClickedInventory().getHolder() + " inventory!");
             event.setCancelled(true);
             event.getClickedInventory().remove(is);
         }
     }
-    
+
     public static void registerValidation(Function<ItemStack, Boolean> validation) {
         VALIDATIONS.add(validation);
     }

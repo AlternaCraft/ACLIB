@@ -18,30 +18,31 @@ package com.alternacraft.aclib.exceptions;
 
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.utils.exceptions.ErrorManager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 /**
  * Custom exception.
  * This add some extras:
  * <ul>
- *  <li>Structured messages
- *      <ul>
- *          <li>There are three types:
- *              <ul>
- *                  <li><b>Simplified</b>. Just for indicating an error</li>
- *                  <li><b>Essential</b>. Essential information to find a reason</li>
- *                  <li><b>Full</b>. All the data</li>
- *              </ul>
- *          </li>
- *      </ul>
- *  </li>
- *  <li>How to report</li>
- *  <li>Functionality for finding a possible reason of the error</li>
+ * <li>Structured messages
+ * <ul>
+ * <li>There are three types:
+ * <ul>
+ * <li><b>Simplified</b>. Just for indicating an error</li>
+ * <li><b>Essential</b>. Essential information to find a reason</li>
+ * <li><b>Full</b>. All the data</li>
+ * </ul>
+ * </li>
+ * </ul>
+ * </li>
+ * <li>How to report</li>
+ * <li>Functionality for finding a possible reason of the error</li>
  * </ul>
  *
  * @author AlternaCraft
@@ -62,8 +63,8 @@ public class PluginException extends Exception {
 
     protected static final short SIMPLIFIED = 0;
     protected static final short ESSENTIAL = 1;
-    protected static final short FULL = 2;  
-    
+    protected static final short FULL = 2;
+
     protected Map<String, Object> data = new LinkedHashMap();
     protected String custom_error = null;
 
@@ -81,7 +82,7 @@ public class PluginException extends Exception {
         this(message);
         this.custom_error = custom_error;
     }
-    
+
     /* With previous stacktrace */
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public PluginException(String message, StackTraceElement[] ste) {
@@ -120,10 +121,10 @@ public class PluginException extends Exception {
     public Object[] getCustomStacktrace() {
         int n = PluginBase.INSTANCE.getErrorFormat();
         List result = new ArrayList();
-        
-        ErrorManager.analyzePossibleReasons(this.getMessage(), this.data, 
+
+        ErrorManager.analyzePossibleReasons(this.getMessage(), this.data,
                 this.custom_error); // Keep data
-        
+
         switch (n) {
             case SIMPLIFIED:
                 result.addAll(getHeader());
@@ -147,14 +148,14 @@ public class PluginException extends Exception {
 
     // <editor-fold defaultstate="collapsed" desc="DEFAULT TEMPLATES">
     protected List getHeader() {
-        return new ArrayList<String>() {{ 
+        return new ArrayList<String>() {{
             this.add(new StringBuilder(getMessage())
-                    .append(ErrorManager.getLastCodes()).toString()); 
+                    .append(ErrorManager.getLastCodes()).toString());
         }};
     }
 
     protected List getPossibleReasons() {
-        return new ArrayList() {{ 
+        return new ArrayList() {{
             this.add("          " + G + "====== " + V + "POSSIBLE REASONS" + G + " ======");
             this.addAll(ErrorManager.getLastMessages());
         }};
@@ -206,16 +207,16 @@ public class PluginException extends Exception {
             {
                 for (StackTraceElement stackTrace : getStackTrace()) {
                     String str = stackTrace.toString();
-                    if (str.contains(NAME.toLowerCase())) {                        
+                    if (str.contains(NAME.toLowerCase())) {
                         this.add(
-                          new StringBuilder()
-                                .append(stackTrace.getClassName()
-                                  .replaceAll(".*\\." + NAME.toLowerCase() + "\\.", ""))
-                                .append("(")
-                                  .append(stackTrace.getMethodName())
-                                  .append(" -> ")
-                                  .append(stackTrace.getLineNumber())
-                                .append(")").toString()
+                                new StringBuilder()
+                                        .append(stackTrace.getClassName()
+                                                .replaceAll(".*\\." + NAME.toLowerCase() + "\\.", ""))
+                                        .append("(")
+                                        .append(stackTrace.getMethodName())
+                                        .append(" -> ")
+                                        .append(stackTrace.getLineNumber())
+                                        .append(")").toString()
                         );
                     }
                 }

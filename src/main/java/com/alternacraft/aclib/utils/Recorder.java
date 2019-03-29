@@ -23,19 +23,19 @@ import java.util.Map;
 
 /**
  * This class allows you to record times for managing performance.
- * 
+ *
  * @author AlternaCraft
  */
 public class Recorder {
 
     // If you want to measure times
     private final Map<String, Long> timeAtStart = new HashMap();
-    
+
     private final Map<String, List<Long>> register = new HashMap();
 
     /**
      * Save the current time for "id".
-     * 
+     *
      * @param id Name for the process
      */
     public void start(String id) {
@@ -44,9 +44,8 @@ public class Recorder {
 
     /**
      * Returns the start time for "id"
-     * 
+     *
      * @param id Process name
-     * 
      * @return Time in milliseconds
      */
     public long getStartTime(String id) {
@@ -54,11 +53,10 @@ public class Recorder {
     }
 
     /**
-     * Saves the value and returns the difference between the final time and 
+     * Saves the value and returns the difference between the final time and
      * the start time.
-     * 
+     *
      * @param id Process name
-     * 
      * @return Time in milliseconds
      */
     public long recordTime(String id) {
@@ -72,11 +70,11 @@ public class Recorder {
         this.register.get(id).add(elapsedtime);
         return elapsedtime;
     }
-    
+
     /**
      * Saves the value.
-     * 
-     * @param id Process name
+     *
+     * @param id    Process name
      * @param value Number to save
      */
     public void recordNumber(String id, long value) {
@@ -89,48 +87,48 @@ public class Recorder {
     /**
      * Returns parsed values.
      * <i>The values will be replaced with the mean</i>
-     * 
+     *
      * @return Parsed values
      */
     public Map<String, Integer> getParsedValues() {
         Map<String, Integer> parsed = new HashMap<>();
-        
+
         for (Map.Entry<String, List<Long>> entry : register.entrySet()) {
             String key = entry.getKey();
             List<Long> value = entry.getValue();
-            
+
             int total = getAverage(value);
-            
+
             parsed.put(key, total);
         }
-        
+
         return parsed;
     }
 
     public void saveToLog(String filename) {
         this.saveToLog(new PluginLog(filename), false);
     }
-    
+
     /**
      * Save the messages to a log file.
      * <i>If the file already exists will be deleted</i>
-     * 
+     *
      * @param filename File to export the content
-     * @param keep Keep previous data
-     */    
+     * @param keep     Keep previous data
+     */
     public void saveToLog(String filename, boolean keep) {
         this.saveToLog(new PluginLog(filename), keep);
     }
-    
+
     public void saveToLog(PluginLog pl) {
         this.saveToLog(pl, false);
     }
-    
+
     /**
      * Save the messages to a log file.
      * <i>If the file already exists will be deleted</i>
-     * 
-     * @param pl PluginLog
+     *
+     * @param pl   PluginLog
      * @param keep Keep previous data
      */
     public void saveToLog(PluginLog pl, boolean keep) {

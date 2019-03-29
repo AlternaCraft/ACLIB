@@ -17,12 +17,13 @@
 package com.alternacraft.aclib.utils.exceptions;
 
 /**
- *
  * @author AlternaCraft
  */
 public interface ErrorFormat {
-    
-    public String getMessage();
-    public int[] getErrorCode();
-    public ErrorExecutor getErrorExecutor();
+
+    String getMessage();
+
+    int[] getErrorCode();
+
+    ErrorExecutor getErrorExecutor();
 }

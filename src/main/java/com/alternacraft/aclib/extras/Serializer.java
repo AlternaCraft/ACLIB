@@ -17,12 +17,6 @@
 package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.utils.RegExp;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,12 +25,13 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.*;
+
 /**
- *
  * @author AlternaCraft
  */
 public class Serializer {
-    
+
     public static String serializeLocation(Location l) {
         return new StringBuilder()
                 .append(l.getWorld().getName())
@@ -71,7 +66,7 @@ public class Serializer {
             } else {
                 aux = new ItemStack(itemStack);
             }
-            
+
             serializedItemMeta = (aux.hasItemMeta()) ? aux.getItemMeta().serialize() : null;
             aux.setItemMeta(null);
             serializedItemStack = aux.serialize();
@@ -111,15 +106,15 @@ public class Serializer {
     private static final String LIST_ITEM_REGEX = ",(?=\\{)";
     private static final String ITEM_REGEX = "\\{(.*)\\}=(?:\\{(.*)\\}|null)";
     private static final String ITEM_ATTR_REGEX = ",(?!(\\w+=[\\w\\d]+,?)+\\})(?!([\\w\\d]+,?)+\\])";
-    
+
     private static final String ITEM_INNER_MAP = "\\{(.*)\\}";
     private static final String ITEM_INNER_ARRAY = "\\[(.*)\\]";
-    
+
     private static List<Map.Entry<Map<String, Object>, Map<String, Object>>> stringToList(String str) {
         List<Map.Entry<Map<String, Object>, Map<String, Object>>> serializedItemStackList = new ArrayList<>();
-        
+
         Arrays.asList(RegExp.getGroups(INNER_LIST_REGEX, cleanString(str))
-                .get(0).split(LIST_ITEM_REGEX)).forEach(item -> {        
+                .get(0).split(LIST_ITEM_REGEX)).forEach(item -> {
             RegExp.getGroupsWithElements(ITEM_REGEX, item, 1, 2).forEach(nodes -> {
                 Map<String, Object> keys = new LinkedHashMap();
                 Arrays.asList(nodes[0].split(",")).forEach(kv -> {
@@ -129,7 +124,7 @@ public class Serializer {
                 Map<String, Object> values = null;
                 if (nodes[1] != null) {
                     values = new LinkedHashMap();
-                    for (String kv : Arrays.asList(nodes[1].split(ITEM_ATTR_REGEX))) {
+                    for (String kv : nodes[1].split(ITEM_ATTR_REGEX)) {
                         String[] splitter = kv.split("=", 2);
 
                         String key = splitter[0];
@@ -142,18 +137,18 @@ public class Serializer {
                                     .get(0).split(",")).forEach(enchantment -> {
                                 String[] auxsplitter = enchantment.split("=", 2);
                                 aux.put(auxsplitter[0], parseValue(auxsplitter[1]));
-                            });       
+                            });
                             value = aux;
-                        } 
+                        }
                         // [a,b]
-                        else if (splitter[1].matches(ITEM_INNER_ARRAY)) {  
+                        else if (splitter[1].matches(ITEM_INNER_ARRAY)) {
                             List<String> aux = new ArrayList<>();
                             Arrays.asList(RegExp.getGroups(ITEM_INNER_ARRAY, splitter[1])
                                     .get(0).split(",")).forEach(text -> {
                                 aux.add(text);
-                            });       
+                            });
                             value = aux;
-                        } 
+                        }
                         // a
                         else {
                             value = parseValue(splitter[1]);
@@ -164,8 +159,8 @@ public class Serializer {
                 }
                 serializedItemStackList.add(new AbstractMap.SimpleEntry<>(keys, values));
             });
-        });      
-        
+        });
+
         return serializedItemStackList;
     }
 

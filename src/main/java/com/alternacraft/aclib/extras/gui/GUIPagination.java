@@ -21,15 +21,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 /**
- *
  * @author AlternaCraft
  */
 public class GUIPagination extends GUI {
-    
+
     public GUIPagination(String title) {
         super(title);
     }
-    
+
     public void addControls(int page, int max_size, Lang lang, String... subkeys) {
         if (page > 0) {
             GUIItem item = new GUIItem(new ItemStack(Material.ARROW),
@@ -54,15 +53,15 @@ public class GUIPagination extends GUI {
             this.addItem(GUIUtils.calculateSlot(this.getRows(), 6, this.getRows()), item, false);
         }
     }
-    
+
     public void addExitItem(Lang lang) {
-        GUIItem item = new GUIItem(new ItemStack(Material.DOUBLE_PLANT),
+        GUIItem item = new GUIItem(new ItemStack(Material.SUNFLOWER),
                 GUIMessages.EXIT.getText(lang));
         item.addInfo(GUIMessages.EXIT_ACTION.getText(lang));
         item.addMeta(GUIUtils.KEY_META, GUIUtils.CLOSE_ACTION_META);
         this.addItem(GUIUtils.calculateSlot(this.getRows(), 5, this.getRows()), item, false);
     }
-    
+
     @Override
     public int getMaxSlots() {
         return (this.getRows() - 2) * this.getCols();

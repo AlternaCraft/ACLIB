@@ -18,23 +18,24 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.langs.Lang;
-import java.lang.reflect.Field;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
+
 /**
  * This class contains some utils for locales.
- * 
+ *
  * @author AlternaCraft
- * @see NMS 
+ * @see NMS
  */
 public enum Localizer {
-    ENGLISH(Lang.EN, "en_US"),    
+    ENGLISH(Lang.EN, "en_US"),
     SPANISH(Lang.ES, "es_ES"),
     ARGENTINEAN_SPANISH(Lang.ES, "es_AR"),
     MEXICO_SPANISH(Lang.ES, "es_MX"),
     URUGUAY_SPANISH(Lang.ES, "es_UY"),
-    VENEZUELA_SPANISH(Lang.ES, "es_VE"),    
+    VENEZUELA_SPANISH(Lang.ES, "es_VE"),
     CZECH(Lang.CS, "cs_CZ"),
     EUSKARA(Lang.EU, "eu_ES"),
     GALICIAN(Lang.GL, "gl_ES"),
@@ -45,23 +46,23 @@ public enum Localizer {
     POLISH(Lang.PL, "pl_PL"),
     SLOVENIAN(Lang.SL, "sl_SI"),
     SERBIAN(Lang.SR, "sr_SP"),
-    ROMANIAN(Lang.RO, "ro_RO"),    
+    ROMANIAN(Lang.RO, "ro_RO"),
     SWEDISH(Lang.SV, "sv_SE"),
     PORTUGUESE_BR(Lang.PT, "pt_BR"),
     PORTUGUESE_PT(Lang.PT, "pt_PT"),
     DEUTSCH(Lang.DE, "de_DE"),
     GREEK(Lang.GR, "el_GR"),
-    FRENCH_CA(Lang.FR, "fr_CA"), 
+    FRENCH_CA(Lang.FR, "fr_CA"),
     FRENCH(Lang.FR, "fr_FR"),
     JAPANESE(Lang.JP, "ja_JP"),
-    SIMPLIFIED_CHINESE(Lang.CN, "zh_CN"),    
-    TRADITIONAL_CHINESE(Lang.CH, "zh_TW"),    
+    SIMPLIFIED_CHINESE(Lang.CN, "zh_CN"),
+    TRADITIONAL_CHINESE(Lang.CH, "zh_TW"),
     RUSSIAN(Lang.RU, "ru_RU");
 
     private final Lang type;
     private final String code;
 
-    private Localizer(Lang type, String code) {
+    Localizer(Lang type, String code) {
         this.type = type;
         this.code = code;
     }
@@ -78,17 +79,16 @@ public enum Localizer {
 
     /**
      * Method for getting a locale by CommandSender
-     * 
+     *
      * @param cs CommandSender
      * @return Langs
-     * 
      * @since 0.0.9
      */
     public static Lang getLocale(CommandSender cs) {
         return (cs instanceof Player) ? Localizer.getLocale((Player) cs)
                 : PluginBase.INSTANCE.getMainLanguage();
     }
-    
+
     public static Lang getLocale(Player inPlayer) {
         try {
             Object nms = NMS.castToNMS(inPlayer);

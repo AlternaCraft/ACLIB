@@ -22,10 +22,11 @@ import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.PluginLog;
 import com.alternacraft.aclib.utils.Recorder;
 import com.alternacraft.aclib.utils.StringsUtils;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.logging.LogRecord;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Singleton.
@@ -33,7 +34,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author AlternaCraft
  */
 public class PluginBase {
-    
+
     //<editor-fold defaultstate="collapsed" desc="Vars + Constructor">
     /**
      * Gets plugin's directory.
@@ -48,31 +49,31 @@ public class PluginBase {
      * @since 0.0.9
      */
     public static final int TPS = 20;
-    
+
     /**
      * Player maximum health.
      *
      * @since 1.5.1
      */
     public static final double MAX_HEALTH = 20.0;
-    
+
     /**
      * Player maximum food.
      *
      * @since 1.5.1
      */
     public static final int MAX_FOOD = 20;
-    
+
     /**
      * UUID Format.
-     * 
+     *
      * @since 2.1.0
      */
     public static final String UUID_FORMAT = "[\\da-f]{8}\\-[\\da-f]{4}\\-[\\da-f]{4}\\-[\\da-f]{4}\\-[\\da-f]{12}";
-    
+
     /**
      * Gets singleton.
-     * 
+     *
      * @since 0.0.6
      */
     public static final PluginBase INSTANCE = new PluginBase();
@@ -100,18 +101,18 @@ public class PluginBase {
 
     /**
      * Custom nodes of the configuration file to keep previous data.
-     * 
+     *
      * @since 1.2.1
      */
     private String[] nodes = {};
-    
+
     /**
      * Static variable to record times.
      */
     public static final Recorder METER = new Recorder();
-    
+
     // Singleton
-    private PluginBase() {    
+    private PluginBase() {
     }
     //</editor-fold>
 
@@ -138,8 +139,7 @@ public class PluginBase {
      * Initializing the essentials and setting the main config data.
      *
      * @param plugin JavaPlugin
-     * @param cdi ConfigDataInterface
-     *
+     * @param cdi    ConfigDataInterface
      * @since 0.0.9
      */
     public final void init(JavaPlugin plugin, ConfigDataInterface cdi) {
@@ -148,18 +148,19 @@ public class PluginBase {
     }
 
     // <editor-fold defaultstate="collapsed" desc="Setters">
+
     /**
      * Sets custom nodes.
-     * 
+     *
      * @param nodes Array of nodes
      */
     public void defineCustomNodes(String... nodes) {
         this.nodes = nodes;
     }
-    
+
     /**
      * Sets plugin prefix.
-     * 
+     *
      * @param prefix Prefix
      */
     public void definePluginPrefix(String prefix) {
@@ -168,7 +169,7 @@ public class PluginBase {
 
     /**
      * Sets the main language of the plugin.
-     * 
+     *
      * @param lang Language
      * @since 0.0.6
      */
@@ -178,30 +179,30 @@ public class PluginBase {
 
     /**
      * Sets error format.
-     * 
+     *
      * @param n Error format
      * @since 0.0.6
      */
     public void defineErrorFormat(short n) {
         this.errorFormat = n;
-    }       
-    
+    }
+
     /**
      * Define custom filters for logger.
-     * 
-     * @param cmds Regular expressions 
+     *
+     * @param cmds Regular expressions
      * @since 1.4.1
      */
     public void defineFilters(String... cmds) {
         this.pluginInstance.getServer().getLogger().setFilter((LogRecord record) -> {
-            return !Arrays.stream(cmds).anyMatch(cmd -> 
+            return !Arrays.stream(cmds).anyMatch(cmd ->
                     record.getMessage().matches(cmd));
         });
     }
-    
+
     /**
      * Define debug mode.
-     * 
+     *
      * @param debug Should enable debug?
      * @since 1.4.1
      */
@@ -225,7 +226,7 @@ public class PluginBase {
 
     /**
      * Returns custom nodes.
-     * 
+     *
      * @return Array of strings
      * @since 1.2.1
      */
@@ -235,7 +236,7 @@ public class PluginBase {
 
     /**
      * Returns plugin prefix.
-     * 
+     *
      * @return Plugin prefix
      * @since 0.0.6
      */
@@ -245,7 +246,7 @@ public class PluginBase {
 
     /**
      * Returns main language.
-     * 
+     *
      * @return Language
      * @since 0.0.6
      */
@@ -255,17 +256,17 @@ public class PluginBase {
 
     /**
      * Returns error format.
-     * 
+     *
      * @return Error format number
      * @since 0.0.6
      */
     public short getErrorFormat() {
         return this.errorFormat;
     }
-    
+
     /**
      * Returns debug mode
-     * 
+     *
      * @return True if it is enabled; False if not
      * @since 1.4.1
      */

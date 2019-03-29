@@ -19,10 +19,9 @@ package com.alternacraft.aclib.commands;
 import java.util.List;
 
 /**
- *
  * @author AlternaCraft
  */
 public interface SubCommandTabExecutor {
-    
-    public List<String> parseArgument(String input, SubCommandArgument argument);    
+
+    List<String> parseArgument(String input, SubCommandArgument argument);
 }

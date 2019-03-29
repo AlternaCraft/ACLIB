@@ -17,40 +17,31 @@
 package com.alternacraft.aclib.extras.db;
 
 import com.alternacraft.aclib.MessageManager;
-import static com.alternacraft.aclib.PluginBase.METER;
 import com.alternacraft.aclib.exceptions.PluginException;
 import com.alternacraft.aclib.exceptions.UndefinedMethodException;
 import com.alternacraft.aclib.extras.db.CustomStatement.Condition;
 import com.alternacraft.aclib.extras.db.CustomStatement.Field;
 import com.alternacraft.aclib.extras.db.CustomStatement.Method;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.BLOB;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.BOOLEAN;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.INTEGER;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.LONG;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.REAL;
-import static com.alternacraft.aclib.extras.db.CustomStatement.Types.TEXT;
 import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.alternacraft.aclib.PluginBase.METER;
 
 /**
- *
  * @author AlternaCraft
  */
 public abstract class SQLConnection {
 
     //<editor-fold defaultstate="collapsed" desc="VARS + CONSTRUCTOR">    
-    public static enum Drivers {
+    public enum Drivers {
         MYSQL("com.mysql.jdbc.Driver", "jdbc:mysql://"),
         SQLITE("org.sqlite.JDBC", "jdbc:sqlite:");
-        
+
         private final String driver;
         private final String prefix;
 
@@ -62,22 +53,22 @@ public abstract class SQLConnection {
         public String getDriver() {
             return driver;
         }
-        
+
         public String getCompleteURL(String to) {
             return this.prefix + to;
         }
     }
 
-    public static enum Status {
+    public enum Status {
         CONNECTED,
-        NOT_CONNECTED;
+        NOT_CONNECTED
     }
 
     private final static String DEFAULT_USER = "root";
     private final static String DEFAULT_PASS = "";
-    
+
     public Status status = Status.NOT_CONNECTED;
-    
+
     protected java.sql.Connection connection;
 
     protected Drivers driver;
@@ -128,7 +119,7 @@ public abstract class SQLConnection {
         }
         this.load();
     }
-    
+
     public boolean isConnected() throws PluginException {
         boolean valida = false;
 
@@ -163,7 +154,7 @@ public abstract class SQLConnection {
 
     //<editor-fold defaultstate="collapsed" desc="QUERIES">    
     public List<Map<String, Object>> executeQuery(CustomStatement query,
-            Object... values) throws SQLException {
+                                                  Object... values) throws SQLException {
         List<Map<String, Object>> data = new ArrayList();
 
         PreparedStatement ps = this.basics(query, values);

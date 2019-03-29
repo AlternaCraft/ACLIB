@@ -18,19 +18,16 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.bukkit.plugin.java.JavaPlugin;
+import java.util.*;
 
 /**
  * Useful class for managing plugin logs.
- * 
+ *
  * @author AlternaCraft
  */
 public class PluginLog extends File {
@@ -45,14 +42,14 @@ public class PluginLog extends File {
      *
      * @param filename File name with extension
      */
-    public PluginLog(String filename) {        
+    public PluginLog(String filename) {
         this(PluginLog.default_path, filename);
     }
 
     /**
      * Register a logger which will be saved into path.
      *
-     * @param path Path without the last slash
+     * @param path     Path without the last slash
      * @param filename File name with extension
      */
     public PluginLog(String path, String filename) {
@@ -117,11 +114,11 @@ public class PluginLog extends File {
         resul += "### " + DateUtils.getCurrentTime() + " ###\n";
         for (String message : messages) {
             resul += message + "\n";
-        }                
+        }
         FileUtils.writeFile(this, resul);
     }
 
-    public void importLog() {        
+    public void importLog() {
         if (this.exists()) {
             this.messages.addAll(FileUtils.getFileContentPerLines(this));
         }
@@ -150,9 +147,8 @@ public class PluginLog extends File {
 
     /**
      * Returns the values per date.
-     * 
+     *
      * @param lines Values
-     * 
      * @return Values per date
      */
     public static Map<Date, List<String>> getValuesPerDate(List<String> lines) {

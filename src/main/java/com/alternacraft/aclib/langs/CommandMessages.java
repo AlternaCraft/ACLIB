@@ -55,7 +55,7 @@ public enum CommandMessages implements LangInterface {
      * @param es Spanish
      * @param en English
      */
-    private CommandMessages(String es, String en) {
+    CommandMessages(String es, String en) {
         this.locales.put(Lang.ES, es);
         this.locales.put(Lang.EN, en);
     }
@@ -64,7 +64,7 @@ public enum CommandMessages implements LangInterface {
     public Map<Lang, String> getLocales() {
         return this.locales;
     }
-    
+
     @Override
     public Enum getEnum() {
         return this;

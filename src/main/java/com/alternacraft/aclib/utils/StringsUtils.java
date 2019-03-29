@@ -18,14 +18,6 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.exceptions.InvalidColorNameException;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -35,6 +27,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * This class contains some utils for Strings.
@@ -47,7 +48,6 @@ public class StringsUtils {
      * Translates all ChatColors from a String.
      *
      * @param s String to format
-     *
      * @return String formatted
      */
     public static String translateColors(String s) {
@@ -58,7 +58,6 @@ public class StringsUtils {
      * Removes all ChatColors from a String.
      *
      * @param s String to format
-     *
      * @return String formatted
      */
     public static String stripColors(String s) {
@@ -69,7 +68,6 @@ public class StringsUtils {
      * Formattes a number in time components.
      *
      * @param s Time in seconds
-     *
      * @return String formatted as, for example, "4d 5h 3m 2s" without quotes
      * @since 0.0.9
      */
@@ -108,7 +106,6 @@ public class StringsUtils {
      * Method for getting the higher length of multiple Strings.
      *
      * @param strs String...
-     *
      * @return the higher length
      */
     public static int getHigherLength(String... strs) {
@@ -126,8 +123,8 @@ public class StringsUtils {
     /**
      * @since 0.0.9
      */
-    public static enum Position {
-        LEFT, CENTER, RIGHT;
+    public enum Position {
+        LEFT, CENTER, RIGHT
     }
 
     /**
@@ -137,12 +134,10 @@ public class StringsUtils {
      * occupy the same space</p>
      *
      * @param size Maximum size
-     * @param e Char to add
-     * @param p Position in the 'block'
+     * @param e    Char to add
+     * @param p    Position in the 'block'
      * @param strs String...
-     *
      * @return String[] in the same order
-     *
      * @since 0.0.9
      */
     public static String[] copyLength(int size, char e, Position p, String... strs) {
@@ -175,7 +170,6 @@ public class StringsUtils {
      * Returns the Color by name.
      *
      * @param color Color name
-     *
      * @return Bukkit Color
      * @throws com.alternacraft.aclib.exceptions.InvalidColorNameException
      */
@@ -192,23 +186,23 @@ public class StringsUtils {
         }
         throw new InvalidColorNameException();
     }
-    
+
     private static final Map<String, Long> PAIRS = new HashMap();
     private static final Pattern FORMAT;
+
     static {
         PAIRS.put("d", 1000L * 3600L * 24L);
         PAIRS.put("h", 1000L * 3600L);
         PAIRS.put("m", 1000L * 60L);
         PAIRS.put("s", 1000L);
         FORMAT = Pattern.compile("(\\d+)([dhms])", Pattern.CASE_INSENSITIVE);
-    }    
+    }
 
     /**
      * Returns time String in millis.
      * Format example: [-]5d 3m 4s
-     * 
+     *
      * @param time String
-     * 
      * @return time in millis
      */
     public static long parseStrTimeToMillis(String time) {
@@ -222,17 +216,16 @@ public class StringsUtils {
         }
         return (minus) ? -millis : millis;
     }
-    
+
     /**
      * Returns an interactive text.
-     *
+     * <p>
      * Template: %click:(cmd|info):value | [hover:(text|item):value] |
      * displayed_text%
-     * 
+     * <p>
      * Use "//" to write multiple lore lines
      *
      * @param str String
-     *
      * @return Awesome text
      */
     public static TextComponent interactiveText(String str) {
@@ -261,10 +254,10 @@ public class StringsUtils {
                         case "click":
                             ClickEvent ce;
                             if (data[1].equals("cmd")) {
-                                ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND, 
+                                ce = new ClickEvent(ClickEvent.Action.RUN_COMMAND,
                                         stripped_message);
                             } else {
-                                ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+                                ce = new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND,
                                         stripped_message);
                             }
                             v.setClickEvent(ce);
@@ -282,7 +275,7 @@ public class StringsUtils {
                                             .replace("\\:", ":")
                                     );
                                 }
-                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, aux);                                        
+                                he = new HoverEvent(HoverEvent.Action.SHOW_TEXT, aux);
                             } else {
                                 he = new HoverEvent(HoverEvent.Action.SHOW_ITEM, null);
                                 //ce = new ClickEvent(HoverEvent.Action.SHOW_ITEM,);

@@ -22,21 +22,13 @@ import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.MapUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Define command/subcommand listener.
@@ -59,9 +51,9 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                         .collect(Collectors.toList());
         }
         return new ArrayList();
-    };    
+    };
     //</editor-fold>
-    
+
     private final String command;
     private final String perm_prefix;
     private final JavaPlugin plugin;
@@ -70,8 +62,8 @@ public class CommandListener implements CommandExecutor, TabCompleter {
      * Main constructor.
      *
      * @param command Main command
-     * @param prefix Permissions prefix
-     * @param plugin JavaPlugin
+     * @param prefix  Permissions prefix
+     * @param plugin  JavaPlugin
      */
     @SuppressWarnings("LeakingThisInConstructor")
     public CommandListener(String command, String prefix, JavaPlugin plugin) {
@@ -88,7 +80,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
      * Adds a subcommand.
      *
      * @param subcommand SubCommand
-     * @param executor Executor
+     * @param executor   Executor
      */
     public void addSubCommand(SubCommand subcommand, SubCommandExecutor executor) {
         arguments.put(subcommand, executor);
@@ -114,7 +106,7 @@ public class CommandListener implements CommandExecutor, TabCompleter {
             if (cs instanceof Player && !subcommand.getCommand().isEmpty()) {
                 Player pl = (Player) cs;
                 String permission = this.getPermission(subcommand.getCommand());
-                if (!pl.hasPermission(permission) && 
+                if (!pl.hasPermission(permission) &&
                         (subcommand.getCondition() == null || !subcommand.getCondition().testCondition(pl, args))) {
                     MessageManager.sendPluginMessage(cs, CommandMessages.NO_PERMISSION.getText(l));
                     return true;
@@ -134,26 +126,26 @@ public class CommandListener implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender cs, Command cmd, String string, String[] params) {
         List<String> options = new ArrayList<>();
-        for (Iterator<SubCommand> iterator = this.arguments.keySet().iterator(); iterator.hasNext();) {
+        for (Iterator<SubCommand> iterator = this.arguments.keySet().iterator(); iterator.hasNext(); ) {
             SubCommand next = iterator.next();
-            if (next.getCommand().startsWith(params[0]) 
+            if (next.getCommand().startsWith(params[0])
                     || Arrays.stream(next.getAliases())
-                            .anyMatch(als -> als.startsWith(params[0]))) {
+                    .anyMatch(als -> als.startsWith(params[0]))) {
                 options.addAll(this.getOptions(cs, next, next, 1, params));
             }
         }
         return options;
     }
-    
-    private List<String> getOptions(CommandSender cs, SubCommand base, 
-            SubCommand next, int idx, String[] params) {        
+
+    private List<String> getOptions(CommandSender cs, SubCommand base,
+                                    SubCommand next, int idx, String[] params) {
         List<String> options = new ArrayList<>();
-        
+
         if (next.hasSubCommands() && params.length > idx) {
             for (SubCommand subcommand : next.getSubcommands()) {
                 if (subcommand.getCommand().startsWith(params[idx])
                         || Arrays.stream(subcommand.getAliases())
-                                .anyMatch(als -> als.startsWith(params[idx]))) {
+                        .anyMatch(als -> als.startsWith(params[idx]))) {
                     options.addAll(this.getOptions(cs, base, subcommand, idx + 1, params));
                 }
             }
@@ -170,15 +162,15 @@ public class CommandListener implements CommandExecutor, TabCompleter {
                 }
             }
         }
-        
+
         return options;
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="GETTERS">
     public String getCommand() {
         return command;
     }
-    
+
     public String getPermission(String subcmd) {
         return this.perm_prefix + "." + subcmd;
     }

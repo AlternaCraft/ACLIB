@@ -132,6 +132,6 @@ public enum Lang {
     /**
      * Russian
      */
-    RU;
+    RU
     // </editor-fold>
 }

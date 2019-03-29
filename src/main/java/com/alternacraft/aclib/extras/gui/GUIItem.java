@@ -17,16 +17,11 @@
 package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.PluginBase;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
 import com.alternacraft.aclib.exceptions.SkinNotLoadedException;
 import com.alternacraft.headconverter.HeadConverter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -42,14 +37,19 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 /**
- *
  * @author AlternaCraft
  */
 public class GUIItem {
-    
+
     private static String ID = "ct_value";
-    
+
     private ItemStack item;
 
     private String title;
@@ -69,15 +69,15 @@ public class GUIItem {
 
     public GUIItem(GUIItem item) {
         this(item.getItem(), item.getTitle(), item.isGlow(), item.getPlayerHead(),
-                item.getInfo(), item.getMeta());        
+                item.getInfo(), item.getMeta());
     }
-    
+
     public GUIItem(ItemStack item, String title, boolean glow, String player_head,
-            List<String> info, JSONObject meta) {
+                   List<String> info, JSONObject meta) {
         this.item = new ItemStack(item);
 
         this.title = title;
-        this.glow = glow;            
+        this.glow = glow;
         this.player_head = player_head;
 
         this.info = new ArrayList<>(info);
@@ -97,7 +97,7 @@ public class GUIItem {
         this.info.clear();
         this.info.addAll(info);
     }
-    
+
     public List<String> getInfo() {
         return info;
     }
@@ -115,16 +115,16 @@ public class GUIItem {
         this.meta.clear();
         this.meta.putAll(meta);
     }
-    
+
     public Object getMetaBy(String key) {
         return meta.get(key);
     }
 
     public JSONObject getMeta() {
         return meta;
-    }   
-    
-    public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags) 
+    }
+
+    public ItemStack getCompleteItem(boolean removeAttributes, ItemFlag... flags)
             throws SkinNotLoadedException {
         final ItemStack aux = new ItemStack(this.item);
         ItemMeta metaaux = aux.getItemMeta();
@@ -139,28 +139,29 @@ public class GUIItem {
             metaaux.addEnchant(Enchantment.DURABILITY, 1, true);
         }
         metaaux.setLore(GUIUtils.parseLoreLines(this.info));
-        aux.setItemMeta(metaaux);        
-        if (removeAttributes) GUIUtils.removeAttributes(aux, flags);  
+        aux.setItemMeta(metaaux);
+        if (removeAttributes) GUIUtils.removeAttributes(aux, flags);
         if (this.isPlayerHead()) {
             if (Bukkit.getPluginManager().isPluginEnabled("HeadConverter")) {
                 if (HeadConverter.containsUUID(this.player_head)) {
                     setSkin(aux, HeadConverter.getB64(this.player_head));
-                } else {            
+                } else {
                     throw new SkinNotLoadedException(aux);
                 }
             } else {
                 if (this.player_head.matches(PluginBase.UUID_FORMAT)) {
-                    try {                    
+                    try {
                         setSkullOwner(aux, UUID.fromString(this.player_head));
-                    } catch (PlayerNotFoundException ex) {}
+                    } catch (PlayerNotFoundException ex) {
+                    }
                 } else {
                     setSkullOwner(aux, this.player_head);
                 }
-            }      
+            }
         }
         return aux;
     }
-    
+
     public ItemStack getCompleteItem() throws SkinNotLoadedException {
         return this.getCompleteItem(true, ItemFlag.values());
     }
@@ -202,12 +203,12 @@ public class GUIItem {
     public void setPlayerHead(String value) {
         this.player_head = value;
     }
-    
+
     public boolean isPlayerHead() {
-        return this.item.getType().equals(Material.SKULL_ITEM)
+        return this.item.getType().equals(Material.PLAYER_HEAD)
                 && this.player_head != null;
     }
-    
+
     public static String getID() {
         return ID;
     }
@@ -215,15 +216,15 @@ public class GUIItem {
     /**
      * Set a potion effect.
      *
-     * @param is ItemStack
+     * @param is     ItemStack
      * @param effect Potion type
      */
     public static void setPotionEffect(ItemStack is, PotionType effect) {
         PotionMeta pmeta = (PotionMeta) is.getItemMeta();
         pmeta.setBasePotionData(new PotionData(effect));
         is.setItemMeta(pmeta);
-    }    
-    
+    }
+
     public static boolean isGUIItem(ItemStack is) {
         if (is == null || is.getItemMeta() == null) return false;
         String str = GUIUtils.getHiddenString(is.getItemMeta().getDisplayName());
@@ -231,19 +232,19 @@ public class GUIItem {
             try {
                 JSONObject data = (JSONObject) new JSONParser().parse(str);
                 return data.get(GUIUtils.CIT_KEY) != null;
-            } catch (ParseException ex) {}
+            } catch (ParseException ex) {
+            }
         }
         return false;
     }
-    
+
     /**
      * Set skull owner.
      *
      * @param aux
      * @param uuid Player uuid
-     * 
      * @throws com.alternacraft.aclib.exceptions.PlayerNotFoundException If player
-     *         doesn't exist
+     *                                                                   doesn't exist
      */
     public void setSkullOwner(ItemStack aux, UUID uuid) throws PlayerNotFoundException {
         if (!(aux.getItemMeta() instanceof SkullMeta)) return;
@@ -255,13 +256,12 @@ public class GUIItem {
         smeta.setOwningPlayer(op);
         aux.setItemMeta(smeta);
     }
-    
+
     /**
      * Set skull owner
-     * 
+     *
      * @param aux
-     * @param ow Player name
-     * 
+     * @param ow  Player name
      * @deprecated Use offline player instead of name.
      */
     @Deprecated
@@ -269,9 +269,9 @@ public class GUIItem {
         if (!(aux.getItemMeta() instanceof SkullMeta)) return;
         SkullMeta smeta = (SkullMeta) aux.getItemMeta();
         smeta.setOwner(ow);
-        aux.setItemMeta(smeta); 
+        aux.setItemMeta(smeta);
     }
-    
+
     public static void setSkin(ItemStack head, String b64) {
         SkullMeta localSkullMeta = (SkullMeta) head.getItemMeta();
         GameProfile localGameProfile = new GameProfile(UUID.randomUUID(), null);
@@ -282,7 +282,7 @@ public class GUIItem {
             localField.setAccessible(true);
             localField.set(localSkullMeta, localGameProfile);
             localField.setAccessible(false);
-        } catch (IllegalAccessException | IllegalArgumentException 
+        } catch (IllegalAccessException | IllegalArgumentException
                 | NoSuchFieldException | SecurityException ex) {
             System.out.println("Error: " + ex.getMessage());
         }

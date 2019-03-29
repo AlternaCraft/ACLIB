@@ -19,27 +19,27 @@ package com.alternacraft.aclib.extras.gui;
 import com.alternacraft.aclib.PluginBase;
 import com.alternacraft.aclib.exceptions.SkinNotLoadedException;
 import com.alternacraft.headconverter.HeadConverter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 /**
- *
  * @author AlternaCraft
  */
 public class GUI {
 
     private static String ID = PluginBase.INSTANCE.plugin().getName();
-    
+
     protected static final String DEF_NAME = "Chest";
     protected static final int MAX_COLS = 9;
     protected static final int DEF_ROWS = 6;
-    
+
     protected String title;
     protected int update_interval;
 
@@ -184,5 +184,5 @@ public class GUI {
 
     public static String getID() {
         return ID;
-    }    
+    }
 }

@@ -49,15 +49,15 @@ public class ErrorManager {
 
     /**
      * Errors analysis.
-     * <b>This method saves the result within this vars: LAST_MESSAGES 
+     * <b>This method saves the result within this vars: LAST_MESSAGES
      * {@literal &} LAST_CODES</b>
      *
-     * @param msg Exception message.
-     * @param data Custom data.
+     * @param msg     Exception message.
+     * @param data    Custom data.
      * @param c_error Another exception message.
      */
     public static void analyzePossibleReasons(String msg, Map<String, Object> data,
-            String c_error) {
+                                              String c_error) {
         LAST_MESSAGES.clear();
         LAST_CODES.clear();
         VAULT

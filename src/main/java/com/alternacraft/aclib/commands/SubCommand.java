@@ -19,6 +19,7 @@ package com.alternacraft.aclib.commands;
 import com.alternacraft.aclib.langs.CommandMessages;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.langs.LangInterface;
+
 import java.util.Arrays;
 
 /**
@@ -30,17 +31,17 @@ public class SubCommand {
 
     private final String command;
     private final SubCommandArgument[] arguments;
-    
+
     private final Enum description;
     private final Condition condition;
     private final String[] aliases;
-    
+
     private final SubCommand[] subcommands;
     private final SubCommandTabExecutor tabExecutor;
 
-    public SubCommand(String cmd, Enum desc, Condition condition, String[] aliases, 
-            SubCommand[] subcommands, SubCommandTabExecutor tabExecutor, 
-            SubCommandArgument... arguments) {
+    public SubCommand(String cmd, Enum desc, Condition condition, String[] aliases,
+                      SubCommand[] subcommands, SubCommandTabExecutor tabExecutor,
+                      SubCommandArgument... arguments) {
         this.command = cmd;
         this.description = desc;
         this.condition = condition;
@@ -69,45 +70,42 @@ public class SubCommand {
 
     /**
      * Returns arguments.
-     * 
+     *
      * @return Argument[]
      */
     public SubCommandArgument[] getArguments() {
         return arguments;
     }
-    
+
     /**
      * Returns full command.
-     * 
+     *
      * @param prefix Parent command
-     * 
      * @return Full command
      */
     public String getFullCommand(String prefix) {
         return this.getPartialCommand(prefix) + String.join(" ", Arrays.stream(this.arguments)
                 .map(SubCommandArgument::toString).toArray(String[]::new));
     }
-    
+
     /**
      * Returns command without arguments
-     * 
+     *
      * @param prefix Parent command
-     * 
      * @return Partial command
      */
     public String getPartialCommand(String prefix) {
         // Avoid "" empty command (help)
-        return prefix + ((!this.command.isEmpty()) ? 
-                ((!prefix.isEmpty()) ? " " : "") + this.command 
-                + ((this.hasArguments()) ? " " : "") : "");
+        return prefix + ((!this.command.isEmpty()) ?
+                ((!prefix.isEmpty()) ? " " : "") + this.command
+                        + ((this.hasArguments()) ? " " : "") : "");
     }
-    
+
     /**
      * Returns usage.
-     * 
+     *
      * @param prefix Main command
-     * @param lang Language
-     * 
+     * @param lang   Language
      * @return String with the usage
      */
     public String getUsage(String prefix, Lang lang) {
@@ -121,10 +119,10 @@ public class SubCommand {
         }
         return usage;
     }
-    
+
     /**
      * Returns if command has description.
-     * 
+     *
      * @return True if description is not equals to null
      */
     public boolean hasDescription() {
@@ -133,28 +131,27 @@ public class SubCommand {
 
     /**
      * Returns if command has arguments.
-     * 
+     *
      * @return True if command has arguments
      */
     public boolean hasArguments() {
         return this.arguments != null && this.arguments.length > 0;
     }
-    
+
     /**
      * Returns if command has subcommands.
-     * 
+     *
      * @return True if command has subcommands
      */
     public boolean hasSubCommands() {
         return this.subcommands != null && this.subcommands.length > 0;
     }
-    
+
     /**
      * Returns command description by language.
      *
-     * @param <T> Lang enum
+     * @param <T>  Lang enum
      * @param lang Language
-     *
      * @return SubCommand description or empty string
      */
     public <T extends Enum & LangInterface> String getDescription(Lang lang) {
@@ -169,7 +166,7 @@ public class SubCommand {
     public Condition getCondition() {
         return condition;
     }
-    
+
     /**
      * Returns the aliases
      *
@@ -181,25 +178,25 @@ public class SubCommand {
 
     /**
      * Returns all arguments as subcommands
-     * 
+     *
      * @return Array of subcommands
      */
     public SubCommand[] getSubcommands() {
         return subcommands;
-    }    
+    }
 
     /**
      * Returns tabExecutor
-     * 
+     *
      * @return SubCommandTabExecutor
      */
     public SubCommandTabExecutor getTabExecutor() {
         return tabExecutor;
     }
-    
+
     /**
      * Does it have tabExecutor?
-     * 
+     *
      * @return True if SubCommandTabExecutor is not null; False if not
      */
     public boolean hasTabExecutor() {

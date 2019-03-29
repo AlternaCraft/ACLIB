@@ -24,17 +24,18 @@ package com.alternacraft.aclib.extras;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.exceptions.PlayerNotFoundException;
 import com.google.common.collect.ImmutableList;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
 
@@ -69,7 +70,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                 writeBody(connection, body);
                 JSONArray array = (JSONArray) jsonParser.parse(
                         new InputStreamReader(connection.getInputStream())
-                );                
+                );
                 array.forEach(profile -> {
                     JSONObject jsonProfile = (JSONObject) profile;
                     String id = (String) jsonProfile.get("id");
@@ -107,29 +108,29 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
     }
 
     private UUID getUUID(String id) {
-        return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) 
-                + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) 
+        return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12)
+                + "-" + id.substring(12, 16) + "-" + id.substring(16, 20)
                 + "-" + id.substring(20, 32));
     }
     //</editor-fold>
 
-    public static Map<String, UUID> getUUIDOf(String... names) {
+    public static Map<String, UUID> getUUIDFrom(String... names) {
         Map<String, UUID> uuids = new HashMap<>();
         boolean online = Bukkit.getServer().getOnlineMode();
 
         // Copy
         List<String> aux = new ArrayList(Arrays.asList(names));
-        
+
         // Optimization
         if (online) {
             for (String n : names) {
                 if (CACHE.containsKey(n.toLowerCase())) {
                     uuids.put(n, CACHE.get(n.toLowerCase()));
                     aux.remove(n);
-                }            
+                }
             }
         }
-        
+
         if (!aux.isEmpty()) {
             // Check case sensitive
             OfflinePlayer[] offplayers = Bukkit.getServer().getOfflinePlayers();
@@ -139,40 +140,39 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                     uuids.put(name, offplayer.getUniqueId());
                     aux.remove(name);
                 }
-            }        
+            }
             if (online) {
                 uuids.putAll(new UUIDFetcher(aux).call());
             } else {
                 aux.forEach((n) -> {
-                    uuids.put(n, Bukkit.getServer().getOfflinePlayer(n).getUniqueId());                        
+                    uuids.put(n, Bukkit.getServer().getOfflinePlayer(n).getUniqueId());
                 });
             }
         }
-  
+
         return uuids;
-    }        
-    
+    }
+
     /**
      * Method to fetch UUID for online/offline servers.
-     * 
+     *
      * <ol>
-     *  <li>If server is online try to get previous fetched uuids</li>
-     *  <li>Then try to get the player uuid from offline players (Case sensitive)</li>
-     *  <li>If there are missing names then:
-     *      <ul>
-     *          <li>For online mode - Fetch names by the API.
-     *          <li>For offline mode -  Fetch names with offline players (By name)</li>
-     *      </ul>
-     *  </li>
+     * <li>If server is online try to get previous fetched uuids</li>
+     * <li>Then try to get the player uuid from offline players (Case sensitive)</li>
+     * <li>If there are missing names then:
+     * <ul>
+     * <li>For online mode - Fetch names by the API.
+     * <li>For offline mode -  Fetch names with offline players (By name)</li>
+     * </ul>
+     * </li>
      * </ol>
      *
      * @param name Player name
-     * 
      * @return UUID
      * @throws com.alternacraft.aclib.exceptions.PlayerNotFoundException
      */
-    public static UUID getUUIDPlayer(String name) throws PlayerNotFoundException {
-        Map<String, UUID> uuids = getUUIDOf(name);
+    public static UUID getPlayerUUID(String name) throws PlayerNotFoundException {
+        Map<String, UUID> uuids = getUUIDFrom(name);
         if (!uuids.isEmpty()) {
             return uuids.values().iterator().next();
         } else {

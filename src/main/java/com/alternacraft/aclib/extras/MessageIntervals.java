@@ -19,32 +19,35 @@ package com.alternacraft.aclib.extras;
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.langs.Lang;
 import com.alternacraft.aclib.langs.LangInterface;
+import org.bukkit.entity.Player;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.bukkit.entity.Player;
 
 /**
  * Class to reduce the spam of repeated messages.
- * 
+ *
  * @author AlternaCraft
  */
 public class MessageIntervals {
-    
+
     private static long MUTE_TIME = 3 * 1000; // Seconds
-    
-    /** const LAST to check the time when it was sent */    
-    private static final Map<UUID, Map<String, Long>> LAST = new HashMap<>();    
-    
+
+    /**
+     * const LAST to check the time when it was sent
+     */
+    private static final Map<UUID, Map<String, Long>> LAST = new HashMap<>();
+
     public static void sendMessage(Player pl, LangInterface li, Lang lang) {
         sendMessage(pl, li.getText(lang));
-    } 
-    
+    }
+
     /**
      * Sends a message avoiding spam.
-     * 
-     * @param pl Player
+     *
+     * @param pl      Player
      * @param message Message
      */
     public static void sendMessage(Player pl, String message) {
@@ -53,21 +56,21 @@ public class MessageIntervals {
         if (!LAST.containsKey(playerUUID)) {
             LAST.put(playerUUID, new HashMap<>());
         }
-                
+
         if (LAST.get(playerUUID).containsKey(message)) {
             long last = LAST.get(playerUUID).get(message);
             if (new Date(last + MUTE_TIME).after(new Date())) {
                 return;
             }
-        }        
-        
-        MessageManager.sendPluginMessage(pl, message);        
+        }
+
+        MessageManager.sendPluginMessage(pl, message);
         LAST.get(playerUUID).put(message, new Date().getTime());
     }
-    
+
     /**
      * Redefines the mute time in seconds
-     * 
+     *
      * @param time Seconds
      */
     public static void redefineMuteTime(long time) {

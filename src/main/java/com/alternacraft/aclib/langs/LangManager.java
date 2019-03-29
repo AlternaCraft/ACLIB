@@ -22,13 +22,11 @@ import com.alternacraft.aclib.exceptions.KeyNotFoundException;
 import com.alternacraft.aclib.utils.MapUtils;
 import com.alternacraft.aclib.utils.PluginFile;
 import com.alternacraft.aclib.utils.RegExp;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Language manager
@@ -37,7 +35,7 @@ import java.util.regex.Matcher;
  */
 public class LangManager {
 
-    public static final String LANG_DIRECTORY = new StringBuilder(PluginBase.DIRECTORY)            
+    public static final String LANG_DIRECTORY = new StringBuilder(PluginBase.DIRECTORY)
             .append("langs")
             .append(File.separator)
             .toString();
@@ -55,9 +53,9 @@ public class LangManager {
     /**
      * Registers an Enum with a custom path.
      *
-     * @param e Enum class
+     * @param e        Enum class
      * @param filename File name without extension.
-     * @param path File path.
+     * @param path     File path.
      */
     public static void saveMessages(String path, String filename, Class... e) {
         saveMessages(path + "/" + filename);
@@ -76,7 +74,7 @@ public class LangManager {
     /**
      * Registers an Enum.
      *
-     * @param e Enum class
+     * @param e    Enum class
      * @param path Filepath + filename without extension.
      */
     public static void saveMessages(String path, Class... e) {
@@ -118,12 +116,11 @@ public class LangManager {
     /**
      * Creates a new language file.
      *
-     * @param <T> Enum type
+     * @param <T>      Enum type
      * @param langfile PluginFile
-     * @param lang Langs
+     * @param lang     Langs
      * @param messages List
-     * @param restore boolean
-     *
+     * @param restore  boolean
      * @see LangInterface
      */
     private static <T extends Enum & LangInterface> void createConfig(
@@ -137,8 +134,8 @@ public class LangManager {
 
         langfile.yamlFile.options().header(
                 "######################################\n"
-                + "## [LOCALES]Do not edit %variables% ##\n"
-                + "######################################"
+                        + "## [LOCALES]Do not edit %variables% ##\n"
+                        + "######################################"
         );
         langfile.yamlFile.options().copyHeader(true);
 
@@ -166,10 +163,8 @@ public class LangManager {
      * Checks the inner values.
      *
      * @param langFile PluginFile
-     * @param langConf YamlConfiguration
      * @param langType Langs
      * @return true or false
-     *
      * @see LangInterface
      */
     private static <T extends Enum> boolean checkLocales(
@@ -211,7 +206,7 @@ public class LangManager {
 
     /**
      * Returns main languages.
-     * 
+     *
      * @return Array of languages
      */
     public static Lang[] getKeys() {
@@ -239,15 +234,14 @@ public class LangManager {
     /**
      * Find a language value in the registered files
      *
-     * @param lang Language
-     * @param key Key
+     * @param lang  Language
+     * @param key   Key
      * @param match Array of matches
-     *
      * @return Message or null
      */
     public static String findValueInAllFiles(Lang lang, String key, String... match) {
         return Arrays.stream(MapUtils.getKeys(MESSAGES))
-                .map(m -> findMessageByKey((String) m, lang.name(), key))
+                .map(m -> findMessageByKey(m, lang.name(), key))
                 .filter(m -> m != null)
                 .filter(p -> match.length == 0 || Arrays.stream(match).anyMatch(m -> p.contains(m)))
                 .findFirst()
@@ -257,21 +251,19 @@ public class LangManager {
     public static String findValueInFile(String fname, String lang, String key, String... match) {
         return findValueInFile(fname, Lang.valueOf(lang), key, match);
     }
-    
+
     /**
      * Find a language value in a file. (if exists)
      *
      * @param fname File name without extension
-     * @param lang Language name
-     * @param key Language key
+     * @param lang  Language name
+     * @param key   Language key
      * @param match Array of matches
-     *
      * @return Translated value or null
      */
     public static String findValueInFile(String fname, Lang lang, String key, String... match) {
         String aux = Arrays.stream(MapUtils.getKeys(MESSAGES))
-                .filter(p -> p.matches(".*\\" + File.separator 
-                        + Matcher.quoteReplacement(fname)))
+                .filter(p -> p.matches(".*" + Pattern.quote(File.separator) + Matcher.quoteReplacement(fname)))
                 .filter(p -> match.length == 0 || Arrays.stream(match).anyMatch(m -> p.contains(m)))
                 .findFirst()
                 .orElse(null);
@@ -284,11 +276,10 @@ public class LangManager {
     /**
      * Returns a language value from locales files.
      *
-     * @param <T> Enum type
+     * @param <T>  Enum type
      * @param lang Langs
-     * @param e Enum value
+     * @param e    Enum value
      * @return Value or null if it does not exist
-     *
      * @see LangInterface
      */
     public static <T extends Enum> String getValueFromFile(Lang lang, T e) {

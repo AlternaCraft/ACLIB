@@ -17,9 +17,10 @@
 package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.PluginBase;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.bukkit.entity.Player;
 
 /**
  * This class contains some utils for locales.

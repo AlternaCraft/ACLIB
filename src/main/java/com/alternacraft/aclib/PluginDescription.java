@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Custom plugin description.
- * 
+ *
  * @author AlternaCraft
  */
 public class PluginDescription {

@@ -21,20 +21,17 @@ import com.alternacraft.aclib.config.ConfigurationFile;
 import com.alternacraft.aclib.langs.Lang;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
-import static org.mockito.Mockito.mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+
 /**
- *
  * @author AlternaCraft
  */
 @RunWith(PowerMockRunner.class)
@@ -58,7 +55,7 @@ public class PluginBaseTest {
     }
 
     @Before
-    public void setUp() throws Exception {        
+    public void setUp() throws Exception {
         plugin = PowerMockito.mock(JavaPlugin.class);
         PowerMockito.when(plugin.getDataFolder()).thenReturn(null);
         cfile = mock(ConfigurationFile.class);

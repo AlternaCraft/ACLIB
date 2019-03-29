@@ -18,6 +18,7 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.commands.SubCommand;
 import com.alternacraft.aclib.exceptions.KeyNotFoundException;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,6 @@ public class MapUtils {
      * @param <K> Map key
      * @param <V> Map value
      * @param map Map
-     *
      * @return Key array
      */
     public static <K, V> K[] getKeys(Map<K, V> map) {
@@ -46,11 +46,10 @@ public class MapUtils {
     /**
      * Method for getting a key by value.
      *
-     * @param <K> Map key
-     * @param <V> Map value
-     * @param map Map
+     * @param <K>   Map key
+     * @param <V>   Map value
+     * @param map   Map
      * @param value value
-     *
      * @return Key
      * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
      */
@@ -71,11 +70,10 @@ public class MapUtils {
     /**
      * Method for getting a key by value in a List.
      *
-     * @param <K> Map key
-     * @param <V> Map value
-     * @param map Map
+     * @param <K>       Map key
+     * @param <V>       Map value
+     * @param map       Map
      * @param listValue Value
-     *
      * @return Key
      * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
      */
@@ -94,17 +92,16 @@ public class MapUtils {
     /**
      * Method for getting a map key by argument from SubCommand.
      *
-     * @param <K> Map key
-     * @param <V> Map value
-     * @param map Map
+     * @param <K>        Map key
+     * @param <V>        Map value
+     * @param map        Map
      * @param subcommand String with the argument
-     * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
-     *
-     * @see SubCommand
      * @return Key
+     * @throws com.alternacraft.aclib.exceptions.KeyNotFoundException
+     * @see SubCommand
      */
     public static <K extends SubCommand, V> K findArgument(Map<K, V> map,
-            String subcommand) throws KeyNotFoundException {
+                                                           String subcommand) throws KeyNotFoundException {
         Set<K> keys = map.keySet();
         for (K key : keys) {
             if (key.getCommand().equals(subcommand) || Arrays

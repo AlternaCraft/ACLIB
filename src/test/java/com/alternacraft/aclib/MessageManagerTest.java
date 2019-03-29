@@ -17,32 +17,30 @@
 package com.alternacraft.aclib;
 
 import com.alternacraft.aclib.utils.StringsUtils;
-import java.lang.reflect.Field;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender.Spigot;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.junit.After;
-import org.junit.AfterClass;
-import static org.junit.Assert.*;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
-import static org.powermock.api.mockito.PowerMockito.when;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
+
 /**
- *
  * @author AlternaCraft
  */
 @RunWith(PowerMockRunner.class)
@@ -64,13 +62,13 @@ public class MessageManagerTest {
             try {
                 switch (f.getName()) {
                     case "ERROR":
-                        error = (String) f.get(new String());
+                        error = (String) f.get("");
                         break;
                     case "INFO":
-                        info = (String) f.get(new String());
+                        info = (String) f.get("");
                         break;
                     case "DEBUG":
-                        debug = (String) f.get(new String());
+                        debug = (String) f.get("");
                         break;
                     default:
                         break;

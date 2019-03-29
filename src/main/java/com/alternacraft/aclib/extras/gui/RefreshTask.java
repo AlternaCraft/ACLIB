@@ -18,15 +18,15 @@ package com.alternacraft.aclib.extras.gui;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- *
  * @author AlternaCraft
  */
 public class RefreshTask {
@@ -42,12 +42,12 @@ public class RefreshTask {
         this.uuid = uuid;
         this.delay = delay;
     }
-    
+
     /**
      * Registers a function to execute a custom update.
      *
      * @param f Function which should return "true" to continue and "false" to
-     * stop
+     *          stop
      */
     public void registerFunction(Function<String, Boolean> f) {
         this.registerUpdate(NON_LIMIT, f);
@@ -57,7 +57,7 @@ public class RefreshTask {
      * The default update task will replace the players skulls for new ones.
      *
      * @param limit Maximum repetitions
-     * @param f Custom update.
+     * @param f     Custom update.
      */
     public void registerUpdate(int limit, Function<String, Boolean> f) {
         if (f == null) return;

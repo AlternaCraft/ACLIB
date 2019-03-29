@@ -23,51 +23,50 @@ import java.util.Date;
 
 /**
  * This class contains some utils for managing Dates.
- * 
+ *
  * @author AlternaCraft
  */
 public class DateUtils {
 
     private final static String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    
+
     /**
      * Method for getting current time stamp with the default format
      * <i>Check out the constant DEFAULT_FORMAT</i>
-     * 
+     *
      * @return String
      */
     public static String getCurrentTime() {
         return getCurrentTime(DEFAULT_FORMAT);
     }
-    
+
     /**
      * Method for getting current time stamp with a custom format
      *
      * @param format String with format
-     * 
-     * @see SimpleDateFormat
      * @return String
+     * @see SimpleDateFormat
      */
     public static String getCurrentTime(String format) {
         return new SimpleDateFormat(format).format(new Date());
     }
-    
+
     /**
      * Return the default date format.
-     * 
+     *
      * @return DateFormat
      */
     public static DateFormat getDefaultDateFormat() {
         return new SimpleDateFormat(DEFAULT_FORMAT);
     }
-    
+
     public static boolean sameDate(Date di, Date d2) {
         Calendar today = Calendar.getInstance();
         Calendar last = Calendar.getInstance();
 
         today.setTime(new Date());
         last.setTime(d2);
-        
+
         return today.get(Calendar.YEAR) == last.get(Calendar.YEAR)
                 && today.get(Calendar.DAY_OF_YEAR) == last.get(Calendar.DAY_OF_YEAR);
     }

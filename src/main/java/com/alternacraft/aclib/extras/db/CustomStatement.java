@@ -17,24 +17,24 @@
 package com.alternacraft.aclib.extras.db;
 
 import com.alternacraft.aclib.exceptions.UndefinedMethodException;
-import java.util.Arrays;
-import java.util.Collections;
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
- *
  * @author AlternaCraft
  */
 public class CustomStatement {
 
-    public static enum Method {
+    public enum Method {
         SELECT,
         INSERT,
         UPDATE,
         DELETE
     }
 
-    public static enum Types {
+    public enum Types {
         INTEGER,
         LONG,
         BOOLEAN,
@@ -43,17 +43,17 @@ public class CustomStatement {
         REAL
     }
 
-    public static enum Order {
+    public enum Order {
         ASC,
         DESC
     }
-    
-    public static enum Logic {
+
+    public enum Logic {
         AND,
         OR
     }
 
-    public static enum Comparator {
+    public enum Comparator {
         EQ,
         GRT,
         GRTE,
@@ -183,7 +183,7 @@ public class CustomStatement {
         return "insert into " + this.tables[0].getName() + "("
                 + StringUtils.join(this.fields, ",") + ") values ("
                 + StringUtils.join(Collections.nCopies(this.fields.length, "?")
-                        .toArray(new String[this.fields.length]), ",")
+                .toArray(new String[this.fields.length]), ",")
                 + ")";
     }
 
@@ -233,8 +233,8 @@ public class CustomStatement {
 
         public void addOperators(Logic... operators) {
             this.operators = operators;
-        }        
-        
+        }
+
         public Condition[] getPreparedConditions() {
             return Arrays.stream(this.conditions).filter(p -> {
                 return p.shouldSet();

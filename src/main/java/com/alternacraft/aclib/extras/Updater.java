@@ -17,6 +17,14 @@
 package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.MessageManager;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -27,13 +35,6 @@ import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 /**
  * Check for updates on BukkitDev for a given plugin, and download the updates
@@ -214,14 +215,14 @@ public class Updater {
     /**
      * Initialize the updater.
      *
-     * @param plugin The plugin that is checking for an update.
-     * @param id The dev.bukkit.org id of the project.
-     * @param file The file that the plugin is running from, get this by doing
-     * this.getFile() from within your main class.
-     * @param type Specify the type of update this will be. See
-     * {@link UpdateType}
+     * @param plugin   The plugin that is checking for an update.
+     * @param id       The dev.bukkit.org id of the project.
+     * @param file     The file that the plugin is running from, get this by doing
+     *                 this.getFile() from within your main class.
+     * @param type     Specify the type of update this will be. See
+     *                 {@link UpdateType}
      * @param announce True if the program should announce the progress of new
-     * updates in console.
+     *                 updates in console.
      */
     public Updater(Plugin plugin, int id, File file, UpdateType type, boolean announce) {
         this(plugin, id, file, type, null, announce);
@@ -230,14 +231,14 @@ public class Updater {
     /**
      * Initialize the updater with the provided callback.
      *
-     * @param plugin The plugin that is checking for an update.
-     * @param id The dev.bukkit.org id of the project.
-     * @param file The file that the plugin is running from, get this by doing
-     * this.getFile() from within your main class.
-     * @param type Specify the type of update this will be. See
-     * {@link UpdateType}
+     * @param plugin   The plugin that is checking for an update.
+     * @param id       The dev.bukkit.org id of the project.
+     * @param file     The file that the plugin is running from, get this by doing
+     *                 this.getFile() from within your main class.
+     * @param type     Specify the type of update this will be. See
+     *                 {@link UpdateType}
      * @param callback The callback instance to notify when the Updater has
-     * finished
+     *                 finished
      */
     public Updater(Plugin plugin, int id, File file, UpdateType type, UpdateCallback callback) {
         this(plugin, id, file, type, callback, false);
@@ -246,16 +247,16 @@ public class Updater {
     /**
      * Initialize the updater with the provided callback.
      *
-     * @param plugin The plugin that is checking for an update.
-     * @param id The dev.bukkit.org id of the project.
-     * @param file The file that the plugin is running from, get this by doing
-     * this.getFile() from within your main class.
-     * @param type Specify the type of update this will be. See
-     * {@link UpdateType}
+     * @param plugin   The plugin that is checking for an update.
+     * @param id       The dev.bukkit.org id of the project.
+     * @param file     The file that the plugin is running from, get this by doing
+     *                 this.getFile() from within your main class.
+     * @param type     Specify the type of update this will be. See
+     *                 {@link UpdateType}
      * @param callback The callback instance to notify when the Updater has
-     * finished
+     *                 finished
      * @param announce True if the program should announce the progress of new
-     * updates in console.
+     *                 updates in console.
      */
     public Updater(Plugin plugin, int id, File file, UpdateType type, UpdateCallback callback, boolean announce) {
         this.plugin = plugin;
@@ -686,7 +687,7 @@ public class Updater {
      * update.
      * </p>
      *
-     * @param localVersion the current version
+     * @param localVersion  the current version
      * @param remoteVersion the remote version
      * @return true if Updater should consider the remote version an update,
      * false if not.
@@ -779,7 +780,7 @@ public class Updater {
     /**
      * Perform a file operation and log any errors if it fails.
      *
-     * @param file file operation is performed on.
+     * @param file   file operation is performed on.
      * @param result result of file operation.
      * @param create true if a file is being created, false if deleted.
      */

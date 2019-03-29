@@ -20,24 +20,18 @@ import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.commands.SubCommandArgument;
 import com.alternacraft.aclib.commands.SubCommandExecutor;
 import com.alternacraft.aclib.commands.SubCommandTabExecutor;
-import com.alternacraft.aclib.extras.db.CustomStatement.Comparator;
-import com.alternacraft.aclib.extras.db.CustomStatement.Field;
-import com.alternacraft.aclib.extras.db.CustomStatement.GroupedCondition;
-import com.alternacraft.aclib.extras.db.CustomStatement.Logic;
 import com.alternacraft.aclib.extras.db.CustomStatement.Method;
-import com.alternacraft.aclib.extras.db.CustomStatement.Table;
-import com.alternacraft.aclib.extras.db.CustomStatement.Types;
+import org.apache.commons.lang.StringUtils;
+import org.bukkit.command.CommandSender;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.lang.StringUtils;
-import org.bukkit.command.CommandSender;
 
 /**
- *
  * @author AlternaCraft
  */
 public class DatabaseCommand implements SubCommandExecutor {
@@ -65,10 +59,10 @@ public class DatabaseCommand implements SubCommandExecutor {
                             Stream.concat(
                                     Arrays.stream(CustomStatement.Types.values()),
                                     Arrays.stream(CustomStatement.Logic.values())
-                            ), 
+                            ),
                             Arrays.stream(CustomStatement.Comparator.values())
                     )
-                    .toArray(Enum[]::new);
+                            .toArray(Enum[]::new);
                 }
                 String partial = (idx == input.length() - 1) ? "" : input.substring(idx + 1);
                 return Arrays.stream(data)
@@ -99,7 +93,7 @@ public class DatabaseCommand implements SubCommandExecutor {
                 ? args[3].split("\\|") : null;
         Object[] values = (args.length > 4)
                 ? Arrays.stream(args[4].split("\\|")).map(e
-                        -> parseValue(e)).toArray() : new Object[0];
+                -> parseValue(e)).toArray() : new Object[0];
 
         Method m = Method.valueOf(method.toUpperCase());
 
@@ -117,12 +111,12 @@ public class DatabaseCommand implements SubCommandExecutor {
                 );
                 if (fields != null) {
                     this.addFields(Arrays.stream(fields).map(f -> {
-                        String[] items = f.split(":");
-                        return new Field(
-                                items[0],
-                                Types.valueOf(items[1].toUpperCase())
-                        );
-                    }).toArray(Field[]::new)
+                                String[] items = f.split(":");
+                                return new Field(
+                                        items[0],
+                                        Types.valueOf(items[1].toUpperCase())
+                                );
+                            }).toArray(Field[]::new)
                     );
                 }
                 if (conditions != null) {

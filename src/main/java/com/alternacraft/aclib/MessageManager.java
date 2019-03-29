@@ -20,9 +20,10 @@ import com.alternacraft.aclib.langs.LangInterface;
 import com.alternacraft.aclib.langs.LangManager;
 import com.alternacraft.aclib.utils.Localizer;
 import com.alternacraft.aclib.utils.StringsUtils;
-import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 /**
  * Class for sending messages.
@@ -30,9 +31,9 @@ import org.bukkit.command.CommandSender;
  * @author AlternaCraft
  */
 public class MessageManager {
-    
+
     private static final String BREAK_LINE = "\r\n|\n|\r|(?<!\\\\)\\/n";
-    
+
     private static final String ERROR = "&cERROR: &f";
     private static final String INFO = "&eINFO: &f";
     private static final String DEBUG = "&6DEBUG: &f";
@@ -41,7 +42,7 @@ public class MessageManager {
      * Logs a message into CONSOLE with a prefix.
      *
      * @param message The message
-     * @param prefix Prefix message
+     * @param prefix  Prefix message
      */
     public static void log(String message, String prefix) {
         String[] messages = message.split(BREAK_LINE);
@@ -119,7 +120,7 @@ public class MessageManager {
     /**
      * Sends a prefixed message to a player.
      *
-     * @param cs Receiver
+     * @param cs      Receiver
      * @param message Message
      */
     public static void sendPluginMessage(CommandSender cs, String message) {
@@ -128,11 +129,11 @@ public class MessageManager {
             sendInteractiveText(cs, prepareString(_message));
         }
     }
-    
+
     /**
      * Sends a clean message to a command sender
-     * 
-     * @param cs The command sender
+     *
+     * @param cs      The command sender
      * @param message The message
      */
     public static void sendMessage(CommandSender cs, String message) {
@@ -152,13 +153,13 @@ public class MessageManager {
     public static String prepareString(String message) {
         return StringsUtils.translateColors(PluginBase.INSTANCE.pluginPrefix() + " &r" + message);
     }
-    
+
     /**
      * Sends an interactive text if it is defined as it.
      * Check it out to {@link com.alternacraft.aclib.utils.StringsUtils#interactiveText(java.lang.String) interactiveText}
-     * 
+     *
      * @param msg Message
-     * @param cs Command Sender
+     * @param cs  Command Sender
      */
     public static void sendInteractiveText(CommandSender cs, String msg) {
         cs.spigot().sendMessage(StringsUtils.interactiveText(msg));

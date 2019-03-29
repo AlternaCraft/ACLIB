@@ -24,7 +24,6 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 /**
- *
  * @author AlternaCraft
  */
 public class EasyFirework {
@@ -38,7 +37,7 @@ public class EasyFirework {
     private boolean trail;
 
     public EasyFirework(Color color, Color fade, FireworkEffect.Type effect,
-            int power, boolean flicker, boolean trail) {
+                        int power, boolean flicker, boolean trail) {
         this.color = color;
         this.fade = fade;
         this.effect = effect;

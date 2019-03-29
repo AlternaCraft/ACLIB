@@ -22,7 +22,7 @@ import com.alternacraft.aclib.commands.SubCommand;
 
 /**
  * Register subcommands automaticaly
- * 
+ *
  * @author AlternaCraft
  */
 public class SubCommandsRegisterer {
@@ -37,14 +37,13 @@ public class SubCommandsRegisterer {
      * Method for registering the arguments in an enum class
      *
      * @param <T> Enum type
-     * @param e Enum class
-     *
+     * @param e   Enum class
      * @see SubCommandsInterface
      */
     public <T extends SubCommandsInterface> void register(Class<T> e) {
         for (T arg : e.getEnumConstants()) {
             this.cmd.addSubCommand(new SubCommand(arg.getSubCommand(),
-                    arg.getDescription(), arg.getCustomCondition(), 
+                    arg.getDescription(), arg.getCustomCondition(),
                     arg.getAliases(), arg.getSubcommands(), arg.getTabExecutor(),
                     arg.getArguments()), arg.getInstance());
         }

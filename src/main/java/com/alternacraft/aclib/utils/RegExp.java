@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 /**
  * Utils for Regular Expressions
- * 
+ *
  * @author AlternaCraft
  */
 public class RegExp {
@@ -34,12 +34,11 @@ public class RegExp {
      * variable ESCAPE_STRING to escape a character adding '\' at the beginning
      */
     public static final String ESCAPE_STRING = "(?<!\\\\)";
-    
+
     /**
      * Escape a String by adding ESCAPE_STRING at the beginning.
-     * 
+     *
      * @param v String
-     * 
      * @return Escaped String
      */
     public static String escape(String v) {
@@ -48,67 +47,64 @@ public class RegExp {
 
     /**
      * Quote and Escape a String by adding ESCAPE_STRING at the beginning.
-     * 
+     *
      * @param v String
-     * 
      * @return Escaped and Quoted String
-     */    
+     */
     public static String QaE(String v) {
         return escape(Pattern.quote(v));
     }
-    
+
     /**
      * Get groups from an input applying a pattern.
-     * 
+     *
      * @param pattern Pattern
-     * @param input Input
-     * 
+     * @param input   Input
      * @return Groups' list
      */
     public static List<String> getGroups(String pattern, String input) {
         List<String> data = new ArrayList<>();
-        
+
         Pattern vars = Pattern.compile(pattern);
         Matcher matcher = vars.matcher(input);
         while (matcher.find()) {
             data.add(matcher.group(1));
         }
-        
+
         return data;
     }
 
     /**
      * Get groups with elements from an input applying a pattern.
-     * 
+     *
      * @param pattern Pattern
-     * @param input Input
-     * @param grs Groups which have to be returned in natural order; All if empty
-     * 
+     * @param input   Input
+     * @param grs     Groups which have to be returned in natural order; All if empty
      * @return Groups' list which include an array with the elements
-     */    
-    public static List<String[]> getGroupsWithElements(String pattern, String input, 
-            int... grs) {
+     */
+    public static List<String[]> getGroupsWithElements(String pattern, String input,
+                                                       int... grs) {
         List<String[]> data = new ArrayList<>();
-        
+
         Pattern v = Pattern.compile(pattern);
         Matcher m = v.matcher(input);
-        
-        Arrays.sort(grs);        
-        
+
+        Arrays.sort(grs);
+
         while (m.find()) {
             boolean spc = grs.length > 0 && grs[grs.length - 1] <= m.groupCount();
             String[] elements;
             if (spc) {
                 elements = new String[grs.length];
             } else {
-                elements = new String[m.groupCount()];                
+                elements = new String[m.groupCount()];
             }
             for (int i = 0; i < elements.length; i++) {
-                elements[i] = (spc) ? m.group(grs[i]) : m.group(i+1);
+                elements[i] = (spc) ? m.group(grs[i]) : m.group(i + 1);
             }
             data.add(elements);
         }
-        
+
         return data;
-    }    
+    }
 }

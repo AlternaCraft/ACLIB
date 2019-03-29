@@ -16,8 +16,9 @@
  */
 package com.alternacraft.aclib.extras;
 
-import java.util.Random;
 import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 /**
  * An utils class about numbers.
@@ -57,7 +58,6 @@ public class NumbersUtils {
      * @param p1 int
      * @param p2 int
      * @return distance
-     *
      * @since 0.0.9
      */
     public static int differenceBetween(int p1, int p2) {
@@ -69,7 +69,6 @@ public class NumbersUtils {
      * Method for getting lower number.
      *
      * @param numbers int...
-     * 
      * @return lower
      */
     public static int getLower(int... numbers) {
@@ -87,10 +86,9 @@ public class NumbersUtils {
     /**
      * Returns if a number is equals or between two other values.
      *
-     * @param value Number to analyze
-     * @param lower Lower value
+     * @param value  Number to analyze
+     * @param lower  Lower value
      * @param bigger Bigger value
-     * 
      * @return True if it is equals or between two other number; False if not
      */
     public static boolean isEqualsOrBetween(float value, float lower, float bigger) {
@@ -100,22 +98,20 @@ public class NumbersUtils {
     /**
      * Returns if a number is between two other values.
      *
-     * @param value Number to analyze
-     * @param lower Lower value
+     * @param value  Number to analyze
+     * @param lower  Lower value
      * @param bigger Bigger value
-     * 
      * @return True if it is between two other number; False if not
      */
     public static boolean isBetween(float value, float lower, float bigger) {
         return value > lower && value < bigger;
     }
-    
+
     /**
      * Get a random value between an interval.
      *
      * @param max Max value
      * @param min Min value
-     *
      * @return int
      */
     public static int rand(int min, int max) {
@@ -127,7 +123,6 @@ public class NumbersUtils {
      *
      * @param p1 Vector 1
      * @param p2 Vector 2
-     *
      * @return Random vector
      * @since 0.0.9
      */
@@ -140,7 +135,7 @@ public class NumbersUtils {
 
         return new Vector(pos1, pos2, pos3);
     }
-    
+
     private static int seekMAXandGetRand(int v1, int v2) {
         int r;
 
@@ -153,5 +148,5 @@ public class NumbersUtils {
         }
 
         return r;
-    }    
+    }
 }

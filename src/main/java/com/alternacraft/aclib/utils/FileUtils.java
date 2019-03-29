@@ -18,15 +18,14 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.exceptions.InvalidFileNameException;
-import com.google.common.io.Files;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * File utils class.
@@ -98,16 +97,15 @@ public class FileUtils {
      * Returns the file from the specified path as a String instance.
      *
      * @param path The file path
-     * 
      * @return The file as a String instance
      */
     public static String getFileAsString(String path) {
         List<String> lines = FileUtils.getFileLines(path);
         StringBuilder res = new StringBuilder();
 
-        for (String line : lines) {
-            res.append(line.replace(" ", ""));
-        }
+        lines.forEach(line -> {
+            res.append(line.replace(" ", "")); // Optimization
+        });
 
         return res.toString();
     }
@@ -116,7 +114,6 @@ public class FileUtils {
      * Returns the lines from the file from the specified path.
      *
      * @param path The file path
-     * 
      * @return The file lines
      */
     public static List<String> getFileLines(String path) {
@@ -127,16 +124,17 @@ public class FileUtils {
      * Returns the lines from the specified file
      *
      * @param file The file
-     * 
      * @return The file lines
      */
     public static List<String> getFileContentPerLines(File file) {
-        try {
-            return Files.readLines(file, Charset.defaultCharset());
-        } catch (IOException ex) {
-            MessageManager.logError(ex.getMessage());
+        List<String> list = new ArrayList<>();
+        try (Stream<String> stream = Files.lines(Paths.get(file.toURI()))) {
+            list = stream.collect(Collectors.toList());
+        } catch (IOException e) {
+            MessageManager.logError("Error reading file: " + file.getName());
+        } finally {
+            return list;
         }
-        return new ArrayList();
     }
 
     /**
@@ -152,8 +150,7 @@ public class FileUtils {
     /**
      * Deletes the file from the specified path.
      *
-     * @param path The file path
-     * 
+     * @param path           The file path
      * @param delete_on_exit Delete on exit
      */
     public static void delete(String path, boolean delete_on_exit) {
@@ -167,7 +164,6 @@ public class FileUtils {
      * Create all the non-existent directories from the specified path.
      *
      * @param path The directory path
-     * 
      * @return True if success; false if not
      */
     public static boolean createDirs(String path) {
@@ -178,7 +174,6 @@ public class FileUtils {
      * Create all the non-existent directories from the specified file path.
      *
      * @param path The file path
-     * 
      * @return True if success; false if not
      */
     public static boolean createDirsFromFile(String path) {
@@ -189,7 +184,6 @@ public class FileUtils {
      * Create the directory from the specified path.
      *
      * @param path The directory path
-     * 
      * @return True if success; false if not
      */
     public static boolean createDir(String path) {
@@ -200,7 +194,6 @@ public class FileUtils {
      * Returns the files from an specified directory path.
      *
      * @param dir The directory path
-     * 
      * @return The files from the directory
      */
     public static File[] getFilesIntoDir(String dir) {
@@ -215,7 +208,6 @@ public class FileUtils {
      * Returns the extension from the specified file.
      *
      * @param file The file with the extension
-     * 
      * @return The file extension
      * @throws com.alternacraft.aclib.exceptions.InvalidFileNameException
      */

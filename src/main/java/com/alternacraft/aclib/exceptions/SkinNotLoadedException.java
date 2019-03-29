@@ -19,13 +19,12 @@ package com.alternacraft.aclib.exceptions;
 import org.bukkit.inventory.ItemStack;
 
 /**
- *
  * @author AlternaCraft
  */
 public class SkinNotLoadedException extends Exception {
 
     private ItemStack is;
-    
+
     public SkinNotLoadedException() {
     }
 
@@ -36,5 +35,5 @@ public class SkinNotLoadedException extends Exception {
 
     public ItemStack getItemStack() {
         return is;
-    }    
+    }
 }

@@ -17,7 +17,6 @@
 package com.alternacraft.aclib.exceptions;
 
 /**
- *
  * @author AlternaCraft
  */
 public class InvalidColorNameException extends Exception {

@@ -18,10 +18,11 @@ package com.alternacraft.aclib.extras.hook;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ExternalPluginRegisterer {
 
@@ -78,10 +79,10 @@ public class ExternalPluginRegisterer {
     /**
      * Loads added plugins.
      *
-     * @param tps TPS to execute the task; If 0 then it will be executed
-     * instantly.
+     * @param tps    TPS to execute the task; If 0 then it will be executed
+     *               instantly.
      * @param format String with the text to display. %p% will be replaced with
-     * the plugin name.
+     *               the plugin name.
      */
     public void loadPlugins(long tps, String format) {
         if (tps == 0) {

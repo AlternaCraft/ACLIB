@@ -20,7 +20,7 @@ import org.bukkit.command.CommandSender;
 
 /**
  * Subcommand executor.
- * 
+ *
  * @author AlternaCraft
  */
 public interface SubCommandExecutor {
@@ -28,10 +28,9 @@ public interface SubCommandExecutor {
     /**
      * Command logic.
      *
-     * @param cs CommandSender
+     * @param cs   CommandSender
      * @param args List of arguments
-     * 
      * @return Command result
      */
-    public abstract boolean execute(CommandSender cs, String[] args);
+    boolean execute(CommandSender cs, String[] args);
 }

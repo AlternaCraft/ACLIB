@@ -17,3 +17,5 @@
 /.settings
 /nbactions-copy-plugin.xml
 /nbactions.xml
+
+/dependency-reduced-pom.xml

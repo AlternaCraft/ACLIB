@@ -17,7 +17,6 @@
 package com.alternacraft.aclib.exceptions;
 
 /**
- *
  * @author AlternaCraft
  */
 public class UndefinedMethodException extends Exception {

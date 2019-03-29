@@ -18,26 +18,26 @@ package com.alternacraft.aclib.utils.exceptions;
 
 /**
  * Error.
- * 
+ *
  * @author AlternaCraft
  */
 public class Error {
 
     private final String message;
-    private final ErrorCode code;    
+    private final ErrorCode code;
     // For checking if this error matches.
     private ErrorExecutor executor;
-    
+
     public Error(String message, ErrorCode ec) {
         this.message = message;
         this.code = ec;
     }
-    
+
     public Error(String message, ErrorCode ec, ErrorExecutor executor) {
         this(message, ec);
         this.executor = executor;
     }
-    
+
     public String getError() {
         return this.message + " (" + this.code.errorCode() + ")";
     }

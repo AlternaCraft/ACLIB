@@ -16,15 +16,16 @@
  */
 package com.alternacraft.aclib.extras.gui;
 
-import java.nio.charset.Charset;
 import org.bukkit.ChatColor;
+
+import java.nio.charset.Charset;
 
 /**
  * Hidden strings.
  * <a href="https://gist.github.com/filoghost/f53ecb7b014c40b66bdc">Source</a>
- * 
- * @version 1.0
+ *
  * @author filoghost
+ * @version 1.0
  */
 public class HiddenStringUtils {
 
@@ -60,7 +61,7 @@ public class HiddenStringUtils {
             throw new IndexOutOfBoundsException("Invalid indexes for sequence");
         }
 
-        return input.substring(0, start + SEQUENCE_HEADER.length()) + stringToColors(hiddenString) + input.substring(end, input.length());
+        return input.substring(0, start + SEQUENCE_HEADER.length()) + stringToColors(hiddenString) + input.substring(end);
     }
 
     public static String removeHiddenString(String input) {

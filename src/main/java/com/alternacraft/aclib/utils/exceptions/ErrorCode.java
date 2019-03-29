@@ -20,10 +20,10 @@ package com.alternacraft.aclib.utils.exceptions;
  * Error code.
  * The final structure should be something like this: <i>00x00</i>
  * <ul>
- *  <li>The first two digits refer to the "application".</li>
- *  <li>The last two digits refer to the "component" of the "application".</li>
+ * <li>The first two digits refer to the "application".</li>
+ * <li>The last two digits refer to the "component" of the "application".</li>
  * </ul>
- * 
+ *
  * @author AlternaCraft
  */
 public class ErrorCode {
@@ -39,14 +39,14 @@ public class ErrorCode {
     public String errorCode() {
         String result_prefix = "";
         String result_suffix = "";
-        
+
         if (this.error_prefix <= 9) {
             result_prefix = "0";
         }
         if (this.error_suffix <= 9) {
             result_suffix = "0";
         }
-        
+
         return new StringBuilder(result_prefix).append(this.error_prefix)
                 .append("x").append(result_suffix).append(this.error_suffix).toString();
     }

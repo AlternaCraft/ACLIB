@@ -16,84 +16,79 @@
  */
 package com.alternacraft.aclib.commands.registerer;
 
-import com.alternacraft.aclib.commands.Condition;
-import com.alternacraft.aclib.commands.SubCommand;
-import com.alternacraft.aclib.commands.SubCommandArgument;
-import com.alternacraft.aclib.commands.SubCommandExecutor;
-import com.alternacraft.aclib.commands.SubCommandTabExecutor;
+import com.alternacraft.aclib.commands.*;
 
 /**
  * Subcommand structure.
- * 
+ *
  * @author AlternaCraft
  */
 public interface SubCommandsInterface {
 
     /**
      * Returns subcommand.
-     * 
+     *
      * @return String with the subcommand
      */
-    public String getSubCommand();
+    String getSubCommand();
 
     /**
      * Returns description.
-     * 
+     *
      * @return Enum with the description
      */
-    public Enum getDescription();
+    Enum getDescription();
 
     /**
      * Returns the custom condition.
-     * 
+     *
      * @return Condition
      */
-    public default Condition getCustomCondition() {
+    default Condition getCustomCondition() {
         return null;
     }
-    
+
     /**
      * Returns executor instance.
-     * 
+     *
      * @return Subcommand
-     * 
      * @since 1.0.1
      */
-    public SubCommandExecutor getInstance();
-    
+    SubCommandExecutor getInstance();
+
     /**
      * Returns alias.
-     * 
+     *
      * @return Array with the alias
      */
-    public default String[] getAliases() {
+    default String[] getAliases() {
         return new String[0];
     }
-    
+
     /**
      * Returns subcommands.
-     * 
+     *
      * @return Array with subcommands
      */
-    public default SubCommand[] getSubcommands() {
+    default SubCommand[] getSubcommands() {
         return new SubCommand[0];
     }
-    
+
     /**
      * Returns arguments.
-     * 
+     *
      * @return Array with arguments
      */
-    public default SubCommandArgument[] getArguments() {
+    default SubCommandArgument[] getArguments() {
         return new SubCommandArgument[0];
     }
-    
+
     /**
      * Returns subcommand tab executor.
-     * 
+     *
      * @return SubCommandTabExecutor
      */
-    public default SubCommandTabExecutor getTabExecutor() {
+    default SubCommandTabExecutor getTabExecutor() {
         return null;
     }
 }

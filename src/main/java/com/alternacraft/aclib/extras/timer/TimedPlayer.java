@@ -16,16 +16,17 @@
  */
 package com.alternacraft.aclib.extras.timer;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 
 public class TimedPlayer {
 
     private final MovementManager mm;
-    
+
     private UUID uuid;
     private Set<Session> sessions;
     private Session activeSession;
@@ -37,7 +38,7 @@ public class TimedPlayer {
         this.sessions = new HashSet();
         this.afkTime = 0;
     }
-    
+
     public void registerMMListener() {
         this.mm.registerListener();
     }
@@ -73,7 +74,7 @@ public class TimedPlayer {
 
     /**
      * Returns total time in seconds
-     * 
+     *
      * @return Time in seconds
      */
     public long getTotalOnline() {
@@ -82,14 +83,14 @@ public class TimedPlayer {
         for (Session s : this.sessions) {
             // If it is active session
             if (s.equals(getSession())) {
-                timeOnline += (long) ((System.currentTimeMillis() - s.getStartTime()) / 1000L);
+                timeOnline += (System.currentTimeMillis() - s.getStartTime()) / 1000L;
                 timeOnline -= getAFKTime();
 
                 if (this.mm.isAFK()) {
                     timeOnline -= this.mm.getAFKTime();
                 }
             } else {
-                timeOnline += (long) ((s.getStopTime() - s.getStartTime()) / 1000L);
+                timeOnline += (s.getStopTime() - s.getStartTime()) / 1000L;
             }
         }
 

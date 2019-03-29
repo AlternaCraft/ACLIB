@@ -19,19 +19,17 @@ package com.alternacraft.aclib.utils.exceptions;
 import java.util.Map;
 
 /**
- *
  * @author AlternaCraft
  */
 public interface ErrorExecutor {
-    
+
     /**
      * Checks what could be the cause of the error.
-     * 
-     * @param msg Exception message.
-     * @param data (Optional) Added data to the exception.
+     *
+     * @param msg     Exception message.
+     * @param data    (Optional) Added data to the exception.
      * @param c_error (Optional) Another exception message.
-     * 
      * @return True if it matches; False if not
      */
-    public boolean matches(String msg, Map<String, Object> data, String c_error);
+    boolean matches(String msg, Map<String, Object> data, String c_error);
 }

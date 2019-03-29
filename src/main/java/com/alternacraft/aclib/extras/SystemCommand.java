@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *
  * @author AlternaCraft
  */
 public class SystemCommand {
@@ -30,9 +29,7 @@ public class SystemCommand {
      * Executes a command and returns the output and errors, if exists.
      *
      * @param cmd Command
-     *
      * @return Array with output and errors, if exists
-     *
      * @throws java.io.IOException If something fails.
      */
     public static String[] execute(String cmd) throws IOException {
@@ -53,7 +50,7 @@ public class SystemCommand {
         }
 
         p.destroy();
-        
+
         return result;
     }
 }

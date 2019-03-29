@@ -31,8 +31,7 @@ public class HandlersRegisterer {
      * Register listeners.
      *
      * @param <T> HandlersInterface
-     * @param e Enum class of type T
-     *
+     * @param e   Enum class of type T
      * @since 1.0.1
      */
     public static <T extends HandlersInterface> void load(Class<T> e) {
@@ -45,14 +44,13 @@ public class HandlersRegisterer {
     /**
      * Register listeners.
      *
-     * @param <T> Listener
+     * @param <T>       Listener
      * @param listeners Listener objects
-     *
      * @since 1.7.2
      */
     public static <T extends Listener> void load(T... listeners) {
         for (T listener : listeners) {
-            Bukkit.getServer().getPluginManager().registerEvents(listener, 
+            Bukkit.getServer().getPluginManager().registerEvents(listener,
                     PluginBase.INSTANCE.plugin());
         }
     }

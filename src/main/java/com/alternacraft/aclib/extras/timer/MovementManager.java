@@ -28,17 +28,17 @@ public class MovementManager implements Listener {
 
     private static final int AFK_DEF_TIME = 5;
     private static final int DISABLED_AFK = 0;
-    
+
     private static int timeThreshold = AFK_DEF_TIME;
-    
-    private final TimedPlayer tp;    
-    private long lastMovement; 
-        
+
+    private final TimedPlayer tp;
+    private long lastMovement;
+
     public MovementManager(TimedPlayer tp) {
         this.tp = tp;
         this.lastMovement = 0;
     }
-    
+
     public void registerListener() {
         // Register listener
         HandlersRegisterer.load(this);
@@ -49,7 +49,7 @@ public class MovementManager implements Listener {
 
     public boolean isAFK() {
         // Returns 'DISABLED_AFK' if AFKChecker is disabled
-        return (!hasLastMovement()) ? false : getAFKTime() > DISABLED_AFK;
+        return (hasLastMovement()) && getAFKTime() > DISABLED_AFK;
     }
 
     /**
@@ -64,8 +64,7 @@ public class MovementManager implements Listener {
     }
 
     /**
-     * 
-     * @return 
+     * @return
      */
     public boolean hasLastMovement() {
         return this.lastMovement > 0;
@@ -91,26 +90,25 @@ public class MovementManager implements Listener {
     }
 
     /**
-     * 
+     *
      */
     public void removeLastMovement() {
         this.lastMovement = 0;
     }
-    
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMoves(PlayerMoveEvent event) {
         Location from = event.getFrom();
-        Location to = event.getTo();        
+        Location to = event.getTo();
         if (event.getPlayer().getUniqueId().equals(this.tp.getUniqueId())) {
-            if (from.getX() != to.getX() || from.getY() != to.getY() 
+            if (from.getX() != to.getX() || from.getY() != to.getY()
                     || from.getZ() != to.getZ()) {
                 this.addLastMovement();
             }
         }
-    }    
-    
+    }
+
     /**
-     * 
      * @param time Minutes
      */
     public static void setAFKTime(int time) {

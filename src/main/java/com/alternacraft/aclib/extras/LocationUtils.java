@@ -18,14 +18,8 @@ package com.alternacraft.aclib.extras;
 
 import com.alternacraft.aclib.exceptions.UnknownFacingDirectionException;
 import org.bukkit.block.BlockFace;
-import static org.bukkit.block.BlockFace.EAST;
-import static org.bukkit.block.BlockFace.NORTH;
-import static org.bukkit.block.BlockFace.NORTH_EAST;
-import static org.bukkit.block.BlockFace.NORTH_WEST;
-import static org.bukkit.block.BlockFace.SOUTH;
-import static org.bukkit.block.BlockFace.SOUTH_EAST;
-import static org.bukkit.block.BlockFace.SOUTH_WEST;
-import static org.bukkit.block.BlockFace.WEST;
+
+import static org.bukkit.block.BlockFace.*;
 
 /**
  * This class contains some utils for Location objects.
@@ -37,7 +31,6 @@ public class LocationUtils {
      * Returns the facing direction from an specified yaw.
      *
      * @param bf Block face
-     * 
      * @return Block face to yaw
      */
     public static float blockFaceToYaw(BlockFace bf) {
@@ -67,7 +60,6 @@ public class LocationUtils {
      * Returns the facing direction from an specified yaw.
      *
      * @param yaw Yaw value
-     * 
      * @return Block face
      * @throws com.alternacraft.aclib.exceptions.UnknownFacingDirectionException
      */
@@ -77,8 +69,8 @@ public class LocationUtils {
             rotation += 360.0;
         }
 
-        BlockFace[] bfs = {NORTH_EAST, EAST, SOUTH_EAST,SOUTH, SOUTH_WEST, WEST, NORTH_WEST};
-        
+        BlockFace[] bfs = {NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST};
+
         // + 22.5
         if ((0 <= rotation && rotation < 22.5) || (337.5 <= rotation && rotation < 360.0)) {
             return BlockFace.NORTH;
@@ -90,7 +82,7 @@ public class LocationUtils {
                 return bf;
             }
             angle += 45;
-        }        
+        }
         throw new UnknownFacingDirectionException();
     }
 }

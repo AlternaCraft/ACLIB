@@ -18,10 +18,11 @@ package com.alternacraft.aclib.utils;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Useful class for managing plugin files.
@@ -36,7 +37,6 @@ public class PluginFile extends File {
      * Autocreate file if not exists into default directory.
      *
      * @param path Path to file
-     *
      * @since 1.0.2
      */
     public PluginFile(String path) {
@@ -48,7 +48,6 @@ public class PluginFile extends File {
      *
      * @param base Default directory
      * @param path Path to file
-     *
      * @since 1.0.2
      */
     public PluginFile(String base, String path) {
@@ -58,9 +57,8 @@ public class PluginFile extends File {
     /**
      * Load file inside default directory.
      *
-     * @param path Path to file
+     * @param path          Path to file
      * @param auto_creation Defaults
-     *
      * @since 1.0.2
      */
     public PluginFile(String path, boolean auto_creation) {
@@ -70,14 +68,13 @@ public class PluginFile extends File {
     /**
      * Some extras:
      * <ul>
-     *   <li>Create a new file if not exists</li>
-     *   <li>Load YAML configuration</li>
+     * <li>Create a new file if not exists</li>
+     * <li>Load YAML configuration</li>
      * </ul>
      *
-     * @param base Default directory
-     * @param path Custom path
+     * @param base          Default directory
+     * @param path          Custom path
      * @param auto_creation Do extras
-     *
      * @since 1.0.2
      */
     @SuppressWarnings("OverridableMethodCallInConstructor")
@@ -141,7 +138,7 @@ public class PluginFile extends File {
     public Set<String> getNodes(String path) {
         return this.getNodes(path, false);
     }
-    
+
     public Set<String> getNodes(String path, boolean deep) {
         return yamlFile.getConfigurationSection(path).getKeys(deep);
     }

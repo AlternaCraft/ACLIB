@@ -18,16 +18,6 @@ package com.alternacraft.aclib.config;
 
 import com.alternacraft.aclib.MessageManager;
 import com.alternacraft.aclib.PluginBase;
-import static com.alternacraft.aclib.PluginBase.DIRECTORY;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
@@ -36,30 +26,38 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+
+import static com.alternacraft.aclib.PluginBase.DIRECTORY;
+
 /**
- * Custom class for working better with the main config file. 
+ * Custom class for working better with the main config file.
  * These are the capabilities:
  * <ul>
- *  <li>Creating config with comments between lines.</li>
- *  <li>Checking config version with internal version for checking changes.
- *      <ul>
- *          <li>Setting params from previous config within the new one.</li>
- *      </ul>
- *  </li>
- *  <li>Saving data from the config inside of variables.</li>
+ * <li>Creating config with comments between lines.</li>
+ * <li>Checking config version with internal version for checking changes.
+ * <ul>
+ * <li>Setting params from previous config within the new one.</li>
+ * </ul>
+ * </li>
+ * <li>Saving data from the config inside of variables.</li>
  * </ul>
  *
  * @see FileConfiguration
  * @see ConfigDataInterface
  */
 public class ConfigurationFile {
-    
+
     //Attributes
     private JavaPlugin plugin = null;
 
     private FileConfiguration configFile = null;
     private File backupFile = null;
-    
+
     // Parents
     private String parent;
 
@@ -80,13 +78,12 @@ public class ConfigurationFile {
         plugin.reloadConfig();
         configFile = plugin.getConfig();
     }
-    
+
     /**
      * Loads the main configuration parameters
      *
      * @param <T> Loader Interface
      * @param cdi Loader
-     *
      * @since 0.0.9
      */
     public <T extends ConfigDataInterface> void loadParams(T cdi) {
@@ -95,7 +92,7 @@ public class ConfigurationFile {
 
     /**
      * Gets file configuration
-     * 
+     *
      * @return Configuration file
      */
     public FileConfiguration get() {
@@ -135,9 +132,9 @@ public class ConfigurationFile {
         String[] cnodes = PluginBase.INSTANCE.getCustomNodes();
 
         try (BufferedReader br = new BufferedReader(new FileReader(outFile));
-                FileWriter fw = new FileWriter(temp)) {
+             FileWriter fw = new FileWriter(temp)) {
             String line;
-            boolean avoid = false;            
+            boolean avoid = false;
             while ((line = br.readLine()) != null) {
                 if (avoid) {
                     if (!line.matches("[^#]?\\s+\\w+:.*") && !line.matches("\\s*#.*")) {
@@ -171,7 +168,7 @@ public class ConfigurationFile {
                 + "into the new one.");
         MessageManager.log(ChatColor.YELLOW + "Just in case, check the result.");
     }
-    
+
     private String parseCustomNode(String key, YamlConfiguration oldFile) {
         String result = key + ":" + System.lineSeparator();
         Set<String> values = oldFile.getConfigurationSection(key).getKeys(true);
@@ -186,7 +183,7 @@ public class ConfigurationFile {
             return spaces + kkey + ": " + val + System.lineSeparator();
         }).reduce(result, String::concat);
         return result;
-    }    
+    }
 
     private String replace(String line, YamlConfiguration newFile, YamlConfiguration oldFile) {
         // Ignore values
@@ -197,19 +194,19 @@ public class ConfigurationFile {
 
         // Output
         String res;
-        
+
         // ** BEGIN FIND NODE ** //
         String key = getKey(line);
         String cKey = key;
-        
+
         Object v = newFile.get(cKey); // Default value
-        
+
         // Testing with parent
         if (v == null) {
             cKey = parent + "." + key;
             v = newFile.get(cKey);
         }
-        
+
         // Going back
         while (v == null && parent.contains(".")) {
             parent = parent.substring(0, parent.lastIndexOf("."));
@@ -233,13 +230,13 @@ public class ConfigurationFile {
 
         // Default output [For nodes]
         res = spaces + key + ":";
-        
+
         // Object type
         if (v instanceof List) {
             res += this.parseList((List<Object>) v, spaces);
         } else if (v instanceof MemorySection) {
             // If it is custom then copy old values
-            if (newFile.getConfigurationSection(cKey).getKeys(false).isEmpty() 
+            if (newFile.getConfigurationSection(cKey).getKeys(false).isEmpty()
                     && oldFile.contains(cKey)
                     && !oldFile.getConfigurationSection(cKey).getKeys(false).isEmpty()) {
                 for (String k : oldFile.getConfigurationSection(cKey).getKeys(true)) {
@@ -251,8 +248,8 @@ public class ConfigurationFile {
                     if (!(nv instanceof MemorySection)) {
                         if (nv instanceof List) {
                             res += this.parseList((List<Object>) nv, nspaces);
-                        } else {                            
-                            res += " " + getFilteredString(nv.toString());                            
+                        } else {
+                            res += " " + getFilteredString(nv.toString());
                         }
                     }
                 }
@@ -276,7 +273,7 @@ public class ConfigurationFile {
                 .map(e -> System.lineSeparator() + spaces + "- " + e)
                 .reduce("", String::concat);
     }
-    
+
     private String getKey(String str) {
         return str.split(":")[0].replaceAll("\\s+", "");
     }
